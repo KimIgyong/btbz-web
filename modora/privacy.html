@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modora 개인정보처리방침 | Privacy Policy</title>
+<meta name="description" content="Modora 개인정보처리방침 — 모든 데이터는 기기에 암호화되어 저장되며, 자체 서버로 전송되지 않습니다. / Modora Privacy Policy — all data is encrypted on your device; nothing is sent to our servers.">
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1a1d21; --muted: #5c6470; --accent: #2563eb;
+    --border: #e5e8ec; --card: #f6f8fa;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14161a; --fg: #e6e9ed; --muted: #9aa3af; --accent: #60a5fa;
+            --border: #2a2f36; --card: #1d2127; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--fg);
+         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo",
+                      "Noto Sans KR", Roboto, sans-serif;
+         line-height: 1.7; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  header { margin-bottom: 2rem; }
+  h1 { font-size: 1.65rem; margin-bottom: .25rem; }
+  .meta { color: var(--muted); font-size: .9rem; }
+  h2 { font-size: 1.2rem; margin: 2rem 0 .6rem; padding-top: 1rem;
+       border-top: 1px solid var(--border); }
+  p, li { margin-bottom: .55rem; }
+  ul { padding-left: 1.3rem; }
+  .card { background: var(--card); border: 1px solid var(--border);
+          border-radius: 10px; padding: 1rem 1.2rem; margin: 1rem 0; }
+  a { color: var(--accent); }
+  .lang-switch { display: flex; gap: .5rem; margin-bottom: 1.5rem; }
+  .lang-switch button { border: 1px solid var(--border); background: var(--card);
+    color: var(--fg); padding: .35rem .9rem; border-radius: 999px; cursor: pointer;
+    font-size: .9rem; }
+  .lang-switch button.active { background: var(--accent); border-color: var(--accent);
+    color: #fff; }
+  [data-lang] { display: none; }
+  html[data-show="ko"] [data-lang="ko"] { display: block; }
+  html[data-show="en"] [data-lang="en"] { display: block; }
+  table { width: 100%; border-collapse: collapse; margin: .8rem 0; font-size: .95rem; }
+  th, td { text-align: left; padding: .5rem .6rem; border: 1px solid var(--border);
+           vertical-align: top; }
+  th { background: var(--card); }
+  .toc { font-size: .95rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lang-switch">
+    <button id="btn-ko" onclick="setLang('ko')">한국어</button>
+    <button id="btn-en" onclick="setLang('en')">English</button>
+  </div>
+
+  <!-- ================= 한국어 ================= -->
+  <div data-lang="ko">
+    <header>
+      <h1>Modora 개인정보처리방침</h1>
+      <p class="meta">시행일: 2026년 7월 19일 · 버전 1.0</p>
+    </header>
+
+    <div class="card">
+      <strong>요약:</strong> Modora는 로컬 우선(local-first) 앱입니다. 여러분이 기록한 모든
+      데이터는 <strong>사용자의 기기 안에 암호화되어 저장</strong>되며, 개발사는 자체 서버를
+      운영하지 않고 여러분의 데이터에 접근할 수 없습니다.
+    </div>
+
+    <h2>1. 수집·저장하는 데이터</h2>
+    <p>Modora는 다음 데이터를 <strong>오직 사용자의 기기에만</strong> 저장합니다.</p>
+    <ul>
+      <li>비밀메모(제목, 내용, 사이트 정보)</li>
+      <li>비밀번호 및 비밀번호 수정 히스토리</li>
+      <li>첨부 파일(이미지, PDF, 압축 파일)</li>
+      <li>일정(생일·기념일·만료일) 및 알림 설정</li>
+    </ul>
+    <p>개발사는 위 데이터를 수집하지 않으며, 분석·광고 목적의 개인정보 수집도 하지 않습니다.</p>
+
+    <h2>2. 암호화 방식</h2>
+    <ul>
+      <li>마스터 비밀번호는 <strong>Argon2id</strong> 키 유도 함수(KDF)로 처리되며, 원문은 어디에도 저장되지 않습니다.</li>
+      <li>모든 데이터는 <strong>AES-256-GCM</strong>으로 암호화되어 기기에 저장됩니다.</li>
+      <li>개발사는 자체 서버를 운영하지 않으므로, 데이터가 개발사로 전송되는 일은 없습니다.</li>
+      <li>이 구조상 마스터 비밀번호를 잊으면 개발사도 데이터를 복구해 드릴 수 없습니다.</li>
+    </ul>
+
+    <h2>3. 기기 권한 사용 목적</h2>
+    <table>
+      <tr><th>권한</th><th>사용 목적</th></tr>
+      <tr><td>카메라</td><td>메모에 첨부할 사진 촬영 (선택)</td></tr>
+      <tr><td>사진 보관함</td><td>메모에 첨부할 이미지 선택 (선택)</td></tr>
+      <tr><td>생체인증 (Face ID / 지문)</td><td>앱 잠금 해제 (선택, 인증 정보는 OS가 관리하며 앱은 결과만 전달받음)</td></tr>
+      <tr><td>알림</td><td>생일·기념일·만료일 알림 발송 (선택)</td></tr>
+    </table>
+    <p>모든 권한은 해당 기능을 사용할 때만 요청되며, 거부해도 나머지 기능은 정상 동작합니다.</p>
+
+    <h2>4. Google Drive 백업 (선택 기능)</h2>
+    <ul>
+      <li>Google Drive 자동 백업은 <strong>기본적으로 꺼져 있습니다.</strong></li>
+      <li>사용자가 설정에서 명시적으로 켠 경우에만, <strong>암호화된 백업 파일(.modora)</strong>이 사용자의 Google Drive에 전송됩니다.</li>
+      <li>앱은 Google Drive의 <strong>앱 전용 데이터 폴더(drive.appdata)에만 접근</strong>하며, 사용자의 다른 Drive 파일은 보거나 수정할 수 없습니다.</li>
+      <li>Google 로그인 과정에서 <strong>Google 계정 이메일과 OAuth 토큰</strong>이 처리될 수 있으며, 이는 백업 기능 제공 목적으로만 기기에서 사용됩니다.</li>
+      <li>백업 파일 역시 업로드 전에 암호화되므로, Google Drive에 올라간 파일도 마스터 비밀번호 없이는 열 수 없습니다.</li>
+    </ul>
+
+    <h2>5. 데이터 삭제</h2>
+    <ul>
+      <li>앱 내 <strong>로컬 초기화</strong>는 기기에 저장된 데이터를 삭제합니다.</li>
+      <li>단, <strong>Google Drive에 백업된 파일은 자동으로 삭제되지 않으며</strong>, 사용자가 Google Drive에서 별도로 삭제해야 합니다. (Drive 설정 → 앱 관리 → Modora → 숨겨진 앱 데이터 삭제)</li>
+      <li>앱을 삭제해도 사용자가 선택한 보관 경로의 백업 파일과 Google Drive 백업은 유지될 수 있습니다.</li>
+    </ul>
+
+    <h2>6. 이용자의 권리와 데이터 관리</h2>
+    <ul>
+      <li><strong>열람·수정·삭제:</strong> 모든 데이터는 앱 안에서 직접 열람·수정·삭제할 수 있습니다.</li>
+      <li><strong>내보내기:</strong> 설정에서 암호화된 백업 파일(.modora)로 내보낼 수 있으며, CSV 일괄 등록도 지원합니다.</li>
+      <li><strong>복원:</strong> 백업 파일로 다른 기기나 재설치 후에 데이터를 복원할 수 있습니다.</li>
+      <li>데이터 처리에 관한 문의는 아래 연락처로 보내주시면 신속히 답변드리겠습니다.</li>
+    </ul>
+
+    <h2>7. 방침 변경</h2>
+    <p>이 방침이 변경되는 경우 이 페이지에 개정 내용과 시행일을 게시합니다. 중요한 변경은 앱 내 공지로도 안내합니다.</p>
+
+    <h2>8. 문의처</h2>
+    <ul>
+      <li>이메일: <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a></li>
+      <li>웹사이트: <a href="https://www.btbz.ai">www.btbz.ai</a></li>
+    </ul>
+  </div>
+
+  <!-- ================= English ================= -->
+  <div data-lang="en">
+    <header>
+      <h1>Modora Privacy Policy</h1>
+      <p class="meta">Effective date: July 19, 2026 · Version 1.0</p>
+    </header>
+
+    <div class="card">
+      <strong>Summary:</strong> Modora is a local-first app. Everything you record is
+      <strong>encrypted and stored on your device</strong>. We operate no servers of our own
+      and cannot access your data.
+    </div>
+
+    <h2>1. Data We Store</h2>
+    <p>Modora stores the following data <strong>only on your device</strong>:</p>
+    <ul>
+      <li>Secret memos (title, content, site information)</li>
+      <li>Passwords and password revision history</li>
+      <li>Attachments (images, PDFs, archives)</li>
+      <li>Schedules (birthdays, anniversaries, expiry dates) and reminder settings</li>
+    </ul>
+    <p>We do not collect any of this data, and we do not collect personal data for analytics or advertising.</p>
+
+    <h2>2. Encryption</h2>
+    <ul>
+      <li>Your master password is processed with the <strong>Argon2id</strong> key-derivation function; the password itself is never stored anywhere.</li>
+      <li>All data is encrypted on-device with <strong>AES-256-GCM</strong>.</li>
+      <li>We operate no servers, so your data is never transmitted to us.</li>
+      <li>Because of this design, if you forget your master password, we cannot recover your data.</li>
+    </ul>
+
+    <h2>3. Device Permissions</h2>
+    <table>
+      <tr><th>Permission</th><th>Purpose</th></tr>
+      <tr><td>Camera</td><td>Take photos to attach to memos (optional)</td></tr>
+      <tr><td>Photo library</td><td>Choose images to attach to memos (optional)</td></tr>
+      <tr><td>Biometrics (Face ID / fingerprint)</td><td>Unlock the app (optional; biometric data is managed by the OS — the app only receives the pass/fail result)</td></tr>
+      <tr><td>Notifications</td><td>Reminders for birthdays, anniversaries, and expiry dates (optional)</td></tr>
+    </table>
+    <p>Each permission is requested only when you use the related feature; declining does not affect other features.</p>
+
+    <h2>4. Google Drive Backup (Optional)</h2>
+    <ul>
+      <li>Automatic Google Drive backup is <strong>OFF by default</strong>.</li>
+      <li>Only when you explicitly enable it in Settings is an <strong>encrypted backup file (.modora)</strong> uploaded to your Google Drive.</li>
+      <li>The app accesses only Google Drive's <strong>app-private data folder (drive.appdata)</strong>; it cannot see or modify any of your other Drive files.</li>
+      <li>During Google sign-in, your <strong>Google account email and OAuth tokens</strong> may be processed, solely on-device and solely to provide the backup feature.</li>
+      <li>Backup files are encrypted before upload, so even the file in your Google Drive cannot be opened without your master password.</li>
+    </ul>
+
+    <h2>5. Deleting Your Data</h2>
+    <ul>
+      <li>The in-app <strong>local reset</strong> deletes the data stored on your device.</li>
+      <li>However, <strong>backups in Google Drive are not deleted automatically</strong> — remove them yourself in Google Drive (Settings → Manage apps → Modora → Delete hidden app data).</li>
+      <li>Uninstalling the app may leave backup files in your chosen backup location and in Google Drive.</li>
+    </ul>
+
+    <h2>6. Your Rights and Data Management</h2>
+    <ul>
+      <li><strong>Access, edit, delete:</strong> all data can be viewed, edited, and deleted directly in the app.</li>
+      <li><strong>Export:</strong> Settings lets you export an encrypted backup file (.modora); CSV bulk import is also supported.</li>
+      <li><strong>Restore:</strong> backups can be restored on another device or after reinstalling.</li>
+      <li>For any questions about data handling, contact us below and we will respond promptly.</li>
+    </ul>
+
+    <h2>7. Changes to This Policy</h2>
+    <p>If this policy changes, we will post the revision and its effective date on this page. Significant changes will also be announced in the app.</p>
+
+    <h2>8. Contact</h2>
+    <ul>
+      <li>Email: <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a></li>
+      <li>Website: <a href="https://www.btbz.ai">www.btbz.ai</a></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  function setLang(l) {
+    document.documentElement.setAttribute('data-show', l);
+    document.documentElement.setAttribute('lang', l);
+    document.getElementById('btn-ko').classList.toggle('active', l === 'ko');
+    document.getElementById('btn-en').classList.toggle('active', l === 'en');
+    try { localStorage.setItem('modora-privacy-lang', l); } catch (e) {}
+  }
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('modora-privacy-lang'); } catch (e) {}
+    var nav = (navigator.language || 'ko').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en';
+    setLang(saved || nav);
+  })();
+</script>
+</body>
+</html>
