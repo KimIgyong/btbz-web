@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko" data-show="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modora — 기기에만 저장되는 비밀메모 | Local-first secret memos</title>
+<meta name="description" content="Modora(모더라) — 비밀번호·비밀메모·일정·자료를 기기 안에 암호화해 보관하는 로컬 우선 앱. 서버 전송 없음. / A local-first app that keeps your passwords, memos, schedules and files encrypted on your device.">
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1a1d21; --muted: #5c6470; --accent: #2563eb;
+    --border: #e5e8ec; --card: #f6f8fa;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14161a; --fg: #e6e9ed; --muted: #9aa3af; --accent: #60a5fa;
+            --border: #2a2f36; --card: #1d2127; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--fg); line-height: 1.7;
+         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo",
+                      "Noto Sans KR", Roboto, sans-serif; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  header.top { display: flex; align-items: center; justify-content: space-between;
+               margin-bottom: 3rem; }
+  .logo { font-size: 1.25rem; font-weight: 800; letter-spacing: -.02em; }
+  .logo span { color: var(--accent); }
+  .lang-switch { display: flex; gap: .4rem; }
+  .lang-switch button { border: 1px solid var(--border); background: var(--card);
+    color: var(--fg); padding: .3rem .8rem; border-radius: 999px; cursor: pointer;
+    font-size: .85rem; }
+  .lang-switch button.active { background: var(--accent); border-color: var(--accent);
+    color: #fff; }
+  [data-lang] { display: none; }
+  html[data-show="ko"] [data-lang="ko"] { display: block; }
+  html[data-show="en"] [data-lang="en"] { display: block; }
+  .hero { text-align: center; margin-bottom: 3.5rem; }
+  .hero .mark { font-size: 3rem; margin-bottom: .8rem; }
+  h1 { font-size: 2rem; line-height: 1.35; margin-bottom: .8rem; letter-spacing: -.02em; }
+  .hero p { color: var(--muted); max-width: 560px; margin: 0 auto; }
+  .badges { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap;
+            margin-top: 1.4rem; }
+  .badge { border: 1px solid var(--border); background: var(--card); color: var(--muted);
+           padding: .45rem 1rem; border-radius: 10px; font-size: .85rem; }
+  h2 { font-size: 1.25rem; margin: 2.6rem 0 1rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: .8rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+          padding: 1.1rem 1.2rem; }
+  .card .ic { font-size: 1.4rem; margin-bottom: .4rem; }
+  .card h3 { font-size: .98rem; margin-bottom: .3rem; }
+  .card p { font-size: .88rem; color: var(--muted); margin: 0; }
+  .note { background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+          padding: 1rem 1.2rem; font-size: .9rem; color: var(--muted); margin-top: 2.2rem; }
+  footer { margin-top: 3.5rem; padding-top: 1.4rem; border-top: 1px solid var(--border);
+           display: flex; justify-content: space-between; flex-wrap: wrap; gap: .8rem;
+           font-size: .88rem; color: var(--muted); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="logo">Modora<span>.</span></div>
+    <div class="lang-switch">
+      <button id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+  </header>
+
+  <!-- ================= 한국어 ================= -->
+  <div data-lang="ko">
+    <section class="hero">
+      <div class="mark">🔐</div>
+      <h1>비밀번호와 소중한 기록,<br>기기 안에만 안전하게.</h1>
+      <p>모더라(Modora)는 비밀메모·비밀번호·일정·자료를 <strong>사용자의 기기 안에 암호화해 보관</strong>하는
+         로컬 우선(local-first) 앱입니다. 자체 서버가 없어 데이터가 밖으로 나가지 않습니다.</p>
+      <div class="badges">
+        <span class="badge">📱 Google Play — 준비 중</span>
+        <span class="badge">🍎 App Store — 준비 중</span>
+        <span class="badge">💻 Windows · macOS — 준비 중</span>
+      </div>
+    </section>
+
+    <h2>주요 기능</h2>
+    <div class="grid">
+      <div class="card"><div class="ic">🔒</div><h3>강력한 기기 내 암호화</h3>
+        <p>마스터 비밀번호는 Argon2id로 처리되고, 모든 데이터는 AES-256-GCM으로 암호화됩니다.</p></div>
+      <div class="card"><div class="ic">📝</div><h3>비밀메모</h3>
+        <p>사이트·비밀번호·힌트를 메모로 저장하고, 비밀번호 수정 히스토리까지 관리합니다.</p></div>
+      <div class="card"><div class="ic">#️⃣</div><h3>해시태그 &amp; 카테고리</h3>
+        <p>내용에 #태그를 쓰면 자동 인식되고, 카테고리·정렬·그리드 뷰로 깔끔하게 정리됩니다.</p></div>
+      <div class="card"><div class="ic">📅</div><h3>일정 · 알림</h3>
+        <p>생일·기념일(양력/음력)과 만료일을 저장하고 1개월·1주·1일 전 알림을 받습니다.</p></div>
+      <div class="card"><div class="ic">🗂️</div><h3>자료보관</h3>
+        <p>가입 완료 캡처, 신청 서류 같은 이미지·PDF·압축파일을 안전하게 보관합니다.</p></div>
+      <div class="card"><div class="ic">☁️</div><h3>선택형 Google Drive 백업</h3>
+        <p>기본은 꺼짐. 켜면 암호화된 백업 파일만 내 Drive의 앱 전용 폴더에 저장됩니다.</p></div>
+    </div>
+
+    <div class="note">
+      🔑 모더라는 로그인 계정이 없고 데이터를 수집하지 않습니다. 마스터 비밀번호를 잊으면
+      개발사도 복구할 수 없으니 안전하게 기억해 주세요.
+    </div>
+  </div>
+
+  <!-- ================= English ================= -->
+  <div data-lang="en">
+    <section class="hero">
+      <div class="mark">🔐</div>
+      <h1>Your passwords and records,<br>safe on your device only.</h1>
+      <p>Modora is a <strong>local-first</strong> app that keeps secret memos, passwords,
+         schedules and files <strong>encrypted on your device</strong>. There are no servers —
+         your data never leaves.</p>
+      <div class="badges">
+        <span class="badge">📱 Google Play — coming soon</span>
+        <span class="badge">🍎 App Store — coming soon</span>
+        <span class="badge">💻 Windows · macOS — coming soon</span>
+      </div>
+    </section>
+
+    <h2>Features</h2>
+    <div class="grid">
+      <div class="card"><div class="ic">🔒</div><h3>Strong on-device encryption</h3>
+        <p>Your master password is processed with Argon2id; all data is encrypted with AES-256-GCM.</p></div>
+      <div class="card"><div class="ic">📝</div><h3>Secret memos</h3>
+        <p>Store sites, passwords and hints as memos — with full password revision history.</p></div>
+      <div class="card"><div class="ic">#️⃣</div><h3>Hashtags &amp; categories</h3>
+        <p>Type #tags right in your notes; organize with categories, sorting and a grid view.</p></div>
+      <div class="card"><div class="ic">📅</div><h3>Schedules &amp; reminders</h3>
+        <p>Save birthdays and anniversaries (solar/lunar) and expiry dates with 1-month/1-week/1-day alerts.</p></div>
+      <div class="card"><div class="ic">🗂️</div><h3>File vault</h3>
+        <p>Keep signup screenshots, documents, images, PDFs and archives safely stored.</p></div>
+      <div class="card"><div class="ic">☁️</div><h3>Optional Google Drive backup</h3>
+        <p>Off by default. When enabled, only an encrypted backup file goes to an app-private Drive folder.</p></div>
+    </div>
+
+    <div class="note">
+      🔑 Modora has no accounts and collects no data. If you forget your master password,
+      we cannot recover it — keep it safe.
+    </div>
+  </div>
+
+  <footer>
+    <div>© 2026 BTBZ · Modora</div>
+    <div>
+      <a href="/privacy.html" data-l="privacy">개인정보처리방침</a> ·
+      <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a> ·
+      <a href="https://www.btbz.ai">www.btbz.ai</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+  function setLang(l) {
+    document.documentElement.setAttribute('data-show', l);
+    document.documentElement.setAttribute('lang', l);
+    document.getElementById('btn-ko').classList.toggle('active', l === 'ko');
+    document.getElementById('btn-en').classList.toggle('active', l === 'en');
+    document.querySelector('[data-l="privacy"]').textContent =
+      l === 'ko' ? '개인정보처리방침' : 'Privacy Policy';
+    try { localStorage.setItem('modora-lang', l); } catch (e) {}
+  }
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('modora-lang'); } catch (e) {}
+    var nav = (navigator.language || 'ko').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en';
+    setLang(saved || nav);
+  })();
+</script>
+</body>
+</html>
