@@ -32,9 +32,9 @@ cd .. && rsync -az admin/ amb-mail:/var/www/btbz.ai/html/admin/
 
 ## .env (서버에만, 600 권한 — `/home/btbz/btbz-cms/.env`)
 `PORT=3110`, `DB_PATH`, `JWT_SECRET`(적용됨, 랜덤 96자), `MAIL_TO=fremdung@gmail.com`,
-`SEED_ADMIN_EMAIL/PASSWORD`(시드 완료 — 최초 로그인 시 변경 강제).
-**⚠️ SMTP_USER/SMTP_PASS(Gmail 앱 비밀번호)는 미설정 — 설정 전까지 문의 메일 발송이 비활성**(문의는 DB에 저장되고
-어드민에서 ✉️✗로 표시). 설정 후 `systemctl restart btbz-cms`.
+`SEED_ADMIN_EMAIL/PASSWORD`(시드 완료 — 최초 로그인 시 변경 강제),
+`SMTP_HOST=smtp.gmail.com` / `SMTP_PORT=587` / `SMTP_USER=no-reply@amoeba.site` / `SMTP_PASS`(Gmail 앱 비밀번호 —
+2026-07-20 설정·발송 검증 완료, mailSent=1 확인). 값 변경 시 `systemctl restart btbz-cms`.
 
 ## 백업
 `backup-btbz-cms.sh` 크론 등록 필요 시:
