@@ -57,6 +57,26 @@
   footer { margin-top: 2.6rem; padding-top: 1.2rem; border-top: 1px solid var(--border);
            font-size: .85rem; color: var(--muted); }
   a { color: var(--accent); }
+  html[data-show="ko"] .i18n-en { display: none; }
+  html[data-show="en"] .i18n-ko { display: none; }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: none;
+                   align-items: center; justify-content: center; padding: 1rem; z-index: 50; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--bg); border: 1px solid var(--border); border-radius: 14px;
+           max-width: 440px; width: 100%; padding: 1.4rem 1.4rem 1.2rem; }
+  .modal h3 { font-size: 1.05rem; margin-bottom: .5rem; }
+  .modal p { font-size: .88rem; color: var(--muted); margin-bottom: .9rem; }
+  .modal input[type=email] { width: 100%; border: 1px solid var(--border); background: var(--card);
+    color: var(--fg); border-radius: 8px; padding: .55rem .7rem; font: inherit; font-size: .92rem; }
+  .modal .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .modal .actions { display: flex; gap: .5rem; justify-content: flex-end; flex-wrap: wrap;
+                    margin-top: 1.1rem; }
+  .modal .actions button { border: 1px solid var(--border); background: var(--card); color: var(--fg);
+    padding: .5rem 1rem; border-radius: 8px; cursor: pointer; font: inherit; font-size: .88rem; }
+  .modal .actions button.primary { background: var(--accent); border-color: var(--accent);
+    color: #fff; font-weight: 600; }
+  .modal .err { color: #dc2626; font-size: .82rem; margin-top: .5rem; display: none; }
+  .modal .err.show { display: block; }
 </style>
 </head>
 <body>
@@ -82,7 +102,7 @@
     <div class="dl">
       <div class="head"><span class="ic">🪟</span><h2>Windows (x64)</h2></div>
       <p>Windows 10/11용 설치 프로그램입니다. 다운로드 후 실행하면 설치 마법사가 진행됩니다.</p>
-      <a class="btn" href="/download/ModoraSetup-1.1.2.exe" download>ModoraSetup-1.1.2.exe 다운로드 (15.6MB)</a>
+      <a class="btn dl-btn" data-platform="windows" data-version="1.1.2" href="/download/ModoraSetup-1.1.2.exe" download>ModoraSetup-1.1.2.exe 다운로드 (15.6MB)</a>
       <ul class="steps">
         <li>SmartScreen 경고가 뜨면 <strong>추가 정보 → 실행</strong>을 선택하세요.</li>
       </ul>
@@ -92,7 +112,7 @@
     <div class="dl">
       <div class="head"><span class="ic">🍎</span><h2>macOS (Apple Silicon/Intel)</h2></div>
       <p>DMG를 열고 Modora를 Applications 폴더로 드래그하세요.</p>
-      <a class="btn" href="/download/Modora-1.1.2.dmg" download>Modora-1.1.2.dmg 다운로드 (27.5MB)</a>
+      <a class="btn dl-btn" data-platform="macos" data-version="1.1.2" href="/download/Modora-1.1.2.dmg" download>Modora-1.1.2.dmg 다운로드 (27.5MB)</a>
       <ul class="steps">
         <li>미서명 빌드라 "Apple에서 확인할 수 없습니다" 경고가 표시됩니다. 아래 방법으로 실행하세요.</li>
         <li><strong>macOS 15(Sequoia) 이상</strong>: 경고에서 완료 → <strong>시스템 설정 → 개인정보 보호 및 보안</strong> 하단의 <strong>"그래도 열기"</strong> 클릭</li>
@@ -104,7 +124,7 @@
     <div class="dl">
       <div class="head"><span class="ic">🤖</span><h2>Android (APK)</h2></div>
       <p>모든 Android 기기용 APK입니다 (Android 6.0 이상 권장). Google Play 출시 전 직접 설치 버전입니다.</p>
-      <a class="btn" href="/download/Modora-1.1.2.apk" download>Modora-1.1.2.apk 다운로드 (63.2MB)</a>
+      <a class="btn dl-btn" data-platform="android" data-version="1.1.2" href="/download/Modora-1.1.2.apk" download>Modora-1.1.2.apk 다운로드 (63.2MB)</a>
       <ul class="steps">
         <li>다운로드한 APK를 열고, <strong>출처를 알 수 없는 앱 설치 허용</strong>을 켠 뒤 설치하세요.</li>
         <li>Google Play 출시 후에는 스토어 설치를 권장합니다.</li>
@@ -132,7 +152,7 @@
     <div class="dl">
       <div class="head"><span class="ic">🪟</span><h2>Windows (x64)</h2></div>
       <p>Installer for Windows 10/11. Download and run to start the setup wizard.</p>
-      <a class="btn" href="/download/ModoraSetup-1.1.2.exe" download>Download ModoraSetup-1.1.2.exe (15.6MB)</a>
+      <a class="btn dl-btn" data-platform="windows" data-version="1.1.2" href="/download/ModoraSetup-1.1.2.exe" download>Download ModoraSetup-1.1.2.exe (15.6MB)</a>
       <ul class="steps">
         <li>If SmartScreen appears, choose <strong>More info → Run anyway</strong>.</li>
       </ul>
@@ -142,7 +162,7 @@
     <div class="dl">
       <div class="head"><span class="ic">🍎</span><h2>macOS (Apple Silicon/Intel)</h2></div>
       <p>Open the DMG and drag Modora into Applications.</p>
-      <a class="btn" href="/download/Modora-1.1.2.dmg" download>Download Modora-1.1.2.dmg (27.5MB)</a>
+      <a class="btn dl-btn" data-platform="macos" data-version="1.1.2" href="/download/Modora-1.1.2.dmg" download>Download Modora-1.1.2.dmg (27.5MB)</a>
       <ul class="steps">
         <li>This build is unsigned, so macOS shows an "Apple could not verify" warning. To run it:</li>
         <li><strong>macOS 15 (Sequoia) or later</strong>: dismiss the warning, then <strong>System Settings → Privacy &amp; Security</strong> → click <strong>"Open Anyway"</strong> at the bottom</li>
@@ -154,7 +174,7 @@
     <div class="dl">
       <div class="head"><span class="ic">🤖</span><h2>Android (APK)</h2></div>
       <p>Universal APK for all Android devices (Android 6.0+ recommended). Direct install ahead of the Google Play release.</p>
-      <a class="btn" href="/download/Modora-1.1.2.apk" download>Download Modora-1.1.2.apk (63.2MB)</a>
+      <a class="btn dl-btn" data-platform="android" data-version="1.1.2" href="/download/Modora-1.1.2.apk" download>Download Modora-1.1.2.apk (63.2MB)</a>
       <ul class="steps">
         <li>Open the APK and allow <strong>installing apps from unknown sources</strong> when prompted.</li>
         <li>Once released on Google Play, installing from the store is recommended.</li>
@@ -171,9 +191,35 @@
 
   <footer>
     <a href="/" data-l="home">← 홈으로</a> ·
+    <a href="/reviews.html"><span class="i18n-ko">사용후기</span><span class="i18n-en">Reviews</span></a> ·
     <a href="/privacy.html" data-l="privacy">개인정보처리방침</a> ·
     <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a>
   </footer>
+</div>
+
+<!-- 이메일 구독 모달 / Subscribe modal -->
+<div class="modal-overlay" id="sub-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="sub-title">
+    <h3 id="sub-title"><span class="i18n-ko">📬 소식 받기</span><span class="i18n-en">📬 Get updates</span></h3>
+    <p>
+      <span class="i18n-ko">이메일을 입력하시면 버전 업그레이드 등의 소식을 받을 수 있습니다. (선택사항)</span>
+      <span class="i18n-en">Enter your email to receive updates such as new versions. (Optional)</span>
+    </p>
+    <input type="email" id="sub-email" maxlength="254"
+           placeholder="you@example.com">
+    <div class="hp" aria-hidden="true">
+      <label>website<input id="sub-website" tabindex="-1" autocomplete="off"></label>
+    </div>
+    <div class="err" id="sub-err"></div>
+    <div class="actions">
+      <button type="button" onclick="proceedDownload(false)">
+        <span class="i18n-ko">건너뛰고 다운로드</span><span class="i18n-en">Skip &amp; download</span>
+      </button>
+      <button type="button" class="primary" onclick="proceedDownload(true)">
+        <span class="i18n-ko">구독하고 다운로드</span><span class="i18n-en">Subscribe &amp; download</span>
+      </button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -193,6 +239,67 @@
     var nav = (navigator.language || 'ko').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en';
     setLang(saved || nav);
   })();
+
+  // ---- 다운로드 통계 · 이메일 구독 (기록 실패는 다운로드를 막지 않음) ----
+  var pendingHref = null;
+
+  function apiPost(path, body) {
+    return fetch(path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      keepalive: true
+    }).catch(function () { /* 기록 실패 무시 (FR-7) */ });
+  }
+
+  // 페이지뷰 기록 (FR-6)
+  apiPost('/api/events/pageview', { page: 'download' });
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a.dl-btn') : null;
+    if (!a) return;
+    e.preventDefault();
+    pendingHref = {
+      href: a.getAttribute('href'),
+      file: a.getAttribute('href').split('/').pop(),
+      platform: a.getAttribute('data-platform'),
+      version: a.getAttribute('data-version')
+    };
+    document.getElementById('sub-err').className = 'err';
+    document.getElementById('sub-overlay').classList.add('open');
+    document.getElementById('sub-email').focus();
+  });
+
+  function proceedDownload(withSubscribe) {
+    if (!pendingHref) return;
+    var isKo = document.documentElement.getAttribute('data-show') === 'ko';
+    var err = document.getElementById('sub-err');
+    var email = document.getElementById('sub-email').value.trim();
+
+    if (withSubscribe) {
+      if (!email || email.indexOf('@') < 1) {
+        err.textContent = isKo ? '올바른 이메일을 입력해 주세요.' : 'Please enter a valid email.';
+        err.className = 'err show';
+        return;
+      }
+      apiPost('/api/subscribers', { email: email, website: document.getElementById('sub-website').value });
+    }
+    // 다운로드 이벤트 기록 (FR-5) — keepalive라 페이지 이동에도 전송됨
+    apiPost('/api/events/download', {
+      file: pendingHref.file, platform: pendingHref.platform, version: pendingHref.version
+    });
+
+    var href = pendingHref.href;
+    pendingHref = null;
+    document.getElementById('sub-overlay').classList.remove('open');
+    // 실제 파일 다운로드 진행 — 백엔드와 무관하게 항상 실행 (NFR-5)
+    var link = document.createElement('a');
+    link.href = href;
+    link.setAttribute('download', '');
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
 </script>
 </body>
 </html>

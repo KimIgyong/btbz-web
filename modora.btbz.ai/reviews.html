@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko" data-show="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modora 사용후기 | Reviews</title>
+<meta name="description" content="Modora 사용후기 게시판 / User reviews for Modora.">
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1a1d21; --muted: #5c6470; --accent: #2563eb;
+    --border: #e5e8ec; --card: #f6f8fa; --star: #f59e0b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14161a; --fg: #e6e9ed; --muted: #9aa3af; --accent: #60a5fa;
+            --border: #2a2f36; --card: #1d2127; --star: #fbbf24; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--fg); line-height: 1.7;
+         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo",
+                      "Noto Sans KR", Roboto, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  header.top { display: flex; align-items: center; justify-content: space-between;
+               margin-bottom: 2.2rem; }
+  .logo { font-size: 1.15rem; font-weight: 800; }
+  .logo a { color: var(--fg); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  .lang-switch { display: flex; gap: .4rem; }
+  .lang-switch button { border: 1px solid var(--border); background: var(--card);
+    color: var(--fg); padding: .3rem .8rem; border-radius: 999px; cursor: pointer;
+    font-size: .85rem; }
+  .lang-switch button.active { background: var(--accent); border-color: var(--accent);
+    color: #fff; }
+  html[data-show="ko"] .i18n-en { display: none; }
+  html[data-show="en"] .i18n-ko { display: none; }
+  .head-row { display: flex; align-items: center; justify-content: space-between;
+              gap: .8rem; flex-wrap: wrap; margin-bottom: .4rem; }
+  h1 { font-size: 1.6rem; }
+  .sub { color: var(--muted); margin-bottom: 1.8rem; }
+  .btn { display: inline-block; background: var(--accent); color: #fff; border: none;
+         padding: .55rem 1.2rem; border-radius: 10px; font-size: .92rem; font: inherit;
+         font-weight: 600; text-decoration: none; cursor: pointer; }
+  .btn:hover { opacity: .9; }
+  .review { background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+            padding: 1rem 1.2rem; margin-bottom: .8rem; }
+  .review .meta { display: flex; gap: .7rem; align-items: baseline; flex-wrap: wrap;
+                  margin-bottom: .3rem; }
+  .review .stars { color: var(--star); letter-spacing: .1em; }
+  .review .nick { font-weight: 700; font-size: .95rem; }
+  .review .date { color: var(--muted); font-size: .8rem; }
+  .review p { font-size: .92rem; white-space: pre-wrap; word-break: break-word; }
+  .empty { color: var(--muted); text-align: center; padding: 2.5rem 0; }
+  .pager { display: flex; gap: .5rem; justify-content: center; margin-top: 1.4rem; }
+  .pager button { border: 1px solid var(--border); background: var(--card); color: var(--fg);
+    padding: .4rem .9rem; border-radius: 8px; cursor: pointer; font: inherit; font-size: .85rem; }
+  .pager button[disabled] { opacity: .45; cursor: default; }
+  footer { margin-top: 2.6rem; padding-top: 1.2rem; border-top: 1px solid var(--border);
+           font-size: .85rem; color: var(--muted); }
+  a { color: var(--accent); }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: none;
+                   align-items: center; justify-content: center; padding: 1rem; z-index: 50; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--bg); border: 1px solid var(--border); border-radius: 14px;
+           max-width: 480px; width: 100%; padding: 1.4rem 1.4rem 1.2rem; }
+  .modal h3 { font-size: 1.05rem; margin-bottom: .9rem; }
+  .modal label { display: block; font-size: .85rem; color: var(--muted); margin: .7rem 0 .25rem; }
+  .modal input, .modal textarea { width: 100%; border: 1px solid var(--border); background: var(--card);
+    color: var(--fg); border-radius: 8px; padding: .55rem .7rem; font: inherit; font-size: .92rem; }
+  .modal textarea { min-height: 110px; resize: vertical; }
+  .star-pick { display: flex; gap: .2rem; font-size: 1.5rem; cursor: pointer; user-select: none; }
+  .star-pick span { color: var(--border); }
+  .star-pick span.on { color: var(--star); }
+  .modal .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .modal .actions { display: flex; gap: .5rem; justify-content: flex-end; margin-top: 1.1rem; }
+  .modal .actions button { border: 1px solid var(--border); background: var(--card); color: var(--fg);
+    padding: .5rem 1.1rem; border-radius: 8px; cursor: pointer; font: inherit; font-size: .9rem; }
+  .modal .actions button.primary { background: var(--accent); border-color: var(--accent);
+    color: #fff; font-weight: 600; }
+  .modal .actions button[disabled] { opacity: .6; cursor: default; }
+  .modal .msg { font-size: .85rem; margin-top: .7rem; display: none; }
+  .modal .msg.ok { color: #16a34a; display: block; }
+  .modal .msg.err { color: #dc2626; display: block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="logo"><a href="/">Modora<span>.</span></a></div>
+    <div class="lang-switch">
+      <button id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+  </header>
+
+  <div class="head-row">
+    <h1><span class="i18n-ko">사용후기</span><span class="i18n-en">Reviews</span></h1>
+    <button class="btn" onclick="openWrite()">
+      <span class="i18n-ko">✍️ 후기 쓰기</span><span class="i18n-en">✍️ Write a review</span>
+    </button>
+  </div>
+  <p class="sub">
+    <span class="i18n-ko">Modora를 써 보신 소감을 들려주세요. 등록된 후기는 관리자 확인 후 게시됩니다.</span>
+    <span class="i18n-en">Tell us what you think of Modora. Reviews appear after moderation.</span>
+  </p>
+
+  <div id="review-list"></div>
+  <div class="empty" id="review-empty" style="display:none">
+    <span class="i18n-ko">아직 등록된 후기가 없습니다. 첫 후기를 남겨주세요!</span>
+    <span class="i18n-en">No reviews yet — be the first to write one!</span>
+  </div>
+  <div class="pager" id="pager" style="display:none">
+    <button id="pg-prev" onclick="loadReviews(page-1)">←</button>
+    <button id="pg-next" onclick="loadReviews(page+1)">→</button>
+  </div>
+
+  <footer>
+    <a href="/" data-l="home">← 홈으로</a> ·
+    <a href="/privacy.html" data-l="privacy">개인정보처리방침</a> ·
+    <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a>
+  </footer>
+</div>
+
+<!-- 후기 작성 모달 / Write modal -->
+<div class="modal-overlay" id="write-overlay" onclick="if(event.target===this)closeWrite()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="write-title">
+    <h3 id="write-title"><span class="i18n-ko">✍️ 후기 쓰기</span><span class="i18n-en">✍️ Write a review</span></h3>
+    <form id="write-form">
+      <label for="rv-nick"><span class="i18n-ko">닉네임 *</span><span class="i18n-en">Nickname *</span></label>
+      <input id="rv-nick" maxlength="20" required>
+      <label><span class="i18n-ko">별점 *</span><span class="i18n-en">Rating *</span></label>
+      <div class="star-pick" id="star-pick" aria-label="rating">
+        <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+      </div>
+      <label for="rv-content"><span class="i18n-ko">내용 *</span><span class="i18n-en">Review *</span></label>
+      <textarea id="rv-content" maxlength="1000" required></textarea>
+      <div class="hp" aria-hidden="true">
+        <label>website<input id="rv-website" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <div class="msg" id="rv-msg"></div>
+      <div class="actions">
+        <button type="button" onclick="closeWrite()"><span class="i18n-ko">취소</span><span class="i18n-en">Cancel</span></button>
+        <button type="submit" class="primary" id="rv-submit"><span class="i18n-ko">등록</span><span class="i18n-en">Submit</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function setLang(l) {
+    document.documentElement.setAttribute('data-show', l);
+    document.documentElement.setAttribute('lang', l);
+    document.getElementById('btn-ko').classList.toggle('active', l === 'ko');
+    document.getElementById('btn-en').classList.toggle('active', l === 'en');
+    document.querySelector('[data-l="home"]').textContent = l === 'ko' ? '← 홈으로' : '← Home';
+    document.querySelector('[data-l="privacy"]').textContent =
+      l === 'ko' ? '개인정보처리방침' : 'Privacy Policy';
+    try { localStorage.setItem('modora-lang', l); } catch (e) {}
+  }
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('modora-lang'); } catch (e) {}
+    var nav = (navigator.language || 'ko').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en';
+    setLang(saved || nav);
+  })();
+  function isKo() { return document.documentElement.getAttribute('data-show') === 'ko'; }
+
+  // ---- 목록 ----
+  var page = 1, pageSize = 10;
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function loadReviews(p) {
+    page = Math.max(1, p || 1);
+    fetch('/api/reviews?page=' + page)
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var list = document.getElementById('review-list');
+        var totalPages = Math.max(1, Math.ceil(data.total / pageSize));
+        list.innerHTML = data.items.map(function (rv) {
+          var stars = '★'.repeat(rv.rating) + '☆'.repeat(5 - rv.rating);
+          var date = String(rv.createdAt).slice(0, 10);
+          return '<div class="review"><div class="meta">' +
+            '<span class="stars">' + stars + '</span>' +
+            '<span class="nick">' + esc(rv.nickname) + '</span>' +
+            '<span class="date">' + esc(date) + '</span>' +
+            '</div><p>' + esc(rv.content) + '</p></div>';
+        }).join('');
+        document.getElementById('review-empty').style.display = data.total === 0 ? '' : 'none';
+        var pager = document.getElementById('pager');
+        pager.style.display = totalPages > 1 ? '' : 'none';
+        document.getElementById('pg-prev').disabled = page <= 1;
+        document.getElementById('pg-next').disabled = page >= totalPages;
+      })
+      .catch(function () {
+        document.getElementById('review-empty').style.display = '';
+      });
+  }
+  loadReviews(1);
+
+  // ---- 작성 ----
+  var rating = 0;
+  document.getElementById('star-pick').addEventListener('click', function (e) {
+    var v = e.target.getAttribute && e.target.getAttribute('data-v');
+    if (!v) return;
+    rating = Number(v);
+    var spans = this.querySelectorAll('span');
+    for (var i = 0; i < spans.length; i++) spans[i].classList.toggle('on', i < rating);
+  });
+  function openWrite() {
+    document.getElementById('rv-msg').className = 'msg';
+    document.getElementById('write-overlay').classList.add('open');
+    document.getElementById('rv-nick').focus();
+  }
+  function closeWrite() {
+    document.getElementById('write-overlay').classList.remove('open');
+  }
+  document.getElementById('write-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var msg = document.getElementById('rv-msg');
+    var btn = document.getElementById('rv-submit');
+    if (!rating) {
+      msg.textContent = isKo() ? '별점을 선택해 주세요.' : 'Please pick a rating.';
+      msg.className = 'msg err';
+      return;
+    }
+    btn.disabled = true;
+    msg.className = 'msg';
+    fetch('/api/reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nickname: document.getElementById('rv-nick').value.trim(),
+        content: document.getElementById('rv-content').value.trim(),
+        rating: rating,
+        website: document.getElementById('rv-website').value
+      })
+    }).then(function (res) {
+      if (!res.ok) throw new Error('http ' + res.status);
+      msg.textContent = isKo() ? '등록되었습니다. 관리자 확인 후 게시됩니다. 감사합니다!'
+                               : 'Submitted! Your review will appear after moderation. Thank you!';
+      msg.className = 'msg ok';
+      document.getElementById('write-form').reset();
+      setTimeout(closeWrite, 1800);
+    }).catch(function () {
+      msg.textContent = isKo() ? '등록에 실패했습니다. 잠시 후 다시 시도해 주세요.'
+                               : 'Failed to submit. Please try again later.';
+      msg.className = 'msg err';
+    }).finally(function () { btn.disabled = false; });
+  });
+</script>
+</body>
+</html>

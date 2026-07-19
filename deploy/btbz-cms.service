@@ -1,0 +1,20 @@
+# systemd 유닛 — /etc/systemd/system/btbz-cms.service 로 복사
+# 설치: sudo systemctl daemon-reload && sudo systemctl enable --now btbz-cms
+[Unit]
+Description=BTBZ CMS backend (NestJS)
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/btbz-cms
+# .env: PORT/DB_PATH/JWT_SECRET/SMTP_*/MAIL_TO/SEED_ADMIN_* — 서버에서만 작성 (600 권한)
+EnvironmentFile=/opt/btbz-cms/.env
+ExecStart=/usr/bin/node dist/main.js
+Restart=always
+RestartSec=5
+# DB 경로(/var/lib/btbz-cms)는 사전 생성: install -d -o www-data -g www-data /var/lib/btbz-cms
+
+[Install]
+WantedBy=multi-user.target
