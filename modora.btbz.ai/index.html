@@ -53,6 +53,12 @@
   .card p { font-size: .88rem; color: var(--muted); margin: 0; }
   .note { background: var(--card); border: 1px solid var(--border); border-radius: 12px;
           padding: 1rem 1.2rem; font-size: .9rem; color: var(--muted); margin-top: 2.2rem; }
+  .shots { display: flex; gap: .9rem; overflow-x: auto; padding: .4rem .2rem 1rem;
+           scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .shot { flex: 0 0 auto; width: 190px; scroll-snap-align: start; text-align: center; }
+  .shot img { width: 100%; display: block; border-radius: 16px;
+              border: 1px solid var(--border); box-shadow: 0 6px 22px rgba(0,0,0,.10); }
+  .shot p { font-size: .8rem; color: var(--muted); margin-top: .45rem; }
   footer { margin-top: 3.5rem; padding-top: 1.4rem; border-top: 1px solid var(--border);
            display: flex; justify-content: space-between; flex-wrap: wrap; gap: .8rem;
            font-size: .88rem; color: var(--muted); }
@@ -124,6 +130,20 @@
         <p>기본은 꺼짐. 켜면 암호화된 백업 파일만 내 Drive의 앱 전용 폴더에 저장됩니다.</p></div>
     </div>
 
+    <h2>화면 미리보기</h2>
+    <div class="shots">
+      <div class="shot"><img src="/assets/screens/scene1-grid.png" alt="비밀메모 그리드 뷰와 카테고리" loading="lazy">
+        <p>그리드 뷰 &amp; 카테고리</p></div>
+      <div class="shot"><img src="/assets/screens/scene2-edit.png" alt="해시태그 하이라이트 메모 작성" loading="lazy">
+        <p>해시태그 메모 작성</p></div>
+      <div class="shot"><img src="/assets/screens/scene3-schedule.png" alt="일정기록 D-Day" loading="lazy">
+        <p>일정 D-Day 알림</p></div>
+      <div class="shot"><img src="/assets/screens/scene4-archive.png" alt="자료보관" loading="lazy">
+        <p>서류·이미지 자료보관</p></div>
+      <div class="shot"><img src="/assets/screens/scene5-lock.png" alt="생체인증 잠금 화면" loading="lazy">
+        <p>생체인증 잠금</p></div>
+    </div>
+
     <div class="note">
       🔑 모더라는 로그인 계정이 없고 데이터를 수집하지 않습니다. 마스터 비밀번호를 잊으면
       개발사도 복구할 수 없으니 안전하게 기억해 주세요.
@@ -160,6 +180,20 @@
         <p>Keep signup screenshots, documents, images, PDFs and archives safely stored.</p></div>
       <div class="card"><div class="ic">☁️</div><h3>Optional Google Drive backup</h3>
         <p>Off by default. When enabled, only an encrypted backup file goes to an app-private Drive folder.</p></div>
+    </div>
+
+    <h2>Screenshots</h2>
+    <div class="shots">
+      <div class="shot"><img src="/assets/screens/scene1-grid.png" alt="Grid view with categories" loading="lazy">
+        <p>Grid view &amp; categories</p></div>
+      <div class="shot"><img src="/assets/screens/scene2-edit.png" alt="Hashtag note editing" loading="lazy">
+        <p>Hashtag notes</p></div>
+      <div class="shot"><img src="/assets/screens/scene3-schedule.png" alt="Schedule D-day" loading="lazy">
+        <p>D-day reminders</p></div>
+      <div class="shot"><img src="/assets/screens/scene4-archive.png" alt="File vault" loading="lazy">
+        <p>File vault</p></div>
+      <div class="shot"><img src="/assets/screens/scene5-lock.png" alt="Biometric lock screen" loading="lazy">
+        <p>Biometric lock</p></div>
     </div>
 
     <div class="note">
