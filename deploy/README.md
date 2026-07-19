@@ -1,55 +1,49 @@
 # btbz CMS 배포 가이드 / Deployment guide
 
-대상 서버: Ubuntu + nginx/1.18 (modora.btbz.ai · www.btbz.ai 서빙 중)
+**상태: 2026-07-20 운영 배포 완료.** 아래는 실제 적용된 구성(as-built)이자 재배포 절차다.
 
-## 0. 사전 확인 (필수 — REQ Q-3)
-- [ ] `sudo nginx -T | grep -A20 'server_name www.btbz.ai'` 로 **기존 www.btbz.ai 설정과 웹루트 위치를 확인**한다.
-      기존 `/` 콘텐츠는 절대 건드리지 않고 `/admin`·`/api` location만 추가한다.
+- 서버: `211.110.140.172` (Ubuntu 22.04, nginx 1.18 — btbz.ai·modora.btbz.ai·메일 등 공용, ssh 호스트 `amb-mail`)
+- 실행 계정: `btbz` + nvm Node v20.20.2 (서버 관례: 시스템 node 없음, 사용자별 nvm)
+- 백엔드: `/home/btbz/btbz-cms` (systemd `btbz-cms.service`, 포트 **3110** — 3100은 ambCampaign 점유)
+- DB: `/home/btbz/btbz-cms-data/btbz-cms.sqlite`
+- 웹루트: www → `/var/www/btbz.ai/html` (+ `admin/`), modora → `/var/www/modora.btbz.ai/html`
 
-## 1. 백엔드 설치
+## 재배포 절차
+
+### 백엔드 갱신
 ```bash
-# 빌드 (로컬 또는 서버, Node 20)
-cd server && npm ci && npm run build
-
-# 서버 배치
-sudo mkdir -p /opt/btbz-cms
-sudo cp -r dist node_modules package.json /opt/btbz-cms/
-sudo install -d -o www-data -g www-data /var/lib/btbz-cms
-
-# 환경변수 — .env.example 참고, 실값은 서버에서만 작성
-sudo vi /opt/btbz-cms/.env && sudo chmod 600 /opt/btbz-cms/.env
-```
-`.env` 필수 항목: `PORT=3100`, `DB_PATH=/var/lib/btbz-cms/btbz-cms.sqlite`, `JWT_SECRET`(랜덤 64자+),
-`SMTP_USER`/`SMTP_PASS`(Gmail 앱 비밀번호), `MAIL_TO`, `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`.
-
-```bash
-sudo cp deploy/btbz-cms.service /etc/systemd/system/
-sudo systemctl daemon-reload && sudo systemctl enable --now btbz-cms
-curl -s 127.0.0.1:3100/api/reviews   # {"items":[],"total":0} 이면 정상
-```
-첫 기동 시 마이그레이션이 자동 실행되고 `SEED_ADMIN_EMAIL` 계정이 생성된다(최초 로그인 시 비밀번호 변경 강제).
-
-## 2. 정적 파일
-```bash
-# modora.btbz.ai — 기존 웹루트에 갱신된 index/download/privacy + 신규 reviews.html 복사
-# www.btbz.ai   — admin/ 폴더를 /var/www/btbz-web/admin 등으로 복사
+rsync -az --exclude node_modules --exclude dist --exclude '.env' server/ amb-mail:/home/btbz/btbz-cms/
+ssh amb-mail 'chown -R btbz:btbz /home/btbz/btbz-cms && sudo -u btbz bash -c \
+  "export NVM_DIR=/home/btbz/.nvm && . \$NVM_DIR/nvm.sh && cd /home/btbz/btbz-cms && npm ci && npm run build" \
+  && systemctl restart btbz-cms && sleep 2 && curl -s 127.0.0.1:3110/api/reviews'
 ```
 
-## 3. nginx
-`deploy/nginx-btbz-cms.conf`의 location 블록을 두 도메인 server 블록에 추가 후:
+### 정적 파일 갱신
 ```bash
-sudo nginx -t && sudo systemctl reload nginx
+cd modora.btbz.ai
+rsync -az index.html privacy.html reviews.html amb-mail:/var/www/modora.btbz.ai/html/
+rsync -az download/download.html amb-mail:/var/www/modora.btbz.ai/html/download/   # 설치파일 폴더 — html만!
+cd .. && rsync -az admin/ amb-mail:/var/www/btbz.ai/html/admin/
 ```
 
-## 4. 백업
+### nginx
+두 도메인 443 블록에 `nginx-btbz-cms.conf`의 `/api` location 이미 적용됨(백업: `/root/nginx-backup-*`).
+변경 시: `nginx -t && systemctl reload nginx`.
+
+## .env (서버에만, 600 권한 — `/home/btbz/btbz-cms/.env`)
+`PORT=3110`, `DB_PATH`, `JWT_SECRET`(적용됨, 랜덤 96자), `MAIL_TO=fremdung@gmail.com`,
+`SEED_ADMIN_EMAIL/PASSWORD`(시드 완료 — 최초 로그인 시 변경 강제).
+**⚠️ SMTP_USER/SMTP_PASS(Gmail 앱 비밀번호)는 미설정 — 설정 전까지 문의 메일 발송이 비활성**(문의는 DB에 저장되고
+어드민에서 ✉️✗로 표시). 설정 후 `systemctl restart btbz-cms`.
+
+## 백업
+`backup-btbz-cms.sh` 크론 등록 필요 시:
 ```bash
-sudo cp deploy/backup-btbz-cms.sh /opt/btbz-cms/deploy/ && sudo chmod +x /opt/btbz-cms/deploy/backup-btbz-cms.sh
-sudo crontab -e   # 15 4 * * * /opt/btbz-cms/deploy/backup-btbz-cms.sh
+ssh amb-mail 'apt-get install -y sqlite3'   # 스크립트가 sqlite3 CLI 사용
+# crontab: 15 4 * * * DB_PATH=/home/btbz/btbz-cms-data/btbz-cms.sqlite /home/btbz/backup-btbz-cms.sh
 ```
 
-## 5. 릴리즈 체크 (PLN §8)
-- [ ] admin 최초 로그인 → 비밀번호 변경 강제 확인
-- [ ] 문의 전송 → MAIL_TO 수신 + 어드민 목록 확인
-- [ ] 다운로드 3종 클릭 → 통계 기록 확인, **백엔드 중지 상태에서도 다운로드되는지** 확인
-- [ ] 후기 작성 → 승인 → reviews.html 노출 확인
-- [ ] privacy.html §7(웹사이트 수집 항목) 노출 확인
+## 운영 확인 URL
+- https://modora.btbz.ai — 문의 모달 / https://modora.btbz.ai/reviews.html — 후기
+- https://modora.btbz.ai/download/download.html — 구독 모달 + 통계 수집
+- https://www.btbz.ai/admin/ — 어드민 콘솔 (admin@btbz.ai, 최초 로그인 시 비밀번호 변경 강제)
