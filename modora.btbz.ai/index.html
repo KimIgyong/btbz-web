@@ -68,6 +68,13 @@
   .lb-box p { color: #fff; margin-top: .6rem; font-size: .92rem; }
   .lb-close { position: fixed; top: 1rem; right: 1.2rem; font-size: 2rem; line-height: 1;
               color: #fff; cursor: pointer; background: none; border: none; z-index: 61; }
+  .lb-nav { position: fixed; top: 50%; transform: translateY(-50%); z-index: 61;
+            background: rgba(255,255,255,.14); color: #fff; border: none; cursor: pointer;
+            width: 2.8rem; height: 2.8rem; border-radius: 50%; font-size: 1.5rem; line-height: 1; }
+  .lb-nav:hover { background: rgba(255,255,255,.28); }
+  .lb-prev { left: .9rem; }
+  .lb-next { right: .9rem; }
+  @media (max-width: 560px) { .lb-nav { width: 2.3rem; height: 2.3rem; font-size: 1.2rem; } }
   footer { margin-top: 3.5rem; padding-top: 1.4rem; border-top: 1px solid var(--border);
            display: flex; justify-content: space-between; flex-wrap: wrap; gap: .8rem;
            font-size: .88rem; color: var(--muted); }
@@ -225,6 +232,8 @@
 <!-- 스크린샷 확대 모달 / Screenshot lightbox -->
 <div class="lb-overlay" id="lb-overlay" onclick="if(event.target===this)closeShot()">
   <button class="lb-close" onclick="closeShot()" aria-label="닫기 / Close">✕</button>
+  <button class="lb-nav lb-prev" onclick="stepShot(-1)" aria-label="이전 / Previous">‹</button>
+  <button class="lb-nav lb-next" onclick="stepShot(1)" aria-label="다음 / Next">›</button>
   <div class="lb-box">
     <img id="lb-img" src="" alt="">
     <p id="lb-cap"></p>
@@ -273,20 +282,32 @@
 
   function isKo() { return document.documentElement.getAttribute('data-show') === 'ko'; }
 
-  function openShot(el) {
+  var lbList = [], lbIdx = 0;
+  function lbShow(i) {
+    lbIdx = (i + lbList.length) % lbList.length;
+    var el = lbList[lbIdx];
     var img = document.getElementById('lb-img');
     img.src = el.getAttribute('data-full') || el.src;
     img.alt = el.alt;
     var cap = el.parentElement.querySelector('p');
     document.getElementById('lb-cap').textContent = cap ? cap.textContent : '';
+  }
+  function openShot(el) {
+    var section = el.closest('[data-lang]') || document;
+    lbList = Array.prototype.slice.call(section.querySelectorAll('.shot img'));
+    lbShow(lbList.indexOf(el));
     document.getElementById('lb-overlay').classList.add('open');
   }
+  function stepShot(d) { if (lbList.length) lbShow(lbIdx + d); }
   function closeShot() {
     document.getElementById('lb-overlay').classList.remove('open');
     document.getElementById('lb-img').src = '';
   }
   document.addEventListener('keydown', function (e) {
+    var lbOpen = document.getElementById('lb-overlay').classList.contains('open');
     if (e.key === 'Escape') { closeShot(); closeInquiry(); }
+    if (lbOpen && e.key === 'ArrowLeft') stepShot(-1);
+    if (lbOpen && e.key === 'ArrowRight') stepShot(1);
   });
   function openInquiry() {
     document.getElementById('inq-msg').className = 'msg';
