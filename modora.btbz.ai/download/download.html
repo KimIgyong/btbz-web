@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko" data-show="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modora 다운로드 | Download</title>
+<meta name="description" content="Modora 설치 파일 다운로드 — Windows, macOS, Android. / Download Modora installers for Windows, macOS and Android.">
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1a1d21; --muted: #5c6470; --accent: #2563eb;
+    --border: #e5e8ec; --card: #f6f8fa; --warn: #b45309; --warnbg: #fef3c7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14161a; --fg: #e6e9ed; --muted: #9aa3af; --accent: #60a5fa;
+            --border: #2a2f36; --card: #1d2127; --warn: #fbbf24; --warnbg: #3a2f10; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--fg); line-height: 1.7;
+         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo",
+                      "Noto Sans KR", Roboto, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  header.top { display: flex; align-items: center; justify-content: space-between;
+               margin-bottom: 2.2rem; }
+  .logo { font-size: 1.15rem; font-weight: 800; }
+  .logo a { color: var(--fg); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  .lang-switch { display: flex; gap: .4rem; }
+  .lang-switch button { border: 1px solid var(--border); background: var(--card);
+    color: var(--fg); padding: .3rem .8rem; border-radius: 999px; cursor: pointer;
+    font-size: .85rem; }
+  .lang-switch button.active { background: var(--accent); border-color: var(--accent);
+    color: #fff; }
+  [data-lang] { display: none; }
+  html[data-show="ko"] [data-lang="ko"] { display: block; }
+  html[data-show="en"] [data-lang="en"] { display: block; }
+  h1 { font-size: 1.6rem; margin-bottom: .4rem; }
+  .sub { color: var(--muted); margin-bottom: 2rem; }
+  .dl { background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+        padding: 1.2rem 1.3rem; margin-bottom: 1rem; }
+  .dl .head { display: flex; align-items: center; gap: .6rem; margin-bottom: .4rem; }
+  .dl .ic { font-size: 1.5rem; }
+  .dl h2 { font-size: 1.05rem; }
+  .dl p { font-size: .9rem; color: var(--muted); margin-bottom: .8rem; }
+  .btn { display: inline-block; background: var(--accent); color: #fff;
+         padding: .55rem 1.2rem; border-radius: 10px; font-size: .92rem;
+         font-weight: 600; text-decoration: none; }
+  .btn:hover { opacity: .9; }
+  .meta { font-size: .78rem; color: var(--muted); margin-top: .6rem;
+          word-break: break-all; }
+  .steps { font-size: .85rem; color: var(--muted); margin: .6rem 0 0 1.1rem; }
+  .steps li { margin-bottom: .2rem; }
+  .notice { background: var(--warnbg); color: var(--warn); border-radius: 10px;
+            padding: .7rem 1rem; font-size: .85rem; margin-bottom: 1.6rem; }
+  .soon { opacity: .75; }
+  .soon .btn { background: var(--card); color: var(--muted);
+               border: 1px solid var(--border); cursor: default; }
+  footer { margin-top: 2.6rem; padding-top: 1.2rem; border-top: 1px solid var(--border);
+           font-size: .85rem; color: var(--muted); }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="logo"><a href="/">Modora<span>.</span></a></div>
+    <div class="lang-switch">
+      <button id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+  </header>
+
+  <!-- ================= 한국어 ================= -->
+  <div data-lang="ko">
+    <h1>Modora 다운로드</h1>
+    <p class="sub">버전 1.1.0 · 2026-07-19 · 모든 데이터는 기기 안에 암호화되어 저장됩니다</p>
+
+    <div class="notice">
+      ⚠️ 현재 배포되는 설치 파일은 스토어 심사 전의 직접 배포 버전입니다. 설치 시 각 운영체제의
+      보안 경고가 표시될 수 있으며, 아래 안내에 따라 진행해 주세요.
+    </div>
+
+    <div class="dl">
+      <div class="head"><span class="ic">🪟</span><h2>Windows (x64)</h2></div>
+      <p>Windows 10/11용 설치 프로그램입니다. 다운로드 후 실행하면 설치 마법사가 진행됩니다.</p>
+      <a class="btn" href="/download/ModoraSetup-1.1.0.exe" download>ModoraSetup-1.1.0.exe 다운로드 (15.6MB)</a>
+      <ul class="steps">
+        <li>SmartScreen 경고가 뜨면 <strong>추가 정보 → 실행</strong>을 선택하세요.</li>
+      </ul>
+      <div class="meta">SHA-256: f399dd13863787b65aa4939422743e7af16903c85290dcd6afa46d40bd20cc34</div>
+    </div>
+
+    <div class="dl">
+      <div class="head"><span class="ic">🍎</span><h2>macOS (Apple Silicon/Intel)</h2></div>
+      <p>DMG를 열고 Modora를 Applications 폴더로 드래그하세요.</p>
+      <a class="btn" href="/download/Modora-1.1.0.dmg" download>Modora-1.1.0.dmg 다운로드 (27.5MB)</a>
+      <ul class="steps">
+        <li>미서명 빌드라 처음 실행 시 <strong>앱을 우클릭 → 열기 → 열기</strong>로 실행해야 합니다.</li>
+      </ul>
+      <div class="meta">SHA-256: b2fb4ef1c272d8c589540e1e2c15a92f2c9acfdb0e3e6b6e7aeb6885b8be4c36</div>
+    </div>
+
+    <div class="dl">
+      <div class="head"><span class="ic">🤖</span><h2>Android (APK)</h2></div>
+      <p>모든 Android 기기용 APK입니다 (Android 6.0 이상 권장). Google Play 출시 전 직접 설치 버전입니다.</p>
+      <a class="btn" href="/download/Modora-1.1.0.apk" download>Modora-1.1.0.apk 다운로드 (63.2MB)</a>
+      <ul class="steps">
+        <li>다운로드한 APK를 열고, <strong>출처를 알 수 없는 앱 설치 허용</strong>을 켠 뒤 설치하세요.</li>
+        <li>Google Play 출시 후에는 스토어 설치를 권장합니다.</li>
+      </ul>
+      <div class="meta">SHA-256: 1b2a68db26bf45523bb398486f65277c49fa32ea2f9613948f837e0eb9c8e1b2</div>
+    </div>
+
+    <div class="dl soon">
+      <div class="head"><span class="ic">📱</span><h2>iOS</h2></div>
+      <p>App Store 출시 준비 중입니다.</p>
+      <span class="btn">준비 중</span>
+    </div>
+  </div>
+
+  <!-- ================= English ================= -->
+  <div data-lang="en">
+    <h1>Download Modora</h1>
+    <p class="sub">Version 1.1.0 · 2026-07-19 · All data stays encrypted on your device</p>
+
+    <div class="notice">
+      ⚠️ These installers are direct-distribution builds ahead of store review. Your OS may
+      show a security warning — follow the notes under each download.
+    </div>
+
+    <div class="dl">
+      <div class="head"><span class="ic">🪟</span><h2>Windows (x64)</h2></div>
+      <p>Installer for Windows 10/11. Download and run to start the setup wizard.</p>
+      <a class="btn" href="/download/ModoraSetup-1.1.0.exe" download>Download ModoraSetup-1.1.0.exe (15.6MB)</a>
+      <ul class="steps">
+        <li>If SmartScreen appears, choose <strong>More info → Run anyway</strong>.</li>
+      </ul>
+      <div class="meta">SHA-256: f399dd13863787b65aa4939422743e7af16903c85290dcd6afa46d40bd20cc34</div>
+    </div>
+
+    <div class="dl">
+      <div class="head"><span class="ic">🍎</span><h2>macOS (Apple Silicon/Intel)</h2></div>
+      <p>Open the DMG and drag Modora into Applications.</p>
+      <a class="btn" href="/download/Modora-1.1.0.dmg" download>Download Modora-1.1.0.dmg (27.5MB)</a>
+      <ul class="steps">
+        <li>This build is unsigned — on first launch, <strong>right-click the app → Open → Open</strong>.</li>
+      </ul>
+      <div class="meta">SHA-256: b2fb4ef1c272d8c589540e1e2c15a92f2c9acfdb0e3e6b6e7aeb6885b8be4c36</div>
+    </div>
+
+    <div class="dl">
+      <div class="head"><span class="ic">🤖</span><h2>Android (APK)</h2></div>
+      <p>Universal APK for all Android devices (Android 6.0+ recommended). Direct install ahead of the Google Play release.</p>
+      <a class="btn" href="/download/Modora-1.1.0.apk" download>Download Modora-1.1.0.apk (63.2MB)</a>
+      <ul class="steps">
+        <li>Open the APK and allow <strong>installing apps from unknown sources</strong> when prompted.</li>
+        <li>Once released on Google Play, installing from the store is recommended.</li>
+      </ul>
+      <div class="meta">SHA-256: 1b2a68db26bf45523bb398486f65277c49fa32ea2f9613948f837e0eb9c8e1b2</div>
+    </div>
+
+    <div class="dl soon">
+      <div class="head"><span class="ic">📱</span><h2>iOS</h2></div>
+      <p>Coming soon to the App Store.</p>
+      <span class="btn">Coming soon</span>
+    </div>
+  </div>
+
+  <footer>
+    <a href="/" data-l="home">← 홈으로</a> ·
+    <a href="/privacy.html" data-l="privacy">개인정보처리방침</a> ·
+    <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a>
+  </footer>
+</div>
+
+<script>
+  function setLang(l) {
+    document.documentElement.setAttribute('data-show', l);
+    document.documentElement.setAttribute('lang', l);
+    document.getElementById('btn-ko').classList.toggle('active', l === 'ko');
+    document.getElementById('btn-en').classList.toggle('active', l === 'en');
+    document.querySelector('[data-l="home"]').textContent = l === 'ko' ? '← 홈으로' : '← Home';
+    document.querySelector('[data-l="privacy"]').textContent =
+      l === 'ko' ? '개인정보처리방침' : 'Privacy Policy';
+    try { localStorage.setItem('modora-lang', l); } catch (e) {}
+  }
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('modora-lang'); } catch (e) {}
+    var nav = (navigator.language || 'ko').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en';
+    setLang(saved || nav);
+  })();
+</script>
+</body>
+</html>
