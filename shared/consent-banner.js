@@ -17,7 +17,7 @@
     accept: 'Accept', decline: 'Decline', privacy: 'Privacy Policy'
   };
   var PRIVACY_HREF = window.BTBZ_PRIVACY_HREF ||
-    (location.host.indexOf('modora') === 0 ? '/privacy.html' : '/modora/privacy.html');
+    (location.host.indexOf('modora') === 0 ? '/privacy.html' : 'https://modora.btbz.ai/privacy.html');
 
   var css = [
     '#btbz-cc{position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;max-width:720px;margin:0 auto;',
