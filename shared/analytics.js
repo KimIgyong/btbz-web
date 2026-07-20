@@ -204,17 +204,14 @@
 
   // ── 4) 공개 API ──────────────────────────────────────────────────────────
   var api = {
-    /** 쿠키 배너에서 '동의' 시 호출 */
+    /** 쿠키 배너에서 '동의' 시 호출 — 분석 목적만 승인(광고 관련은 미사용이므로 denied 유지) */
     grantConsent: function () {
       lsSet(LS_CONSENT, 'granted');
-      gtag('consent', 'update', {
-        ad_storage: 'granted', ad_user_data: 'granted',
-        ad_personalization: 'granted', analytics_storage: 'granted'
-      });
+      gtag('consent', 'update', { analytics_storage: 'granted' });
       loadGtagScript();
       flushQueue();
       api.trackPageView();
-      log('동의 승인');
+      log('동의 승인 (analytics_storage만)');
     },
     /** 쿠키 배너에서 '거부' 시 호출 */
     denyConsent: function () {
@@ -228,6 +225,13 @@
     },
     /** 'granted' | 'denied' | null(미결정) */
     getConsent: function () { return lsGet(LS_CONSENT); },
+
+    /** 방침 페이지 "쿠키 설정 변경" 링크용 — 선택을 초기화하고 배너를 다시 표시 */
+    resetConsent: function () {
+      try { window.localStorage.removeItem(LS_CONSENT); } catch (e) {}
+      gtag('consent', 'update', { analytics_storage: 'denied' });
+      window.location.reload();
+    },
 
     /** 범용 이벤트 */
     trackEvent: function (name, params) { send(name, params || {}); },
