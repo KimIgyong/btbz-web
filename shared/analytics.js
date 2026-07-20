@@ -14,8 +14,13 @@
   'use strict';
 
   var CFG = window.BTBZ_GA4 || {};
-  // 각 페이지가 window.BTBZ_GA4.measurementId로 지정. 아래는 미지정 시 기본값.
-  var MEASUREMENT_ID = CFG.measurementId || 'G-Z1N8PGJ9ED';
+  // 각 페이지가 window.BTBZ_GA4.measurementId로 지정. 미지정 시 도메인별 스트림 기본값.
+  var DEFAULT_IDS = {
+    'modora.btbz.ai': 'G-Z1N8PGJ9ED',
+    'www.btbz.ai': 'G-4LE1ZNX2WN',
+    'btbz.ai': 'G-4LE1ZNX2WN'
+  };
+  var MEASUREMENT_ID = CFG.measurementId || DEFAULT_IDS[window.location.host] || 'G-XXXXXXXXXX';
   var DEBUG = !!CFG.debug;
 
   var LS_CONSENT = 'btbz-analytics-consent'; // 'granted' | 'denied'
