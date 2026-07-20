@@ -15,7 +15,7 @@
 
   var CFG = window.BTBZ_GA4 || {};
   // TODO(운영): GA4 속성 만들고 측정 ID(G-XXXXXXX)로 교체. 미설정 시 수집 비활성(콘솔 경고).
-  var MEASUREMENT_ID = CFG.measurementId || 'G-XXXXXXXXXX';
+  var MEASUREMENT_ID = CFG.measurementId || 'G-4LE1ZNX2WN';
   var DEBUG = !!CFG.debug;
 
   var LS_CONSENT = 'btbz-analytics-consent'; // 'granted' | 'denied'
