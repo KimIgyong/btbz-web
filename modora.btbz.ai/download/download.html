@@ -95,6 +95,9 @@
   .privacy-note { font-size: .78rem; color: var(--muted); margin-top: .8rem; line-height: 1.5; }
   .privacy-note a { color: var(--accent); }
 </style>
+<!-- GA4 (동의 기반). 측정 ID 발급 후 G-XXXXXXXXXX 교체 — shared/README.md 참고 -->
+<script>window.BTBZ_GA4 = { measurementId: 'G-XXXXXXXXXX' };</script>
+<script src="/analytics.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -277,6 +280,7 @@
 
   // 페이지뷰 기록 (FR-6)
   apiPost('/api/events/pageview', { page: 'download' });
+  window.btbzAnalytics && btbzAnalytics.trackDownloadPageView();
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
@@ -298,6 +302,9 @@
     document.getElementById('sub-err').className = 'err';
     document.getElementById('sub-overlay').classList.add('open');
     document.getElementById('sub-email').focus();
+    window.btbzAnalytics && btbzAnalytics.trackBeginDownload({
+      platform: pendingHref.platform, version: pendingHref.version
+    });
   });
 
   function proceedDownload(withSubscribe) {
@@ -313,9 +320,13 @@
         return;
       }
       apiPost('/api/subscribers', { email: email, website: document.getElementById('sub-website').value });
+      window.btbzAnalytics && btbzAnalytics.trackSubscribe({ platform: pendingHref.platform });
     }
     // 다운로드 이벤트 기록 (FR-5) — keepalive라 페이지 이동에도 전송됨
     apiPost('/api/events/download', {
+      file: pendingHref.file, platform: pendingHref.platform, version: pendingHref.version
+    });
+    window.btbzAnalytics && btbzAnalytics.trackDownload({
       file: pendingHref.file, platform: pendingHref.platform, version: pendingHref.version
     });
 
@@ -331,5 +342,6 @@
     link.remove();
   }
 </script>
+<script src="/consent-banner.js" defer></script>
 </body>
 </html>

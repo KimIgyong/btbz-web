@@ -144,6 +144,9 @@
   .modal .msg.err { color: #dc2626; display: block; }
   .privacy-note { font-size: .78rem; color: var(--muted); margin-top: .8rem; line-height: 1.5; }
 </style>
+<!-- GA4 (동의 기반). 측정 ID 발급 후 G-XXXXXXXXXX 교체 — shared/README.md 참고 -->
+<script>window.BTBZ_GA4 = { measurementId: 'G-XXXXXXXXXX' };</script>
+<script src="/analytics.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -404,6 +407,7 @@
       if (!res.ok) throw new Error('http ' + res.status);
       msg.textContent = isKo() ? '문의가 전송되었습니다. 감사합니다!' : 'Your message has been sent. Thank you!';
       msg.className = 'msg ok';
+      window.btbzAnalytics && btbzAnalytics.trackLead({ form: 'inquiry' });
       form.reset();
       setTimeout(closeInquiry, 1500);
     }).catch(function () {
@@ -413,5 +417,6 @@
     }).finally(function () { btn.disabled = false; });
   });
 </script>
+<script src="/consent-banner.js" defer></script>
 </body>
 </html>
