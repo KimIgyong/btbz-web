@@ -40,11 +40,11 @@ describe('StatsService', () => {
     expect(s.byVersion.find((v) => v.version === '1.1.2')?.count).toBe(3);
   });
 
-  it('원본 로그 페이지네이션', async () => {
-    await events.recordDownload('a.exe', 'windows', '1.1.2', '1.1.1.1', 'ua');
+  it('원본 로그 페이지네이션 + IP 익명화 저장', async () => {
+    await events.recordDownload('a.exe', 'windows', '1.1.2', '125.133.49.165', 'ua');
     const { items, total } = await stats.events(1);
     expect(total).toBe(1);
-    expect(items[0].ip).toBe('1.1.1.1');
+    expect(items[0].ip).toBe('125.133.49.0');
   });
 
   it('기록 실패는 예외를 던지지 않는다 (FR-7)', async () => {

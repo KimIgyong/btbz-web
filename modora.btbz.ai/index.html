@@ -5,6 +5,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modora — 기기에만 저장되는 비밀메모 | Local-first secret memos</title>
 <meta name="description" content="Modora(모더라) — 비밀번호·비밀메모·일정·자료를 기기 안에 암호화해 보관하는 로컬 우선 앱. 서버 전송 없음. / A local-first app that keeps your passwords, memos, schedules and files encrypted on your device.">
+<link rel="canonical" href="https://modora.btbz.ai/">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="Modora — 기기에만 저장되는 비밀메모 | Local-first secret memos">
+<meta property="og:description" content="비밀번호·비밀메모·일정·자료를 기기 안에 암호화해 보관하는 로컬 우선 앱. 서버 전송 없음. / Keeps your passwords, memos, schedules and files encrypted on your device.">
+<meta property="og:url" content="https://modora.btbz.ai/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Modora">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://modora.btbz.ai/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modora — 기기에만 저장되는 비밀메모 | Local-first secret memos">
+<meta name="twitter:description" content="비밀번호·비밀메모·일정·자료를 기기 안에 암호화해 보관하는 로컬 우선 앱. / Local-first, on-device encryption.">
+<meta name="twitter:image" content="https://modora.btbz.ai/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Modora",
+  "alternateName": "모더라",
+  "url": "https://modora.btbz.ai/",
+  "image": "https://modora.btbz.ai/og-image.png",
+  "description": "비밀번호·비밀메모·일정·자료를 기기 안에 암호화해 보관하는 로컬 우선(local-first) 앱. A local-first app that keeps passwords, memos, schedules and files encrypted on your device.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Windows, macOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "downloadUrl": "https://modora.btbz.ai/download/download.html",
+  "publisher": {
+    "@type": "Organization",
+    "name": "BTBZ",
+    "url": "https://www.btbz.ai",
+    "email": "fremdung@gmail.com"
+  },
+  "inLanguage": ["ko", "en"]
+}
+</script>
 <style>
   :root {
     --bg: #ffffff; --fg: #1a1d21; --muted: #5c6470; --accent: #2563eb;
@@ -103,6 +142,7 @@
   .modal .msg { font-size: .85rem; margin-top: .7rem; display: none; }
   .modal .msg.ok { color: #16a34a; display: block; }
   .modal .msg.err { color: #dc2626; display: block; }
+  .privacy-note { font-size: .78rem; color: var(--muted); margin-top: .8rem; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -254,6 +294,10 @@
       <div class="hp" aria-hidden="true">
         <label>website<input name="website" tabindex="-1" autocomplete="off"></label>
       </div>
+      <p class="privacy-note">
+        <span class="i18n-ko">ⓘ 전송 시 <a href="/privacy.html" target="_blank" rel="noopener">개인정보처리방침</a>에 따라 입력하신 정보(제목·내용·이메일)가 수집·이용됩니다.</span>
+        <span class="i18n-en">ⓘ By sending, the information you entered is collected and used per the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+      </p>
       <div class="msg" id="inq-msg"></div>
       <div class="actions">
         <button type="button" onclick="closeInquiry()"><span class="i18n-ko">취소</span><span class="i18n-en">Cancel</span></button>
@@ -269,6 +313,8 @@
     document.documentElement.setAttribute('lang', l);
     document.getElementById('btn-ko').classList.toggle('active', l === 'ko');
     document.getElementById('btn-en').classList.toggle('active', l === 'en');
+    document.getElementById('btn-ko').setAttribute('aria-pressed', l === 'ko');
+    document.getElementById('btn-en').setAttribute('aria-pressed', l === 'en');
     document.querySelector('[data-l="privacy"]').textContent =
       l === 'ko' ? '개인정보처리방침' : 'Privacy Policy';
     try { localStorage.setItem('modora-lang', l); } catch (e) {}
@@ -309,14 +355,35 @@
     if (lbOpen && e.key === 'ArrowLeft') stepShot(-1);
     if (lbOpen && e.key === 'ArrowRight') stepShot(1);
   });
+  var inqTrigger = null;
   function openInquiry() {
+    inqTrigger = document.activeElement;
     document.getElementById('inq-msg').className = 'msg';
     document.getElementById('inquiry-overlay').classList.add('open');
     document.getElementById('inq-subject').focus();
   }
   function closeInquiry() {
     document.getElementById('inquiry-overlay').classList.remove('open');
+    if (inqTrigger && inqTrigger.focus) { inqTrigger.focus(); inqTrigger = null; }
   }
+
+  // 접근성: 클릭 전용 요소(문의 배지·스크린샷)에 키보드 조작 부여
+  (function () {
+    document.querySelectorAll('.badge.linkish').forEach(function (el) {
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openInquiry(); }
+      });
+    });
+    document.querySelectorAll('.shot img').forEach(function (el) {
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openShot(el); }
+      });
+    });
+  })();
   document.getElementById('inquiry-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var form = e.target;

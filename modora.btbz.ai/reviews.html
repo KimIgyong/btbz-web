@@ -5,6 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modora 사용후기 | Reviews</title>
 <meta name="description" content="Modora 사용후기 게시판 / User reviews for Modora.">
+<link rel="canonical" href="https://modora.btbz.ai/reviews.html">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="Modora 사용후기 | Reviews">
+<meta property="og:description" content="Modora를 써 본 사용자들의 후기. / What users say about Modora.">
+<meta property="og:url" content="https://modora.btbz.ai/reviews.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Modora">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://modora.btbz.ai/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modora 사용후기 | Reviews">
+<meta name="twitter:image" content="https://modora.btbz.ai/og-image.png">
 <style>
   :root {
     --bg: #ffffff; --fg: #1a1d21; --muted: #5c6470; --accent: #2563eb;
@@ -79,6 +94,8 @@
   .modal .msg { font-size: .85rem; margin-top: .7rem; display: none; }
   .modal .msg.ok { color: #16a34a; display: block; }
   .modal .msg.err { color: #dc2626; display: block; }
+  .privacy-note { font-size: .78rem; color: var(--muted); margin-top: .8rem; line-height: 1.5; }
+  .star-pick:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
 </style>
 </head>
 <body>
@@ -127,7 +144,8 @@
       <label for="rv-nick"><span class="i18n-ko">닉네임 *</span><span class="i18n-en">Nickname *</span></label>
       <input id="rv-nick" maxlength="20" required>
       <label><span class="i18n-ko">별점 *</span><span class="i18n-en">Rating *</span></label>
-      <div class="star-pick" id="star-pick" aria-label="rating">
+      <div class="star-pick" id="star-pick" role="slider" tabindex="0" aria-label="별점 / Rating"
+           aria-valuemin="1" aria-valuemax="5" aria-valuenow="0">
         <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
       </div>
       <label for="rv-content"><span class="i18n-ko">내용 *</span><span class="i18n-en">Review *</span></label>
@@ -135,6 +153,10 @@
       <div class="hp" aria-hidden="true">
         <label>website<input id="rv-website" tabindex="-1" autocomplete="off"></label>
       </div>
+      <p class="privacy-note">
+        <span class="i18n-ko">ⓘ 등록 시 <a href="/privacy.html" target="_blank" rel="noopener">개인정보처리방침</a>에 따라 입력하신 정보(닉네임·내용·별점)가 수집·이용됩니다.</span>
+        <span class="i18n-en">ⓘ By submitting, the information you entered is collected and used per the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+      </p>
       <div class="msg" id="rv-msg"></div>
       <div class="actions">
         <button type="button" onclick="closeWrite()"><span class="i18n-ko">취소</span><span class="i18n-en">Cancel</span></button>
@@ -150,6 +172,8 @@
     document.documentElement.setAttribute('lang', l);
     document.getElementById('btn-ko').classList.toggle('active', l === 'ko');
     document.getElementById('btn-en').classList.toggle('active', l === 'en');
+    document.getElementById('btn-ko').setAttribute('aria-pressed', l === 'ko');
+    document.getElementById('btn-en').setAttribute('aria-pressed', l === 'en');
     document.querySelector('[data-l="home"]').textContent = l === 'ko' ? '← 홈으로' : '← Home';
     document.querySelector('[data-l="privacy"]').textContent =
       l === 'ko' ? '개인정보처리방침' : 'Privacy Policy';
@@ -200,12 +224,25 @@
 
   // ---- 작성 ----
   var rating = 0;
+  function setRating(v) {
+    rating = Math.min(5, Math.max(1, v));
+    var pick = document.getElementById('star-pick');
+    pick.setAttribute('aria-valuenow', rating);
+    var spans = pick.querySelectorAll('span');
+    for (var i = 0; i < spans.length; i++) spans[i].classList.toggle('on', i < rating);
+  }
   document.getElementById('star-pick').addEventListener('click', function (e) {
     var v = e.target.getAttribute && e.target.getAttribute('data-v');
-    if (!v) return;
-    rating = Number(v);
-    var spans = this.querySelectorAll('span');
-    for (var i = 0; i < spans.length; i++) spans[i].classList.toggle('on', i < rating);
+    if (v) setRating(Number(v));
+  });
+  // 키보드 별점: ←/→ 조절, 1~5 직접 입력
+  document.getElementById('star-pick').addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { e.preventDefault(); setRating(rating + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { e.preventDefault(); setRating(rating - 1); }
+    else if (e.key >= '1' && e.key <= '5') { setRating(Number(e.key)); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeWrite();
   });
   function openWrite() {
     document.getElementById('rv-msg').className = 'msg';

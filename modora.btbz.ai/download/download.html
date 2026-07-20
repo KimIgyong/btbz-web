@@ -5,6 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modora 다운로드 | Download</title>
 <meta name="description" content="Modora 설치 파일 다운로드 — Windows, macOS, Android. / Download Modora installers for Windows, macOS and Android.">
+<link rel="canonical" href="https://modora.btbz.ai/download/download.html">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="Modora 다운로드 | Download">
+<meta property="og:description" content="Windows·macOS·Android 설치 파일 다운로드. / Download installers for Windows, macOS and Android.">
+<meta property="og:url" content="https://modora.btbz.ai/download/download.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Modora">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://modora.btbz.ai/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modora 다운로드 | Download">
+<meta name="twitter:image" content="https://modora.btbz.ai/og-image.png">
 <style>
   :root {
     --bg: #ffffff; --fg: #1a1d21; --muted: #5c6470; --accent: #2563eb;
@@ -77,6 +92,8 @@
     color: #fff; font-weight: 600; }
   .modal .err { color: #dc2626; font-size: .82rem; margin-top: .5rem; display: none; }
   .modal .err.show { display: block; }
+  .privacy-note { font-size: .78rem; color: var(--muted); margin-top: .8rem; line-height: 1.5; }
+  .privacy-note a { color: var(--accent); }
 </style>
 </head>
 <body>
@@ -211,6 +228,10 @@
       <label>website<input id="sub-website" tabindex="-1" autocomplete="off"></label>
     </div>
     <div class="err" id="sub-err"></div>
+    <p class="privacy-note">
+      <span class="i18n-ko">ⓘ 구독 시 이메일이, 다운로드 시 익명화된 접속 정보가 <a href="/privacy.html" target="_blank" rel="noopener">개인정보처리방침</a>에 따라 수집·이용됩니다.</span>
+      <span class="i18n-en">ⓘ Your email (if subscribing) and anonymized access info are collected per the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+    </p>
     <div class="actions">
       <button type="button" onclick="proceedDownload(false)">
         <span class="i18n-ko">건너뛰고 다운로드</span><span class="i18n-en">Skip &amp; download</span>
@@ -228,6 +249,8 @@
     document.documentElement.setAttribute('lang', l);
     document.getElementById('btn-ko').classList.toggle('active', l === 'ko');
     document.getElementById('btn-en').classList.toggle('active', l === 'en');
+    document.getElementById('btn-ko').setAttribute('aria-pressed', l === 'ko');
+    document.getElementById('btn-en').setAttribute('aria-pressed', l === 'en');
     document.querySelector('[data-l="home"]').textContent = l === 'ko' ? '← 홈으로' : '← Home';
     document.querySelector('[data-l="privacy"]').textContent =
       l === 'ko' ? '개인정보처리방침' : 'Privacy Policy';
@@ -254,6 +277,13 @@
 
   // 페이지뷰 기록 (FR-6)
   apiPost('/api/events/pageview', { page: 'download' });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      pendingHref = null;
+      document.getElementById('sub-overlay').classList.remove('open');
+    }
+  });
 
   document.addEventListener('click', function (e) {
     var a = e.target.closest ? e.target.closest('a.dl-btn') : null;
