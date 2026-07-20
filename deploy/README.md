@@ -37,12 +37,10 @@ cd www.btbz.ai && rsync -az index.html robots.txt sitemap.xml 404.html og-image.
 `SMTP_HOST=smtp.gmail.com` / `SMTP_PORT=587` / `SMTP_USER=no-reply@amoeba.site` / `SMTP_PASS`(Gmail 앱 비밀번호 —
 2026-07-20 설정·발송 검증 완료, mailSent=1 확인). 값 변경 시 `systemctl restart btbz-cms`.
 
-## 백업
-`backup-btbz-cms.sh` 크론 등록 필요 시:
-```bash
-ssh amb-mail 'apt-get install -y sqlite3'   # 스크립트가 sqlite3 CLI 사용
-# crontab: 15 4 * * * DB_PATH=/home/btbz/btbz-cms-data/btbz-cms.sqlite /home/btbz/backup-btbz-cms.sh
-```
+## 백업 (2026-07-20 등록 완료)
+- 스크립트: `/home/btbz/backup-btbz-cms.sh` (sqlite3 online backup + gzip, 30일 보관)
+- 크론(btbz): `15 4 * * * DB_PATH=/home/btbz/btbz-cms-data/btbz-cms.sqlite BACKUP_DIR=/home/btbz/backups /home/btbz/backup-btbz-cms.sh >> /home/btbz/backups/backup.log 2>&1`
+- 백업 위치: `/home/btbz/backups/btbz-cms-*.sqlite.gz` — 등록 시 1회 실행·integrity_check `ok` 확인
 
 ## 운영 확인 URL
 - https://modora.btbz.ai — 문의 모달 / https://modora.btbz.ai/reviews.html — 후기
