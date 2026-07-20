@@ -14,8 +14,8 @@
   'use strict';
 
   var CFG = window.BTBZ_GA4 || {};
-  // TODO(운영): GA4 속성 만들고 측정 ID(G-XXXXXXX)로 교체. 미설정 시 수집 비활성(콘솔 경고).
-  var MEASUREMENT_ID = CFG.measurementId || 'G-4LE1ZNX2WN';
+  // 각 페이지가 window.BTBZ_GA4.measurementId로 지정. 아래는 미지정 시 기본값.
+  var MEASUREMENT_ID = CFG.measurementId || 'G-Z1N8PGJ9ED';
   var DEBUG = !!CFG.debug;
 
   var LS_CONSENT = 'btbz-analytics-consent'; // 'granted' | 'denied'
