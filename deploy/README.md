@@ -24,6 +24,7 @@ cd modora.btbz.ai
 rsync -az index.html privacy.html reviews.html amb-mail:/var/www/modora.btbz.ai/html/
 rsync -az download/download.html amb-mail:/var/www/modora.btbz.ai/html/download/   # 설치파일 폴더 — html만!
 cd .. && rsync -az admin/ amb-mail:/var/www/btbz.ai/html/admin/
+cd www.btbz.ai && rsync -az index.html robots.txt sitemap.xml 404.html og-image.png favicon.ico apple-touch-icon.png amb-mail:/var/www/btbz.ai/html/
 ```
 
 ### nginx
