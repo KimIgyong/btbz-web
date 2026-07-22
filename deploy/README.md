@@ -18,10 +18,12 @@ ssh amb-mail 'chown -R btbz:btbz /home/btbz/btbz-cms && sudo -u btbz bash -c \
   && systemctl restart btbz-cms && sleep 2 && curl -s 127.0.0.1:3110/api/reviews'
 ```
 
+> 신규 의존성이 추가되면 `npm ci` 대신 `npm install` 1회 필요(예: sanitize-html, @types/multer, @types/sanitize-html — Q&A 기능).
+
 ### 정적 파일 갱신
 ```bash
 cd modora.btbz.ai
-rsync -az index.html privacy.html reviews.html amb-mail:/var/www/modora.btbz.ai/html/
+rsync -az index.html privacy.html reviews.html qna.html amb-mail:/var/www/modora.btbz.ai/html/
 rsync -az download/download.html amb-mail:/var/www/modora.btbz.ai/html/download/   # 설치파일 폴더 — html만!
 cd .. && rsync -az admin/ amb-mail:/var/www/btbz.ai/html/admin/
 cd www.btbz.ai && rsync -az index.html robots.txt sitemap.xml 404.html og-image.png favicon.ico apple-touch-icon.png amb-mail:/var/www/btbz.ai/html/
@@ -30,6 +32,14 @@ cd www.btbz.ai && rsync -az index.html robots.txt sitemap.xml 404.html og-image.
 ### nginx
 두 도메인 443 블록에 `nginx-btbz-cms.conf`의 `/api` location 이미 적용됨(백업: `/root/nginx-backup-*`).
 변경 시: `nginx -t && systemctl reload nginx`.
+- modora `/api` location에 `client_max_body_size 30M;` 적용됨(Q&A 파일 업로드 5MB×5 대비).
+
+## 제품 Q&A 게시판 (2026-07-23 추가)
+- 공개: `GET/POST /api/qna`, `GET /api/qna/:id`, `GET /api/qna/attachments/:id` (즉시 공개, 허니팟+스로틀 5/분).
+- 관리자: `GET /api/admin/qna`, `PATCH`(숨김/게시)·`DELETE /api/admin/qna/:id`, `POST /api/admin/qna/:id/replies`, `DELETE /api/admin/qna/replies/:id`.
+- 업로드 저장: `QNA_UPLOAD_DIR=/home/btbz/btbz-cms-data/qna-uploads` (.env, btbz 소유). 파일당 5MB·최대 5개, png/jpg=이미지 인라인·그 외=다운로드. 위험 확장자(html/svg/exe 등) 차단.
+- 리치텍스트는 sanitize-html로 서버 새니타이즈(XSS 차단). 공개 응답에는 email/ip 미포함.
+- 어드민 콘솔 ❓ 제품 Q&A: 답변 등록 시 게시판에 “개발자 답변”으로 표시.
 
 ## .env (서버에만, 600 권한 — `/home/btbz/btbz-cms/.env`)
 `PORT=3110`, `DB_PATH`, `JWT_SECRET`(적용됨, 랜덤 96자), `MAIL_TO=fremdung@gmail.com`,
