@@ -8,9 +8,20 @@ import { AuthModule } from './auth/auth.module';
 import { SeedService } from './database/seed.service';
 import { EventsModule } from './events/events.module';
 import { InquiriesModule } from './inquiries/inquiries.module';
+import { QnaModule } from './qna/qna.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
-import { AdminUser, DownloadEvent, Inquiry, PageView, Review, Subscriber } from './entities';
+import {
+  AdminUser,
+  DownloadEvent,
+  Inquiry,
+  PageView,
+  QnaAttachment,
+  QnaPost,
+  QnaReply,
+  Review,
+  Subscriber,
+} from './entities';
 
 @Module({
   imports: [
@@ -18,7 +29,7 @@ import { AdminUser, DownloadEvent, Inquiry, PageView, Review, Subscriber } from 
     TypeOrmModule.forRoot({
       type: 'better-sqlite3',
       database: process.env.DB_PATH ?? 'btbz-cms.sqlite',
-      entities: [AdminUser, DownloadEvent, Inquiry, PageView, Review, Subscriber],
+      entities: [AdminUser, DownloadEvent, Inquiry, PageView, QnaPost, QnaAttachment, QnaReply, Review, Subscriber],
       migrations: [__dirname + '/database/migrations/*{.ts,.js}'],
       migrationsRun: true,
       synchronize: false,
@@ -31,6 +42,7 @@ import { AdminUser, DownloadEvent, Inquiry, PageView, Review, Subscriber } from 
     SubscribersModule,
     ReviewsModule,
     AdminUsersModule,
+    QnaModule,
   ],
   providers: [SeedService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

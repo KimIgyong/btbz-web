@@ -160,7 +160,7 @@ document.getElementById('changepw-form').addEventListener('submit', function (e)
 
 // ---------- 라우팅 ----------
 var routes = { stats: renderStats, subscribers: renderSubscribers, inquiries: renderInquiries,
-               reviews: renderReviews, users: renderUsers, settings: renderSettings };
+               reviews: renderReviews, qna: renderQna, users: renderUsers, settings: renderSettings };
 
 function currentRoute() {
   var h = (location.hash || '#stats').slice(1);
@@ -435,7 +435,109 @@ function renderReviews(main, page, filter) {
   });
 }
 
-// ---------- ⑤ 관리자 관리 ----------
+// ---------- ⑤ 제품 Q&A ----------
+function qStars(n) {
+  if (!n) return '';
+  var s = '';
+  for (var i = 1; i <= 5; i++) s += i <= n ? '★' : '☆';
+  return '<span style="color:#f59e0b">' + s + '</span> ';
+}
+function qSize(b) { return b < 1024 ? b + 'B' : b < 1048576 ? Math.round(b / 1024) + 'KB' : (b / 1048576).toFixed(1) + 'MB'; }
+var QNA_STATUS = { visible: '게시중', hidden: '숨김' };
+
+function renderQna(main, page, filter) {
+  page = page || 1;
+  return api('/admin/qna?page=' + page + (filter ? '&status=' + filter : '')).then(function (d) {
+    var pages = Math.max(1, Math.ceil(d.total / 20));
+    main.innerHTML =
+      '<h2>제품 Q&A <span class="badge">' + d.total + '건</span></h2>' +
+      '<p class="subtitle">질문에 답변을 달면 게시판에 “개발자 답변”으로 표시됩니다. 부적절한 글은 숨김/삭제할 수 있습니다.</p>' +
+      '<div class="toolbar"><select id="q-filter">' +
+      '<option value="">전체</option>' +
+      '<option value="visible"' + (filter === 'visible' ? ' selected' : '') + '>게시중</option>' +
+      '<option value="hidden"' + (filter === 'hidden' ? ' selected' : '') + '>숨김</option>' +
+      '</select></div>' +
+      (d.items.length ? d.items.map(qcard).join('') : '<div class="empty">질문이 없습니다.</div>') +
+      '<div class="pager"><button class="small" id="q-prev"' + (page <= 1 ? ' disabled' : '') +
+      '>← 이전</button><span>' + page + ' / ' + pages + '</span><button class="small" id="q-next"' +
+      (page >= pages ? ' disabled' : '') + '>다음 →</button></div>';
+
+    document.getElementById('q-filter').onchange = function () { renderQna(main, 1, this.value || undefined); };
+    document.getElementById('q-prev').onclick = function () { renderQna(main, page - 1, filter); };
+    document.getElementById('q-next').onclick = function () { renderQna(main, page + 1, filter); };
+
+    main.querySelectorAll('[data-status]').forEach(function (btn) {
+      btn.onclick = function () {
+        api('/admin/qna/' + btn.getAttribute('data-id'), {
+          method: 'PATCH', body: JSON.stringify({ status: btn.getAttribute('data-status') })
+        }).then(function () { renderQna(main, page, filter); });
+      };
+    });
+    main.querySelectorAll('[data-del]').forEach(function (btn) {
+      btn.onclick = function () {
+        if (!confirm('이 질문을 완전히 삭제할까요? (첨부파일·답변도 함께 삭제)')) return;
+        api('/admin/qna/' + btn.getAttribute('data-del'), { method: 'DELETE' })
+          .then(function () { renderQna(main, page, filter); });
+      };
+    });
+    main.querySelectorAll('[data-delreply]').forEach(function (btn) {
+      btn.onclick = function () {
+        if (!confirm('답변을 삭제할까요?')) return;
+        api('/admin/qna/replies/' + btn.getAttribute('data-delreply'), { method: 'DELETE' })
+          .then(function () { renderQna(main, page, filter); });
+      };
+    });
+    main.querySelectorAll('[data-reply]').forEach(function (btn) {
+      btn.onclick = function () {
+        var id = btn.getAttribute('data-reply');
+        var ta = document.getElementById('q-reply-' + id);
+        var body = ta.value.trim();
+        if (!body) { ta.focus(); return; }
+        btn.disabled = true;
+        api('/admin/qna/' + id + '/replies', { method: 'POST', body: JSON.stringify({ body: body }) })
+          .then(function () { renderQna(main, page, filter); })
+          .catch(function (err) { alert(err.message); btn.disabled = false; });
+      };
+    });
+  });
+}
+
+function qcard(it) {
+  var atts = (it.attachments || []).map(function (a) {
+    var url = '/api/qna/attachments/' + a.id;
+    if (a.kind === 'image') return '<a href="' + url + '" target="_blank"><img src="' + url +
+      '" style="max-width:120px;max-height:120px;border-radius:8px;border:1px solid var(--border);vertical-align:top" alt=""></a>';
+    return '<a href="' + url + '" target="_blank" style="display:inline-block;border:1px solid var(--border);border-radius:8px;padding:.25rem .6rem;font-size:.8rem">📎 ' +
+      esc(a.originalName) + ' (' + qSize(a.size) + ')</a>';
+  }).join(' ');
+  var replies = (it.replies || []).map(function (r) {
+    return '<div style="background:var(--card);border-left:3px solid var(--accent);border-radius:8px;padding:.5rem .8rem;margin-top:.5rem">' +
+      '<div style="font-size:.8rem;color:var(--accent);font-weight:700">' + esc(r.author) + ' · 개발자 답변 ' +
+      '<button class="small danger" data-delreply="' + r.id + '" style="margin-left:.4rem">삭제</button></div>' +
+      '<div style="white-space:pre-wrap;font-size:.9rem;margin-top:.2rem">' + esc(r.body) + '</div>' +
+      '<div style="font-size:.72rem;color:var(--muted);margin-top:.2rem">' + fmtDate(r.createdAt) + '</div></div>';
+  }).join('');
+  return '<div style="border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;margin-bottom:.9rem">' +
+    '<div style="display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap">' +
+    '<strong style="font-size:1rem;flex:1">' + qStars(it.rating) + esc(it.title) + '</strong>' +
+    '<span class="badge ' + esc(it.status) + '">' + (QNA_STATUS[it.status] || esc(it.status)) + '</span>' +
+    '<div class="row-actions">' +
+    (it.status === 'visible'
+      ? '<button class="small" data-status="hidden" data-id="' + it.id + '">숨김</button>'
+      : '<button class="small" data-status="visible" data-id="' + it.id + '">게시</button>') +
+    '<button class="small danger" data-del="' + it.id + '">삭제</button></div></div>' +
+    '<div style="font-size:.78rem;color:var(--muted);margin:.3rem 0 .6rem">' +
+    esc(it.nickname) + ' · ' + esc(it.email) + ' · ' + fmtDate(it.createdAt) + (it.ip ? ' · ' + esc(it.ip) : '') + '</div>' +
+    '<div style="word-break:break-word">' + (it.contentHtml || '') + '</div>' +
+    (atts ? '<div style="margin-top:.7rem;display:flex;gap:.5rem;flex-wrap:wrap">' + atts + '</div>' : '') +
+    replies +
+    '<div style="margin-top:.7rem">' +
+    '<textarea id="q-reply-' + it.id + '" placeholder="답변 작성…" style="width:100%;min-height:60px;border:1px solid var(--border);background:var(--bg);color:var(--fg);border-radius:8px;padding:.5rem .6rem;font:inherit;font-size:.9rem"></textarea>' +
+    '<div style="text-align:right;margin-top:.4rem"><button class="small primary" data-reply="' + it.id + '">답변 등록</button></div></div>' +
+    '</div>';
+}
+
+// ---------- ⑥ 관리자 관리 ----------
 function renderUsers(main) {
   return api('/admin/users').then(function (users) {
     main.innerHTML =

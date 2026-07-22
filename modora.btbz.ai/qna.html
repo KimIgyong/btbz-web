@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko" data-show="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modora 제품 Q&amp;A | Product Q&amp;A</title>
+<meta name="description" content="Modora 제품 Q&A 게시판 — 질문을 남기면 개발자가 답변해 드립니다. / Ask about Modora; the developer answers.">
+<link rel="canonical" href="https://modora.btbz.ai/qna.html">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="Modora 제품 Q&amp;A | Product Q&amp;A">
+<meta property="og:description" content="질문을 남기면 개발자가 답변해 드립니다. / Ask about Modora; the developer answers.">
+<meta property="og:url" content="https://modora.btbz.ai/qna.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Modora">
+<meta property="og:image" content="https://modora.btbz.ai/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://modora.btbz.ai/og-image.png">
+<script>window.BTBZ_GA4 = { measurementId: 'G-Z1N8PGJ9ED' };</script>
+<script src="/analytics.js"></script>
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1a1d21; --muted: #5c6470; --accent: #2563eb;
+    --border: #e5e8ec; --card: #f6f8fa; --danger: #dc2626; --ok: #16a34a; --star: #f59e0b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14161a; --fg: #e6e9ed; --muted: #9aa3af; --accent: #60a5fa;
+            --border: #2a2f36; --card: #1d2127; --danger: #f87171; --ok: #4ade80; --star: #fbbf24; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--fg); line-height: 1.7;
+         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo",
+                      "Noto Sans KR", Roboto, sans-serif; }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  header.top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+  .logo { font-size: 1.15rem; font-weight: 800; letter-spacing: -.02em; }
+  .logo a { color: var(--fg); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  .lang-switch { display: flex; gap: .4rem; }
+  .lang-switch button { border: 1px solid var(--border); background: var(--card);
+    color: var(--fg); padding: .3rem .8rem; border-radius: 999px; cursor: pointer; font-size: .85rem; }
+  .lang-switch button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  [data-lang] { display: none; }
+  html[data-show="ko"] [data-lang="ko"] { display: inline; }
+  html[data-show="en"] [data-lang="en"] { display: inline; }
+  h1 { font-size: 1.6rem; margin-bottom: .3rem; }
+  .sub { color: var(--muted); font-size: .92rem; margin-bottom: 1.4rem; }
+  a { color: var(--accent); text-decoration: none; }
+  .ic-svg { width: 1.05em; height: 1.05em; vertical-align: -.16em; flex: none; }
+  button { font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid var(--border);
+           background: var(--card); color: var(--fg); padding: .45rem .9rem; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600;
+                   display: inline-flex; align-items: center; gap: .4rem; }
+  button[disabled] { opacity: .55; cursor: default; }
+  .toolbar-row { display: flex; justify-content: space-between; align-items: center; gap: .6rem;
+                 flex-wrap: wrap; margin-bottom: 1rem; }
+  .back { font-size: .9rem; color: var(--muted); display: inline-flex; align-items: center; gap: .3rem; }
+
+  /* 목록 */
+  .qna-item { border: 1px solid var(--border); border-radius: 12px; margin-bottom: .8rem; overflow: hidden; }
+  .qna-head { padding: .85rem 1.1rem; cursor: pointer; display: flex; gap: .6rem; align-items: baseline; }
+  .qna-head:hover { background: var(--card); }
+  .qna-title { font-weight: 700; font-size: 1rem; flex: 1; word-break: break-word; }
+  .qna-meta { font-size: .8rem; color: var(--muted); white-space: nowrap; }
+  .stars { color: var(--star); letter-spacing: 1px; display: inline-flex; }
+  .stars .off { color: var(--border); }
+  .qna-body { padding: 0 1.1rem 1.1rem; display: none; }
+  .qna-item.open .qna-body { display: block; }
+  .qna-content { border-top: 1px solid var(--border); padding-top: .9rem; word-break: break-word; }
+  .qna-content img { max-width: 100%; }
+  .qna-content a { text-decoration: underline; }
+  .att { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .9rem; }
+  .att-img { max-width: 150px; max-height: 150px; border-radius: 8px; border: 1px solid var(--border);
+             object-fit: cover; cursor: zoom-in; }
+  .att-file { display: inline-flex; align-items: center; gap: .4rem; font-size: .85rem;
+              border: 1px solid var(--border); border-radius: 8px; padding: .35rem .7rem; color: var(--fg); }
+  .att-file:hover { border-color: var(--accent); }
+  .reply { background: var(--card); border-left: 3px solid var(--accent); padding: .7rem .95rem;
+           border-radius: 8px; margin-top: .8rem; }
+  .reply .who { font-weight: 700; font-size: .85rem; color: var(--accent); margin-bottom: .2rem;
+                display: inline-flex; align-items: center; gap: .3rem; }
+  .reply .rbody { font-size: .92rem; white-space: pre-wrap; word-break: break-word; }
+  .reply .rdate { font-size: .75rem; color: var(--muted); margin-top: .3rem; }
+  .no-reply { font-size: .82rem; color: var(--muted); margin-top: .8rem; }
+  .pager { display: flex; gap: .6rem; align-items: center; justify-content: center; margin-top: 1.2rem; }
+  .empty { color: var(--muted); text-align: center; padding: 2.5rem 1rem; }
+
+  /* 작성 모달 */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: none;
+                   align-items: flex-start; justify-content: center; padding: 4vh 1rem; z-index: 50;
+                   overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--bg); border: 1px solid var(--border); border-radius: 14px;
+           max-width: 560px; width: 100%; padding: 1.4rem; }
+  .modal h3 { font-size: 1.1rem; margin-bottom: 1rem; }
+  .modal label { display: block; font-size: .85rem; color: var(--muted); margin: .8rem 0 .25rem; }
+  .modal input[type=text], .modal input[type=email] { width: 100%; border: 1px solid var(--border);
+    background: var(--bg); color: var(--fg); border-radius: 8px; padding: .5rem .7rem; font: inherit; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .rate-input { display: inline-flex; gap: .15rem; }
+  .rate-input button { border: none; background: none; padding: .1rem; font-size: 1.5rem; line-height: 1;
+                       color: var(--border); }
+  .rate-input button.on { color: var(--star); }
+  .rt-toolbar { display: flex; gap: .3rem; flex-wrap: wrap; margin-bottom: .4rem; }
+  .rt-toolbar button { padding: .3rem .6rem; font-size: .85rem; min-width: 2rem; }
+  .editor { min-height: 150px; max-height: 340px; overflow-y: auto; border: 1px solid var(--border);
+            border-radius: 8px; padding: .6rem .75rem; background: var(--bg); font-size: .95rem; }
+  .editor:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .editor:empty::before { content: attr(data-ph); color: var(--muted); }
+  .filelist { display: flex; flex-direction: column; gap: .35rem; margin-top: .5rem; }
+  .filerow { display: flex; align-items: center; gap: .5rem; font-size: .82rem;
+             border: 1px solid var(--border); border-radius: 8px; padding: .3rem .6rem; }
+  .filerow .fname { flex: 1; word-break: break-all; }
+  .filerow .fsize { color: var(--muted); }
+  .filerow button { border: none; background: none; color: var(--danger); padding: 0 .2rem; font-size: 1rem; }
+  .hint { font-size: .78rem; color: var(--muted); margin-top: .3rem; }
+  .msg { margin-top: .8rem; font-size: .88rem; min-height: 1.2em; }
+  .msg.ok { color: var(--ok); } .msg.err { color: var(--danger); }
+  .actions { display: flex; gap: .5rem; justify-content: flex-end; margin-top: 1.2rem; }
+  /* 이미지 라이트박스 */
+  .lb { position: fixed; inset: 0; background: rgba(0,0,0,.8); display: none; z-index: 70;
+        align-items: center; justify-content: center; padding: 1.2rem; }
+  .lb.open { display: flex; }
+  .lb img { max-width: 100%; max-height: 90vh; border-radius: 10px; }
+  footer { margin-top: 3rem; padding-top: 1.4rem; border-top: 1px solid var(--border);
+           font-size: .85rem; color: var(--muted); text-align: center; }
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="ic-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.3 9.3a2.8 2.8 0 0 1 5.3 1c0 1.9-2.6 2.2-2.6 3.8"/><path d="M12 17.2h.01"/></symbol>
+  <symbol id="ic-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="ic-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4"/></symbol>
+  <symbol id="ic-paperclip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11l-8.5 8.5a4 4 0 0 1-6-5.5L14 5a2.7 2.7 0 0 1 4 3.6l-8.6 8.6a1.4 1.4 0 0 1-2-2l7.8-7.8"/></symbol>
+  <symbol id="ic-badge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.4-3 7.4-7 8.5-4-1.1-7-4.1-7-8.5V6z"/><path d="M9.2 12l1.9 1.9 3.7-4"/></symbol>
+</svg>
+
+<div class="wrap">
+  <header class="top">
+    <div class="logo"><a href="/">Modora<span>.</span></a></div>
+    <div class="lang-switch">
+      <button id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+  </header>
+
+  <a class="back" href="/"><svg class="ic-svg" aria-hidden="true"><use href="#ic-arrow-left"/></svg>
+    <span data-lang="ko">홈으로</span><span data-lang="en">Home</span></a>
+
+  <h1 style="margin-top:.8rem"><span data-lang="ko">제품 Q&amp;A</span><span data-lang="en">Product Q&amp;A</span></h1>
+  <p class="sub">
+    <span data-lang="ko">Modora에 대한 질문을 남겨 주세요. 개발자가 확인 후 답변해 드립니다.</span>
+    <span data-lang="en">Ask anything about Modora. The developer will review and answer.</span>
+  </p>
+
+  <div class="toolbar-row">
+    <div class="qna-count" id="qna-count"></div>
+    <button class="primary" onclick="openWrite()">
+      <svg class="ic-svg" aria-hidden="true"><use href="#ic-help"/></svg>
+      <span data-lang="ko">질문 작성</span><span data-lang="en">Ask a question</span>
+    </button>
+  </div>
+
+  <div id="qna-list"><div class="empty" data-lang="ko">불러오는 중…</div><div class="empty" data-lang="en">Loading…</div></div>
+  <div class="pager" id="qna-pager"></div>
+
+  <footer>
+    <a href="/">Modora</a> · <a href="/reviews.html"><span data-lang="ko">사용후기</span><span data-lang="en">Reviews</span></a>
+    · <a href="/privacy.html"><span data-lang="ko">개인정보처리방침</span><span data-lang="en">Privacy</span></a>
+  </footer>
+</div>
+
+<!-- 질문 작성 모달 -->
+<div class="modal-overlay" id="write-overlay" onclick="if(event.target===this)closeWrite()">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h3><span data-lang="ko">질문 작성</span><span data-lang="en">Ask a question</span></h3>
+    <form id="qna-form">
+      <label><span data-lang="ko">닉네임</span><span data-lang="en">Nickname</span></label>
+      <input type="text" id="q-nick" maxlength="40" required>
+      <label><span data-lang="ko">이메일 (비공개 · 답변 알림용)</span><span data-lang="en">Email (private · for reply notice)</span></label>
+      <input type="email" id="q-email" maxlength="254" required>
+      <label><span data-lang="ko">제목</span><span data-lang="en">Title</span></label>
+      <input type="text" id="q-title" maxlength="200" required>
+
+      <label><span data-lang="ko">별점 (선택)</span><span data-lang="en">Rating (optional)</span></label>
+      <div class="rate-input" id="q-rate" aria-label="rating">
+        <button type="button" data-v="1">★</button><button type="button" data-v="2">★</button>
+        <button type="button" data-v="3">★</button><button type="button" data-v="4">★</button>
+        <button type="button" data-v="5">★</button>
+      </div>
+
+      <label><span data-lang="ko">내용</span><span data-lang="en">Content</span></label>
+      <div class="rt-toolbar" aria-label="format">
+        <button type="button" data-cmd="bold" style="font-weight:800">B</button>
+        <button type="button" data-cmd="italic" style="font-style:italic">I</button>
+        <button type="button" data-cmd="underline" style="text-decoration:underline">U</button>
+        <button type="button" data-cmd="insertUnorderedList">•&nbsp;<span data-lang="ko">목록</span><span data-lang="en">List</span></button>
+        <button type="button" data-cmd="createLink"><span data-lang="ko">링크</span><span data-lang="en">Link</span></button>
+      </div>
+      <div class="editor" id="q-editor" contenteditable="true"
+           data-ph="질문 내용을 입력하세요 / Write your question"></div>
+
+      <label><span data-lang="ko">이미지·파일 첨부 (png·jpg 이미지, 파일당 5MB, 최대 5개)</span><span data-lang="en">Attachments (png/jpg images, 5MB each, up to 5)</span></label>
+      <input type="file" id="q-files" multiple accept="image/png,image/jpeg,.png,.jpg,.jpeg,.pdf,.zip,.txt,.doc,.docx,.hwp,.xlsx,.csv">
+      <div class="filelist" id="q-filelist"></div>
+
+      <!-- honeypot -->
+      <div class="hp"><label>Website</label><input type="text" id="q-website" tabindex="-1" autocomplete="off"></div>
+
+      <div class="msg" id="q-msg"></div>
+      <div class="actions">
+        <button type="button" onclick="closeWrite()"><span data-lang="ko">취소</span><span data-lang="en">Cancel</span></button>
+        <button type="submit" class="primary" id="q-submit"><span data-lang="ko">등록</span><span data-lang="en">Submit</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="lb" id="lb" onclick="this.classList.remove('open')"><img id="lb-img" src="" alt=""></div>
+
+<script>
+  var API = '/api';
+  var page = 1, rating = 0, files = [];
+
+  function setLang(l) {
+    document.documentElement.setAttribute('data-show', l);
+    document.documentElement.setAttribute('lang', l);
+    document.getElementById('btn-ko').classList.toggle('active', l === 'ko');
+    document.getElementById('btn-en').classList.toggle('active', l === 'en');
+    try { localStorage.setItem('modora-lang', l); } catch (e) {}
+  }
+  (function () {
+    var saved = null; try { saved = localStorage.getItem('modora-lang'); } catch (e) {}
+    var nav = (navigator.language || 'ko').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en';
+    setLang(saved || nav);
+  })();
+  function isKo() { return document.documentElement.getAttribute('data-show') === 'ko'; }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function fmtDate(d) {
+    var t = new Date(d); if (isNaN(t)) return '';
+    var p = function (n) { return (n < 10 ? '0' : '') + n; };
+    return t.getFullYear() + '-' + p(t.getMonth() + 1) + '-' + p(t.getDate()) + ' ' + p(t.getHours()) + ':' + p(t.getMinutes());
+  }
+  function fmtSize(b) { return b < 1024 ? b + 'B' : b < 1048576 ? (b / 1024).toFixed(0) + 'KB' : (b / 1048576).toFixed(1) + 'MB'; }
+  function stars(n) {
+    var h = '<span class="stars" aria-label="' + n + '/5">';
+    for (var i = 1; i <= 5; i++) h += i <= n ? '★' : '<span class="off">★</span>';
+    return h + '</span>';
+  }
+
+  // ---------- 목록 ----------
+  function loadList(p) {
+    page = p || 1;
+    var wrap = document.getElementById('qna-list');
+    fetch(API + '/qna?page=' + page).then(function (r) { return r.json(); }).then(function (d) {
+      document.getElementById('qna-count').innerHTML =
+        (isKo() ? '전체 ' : 'Total ') + '<strong>' + d.total + '</strong>' + (isKo() ? '건' : '');
+      if (!d.items.length) {
+        wrap.innerHTML = '<div class="empty">' + (isKo() ? '아직 질문이 없습니다. 첫 질문을 남겨보세요!' : 'No questions yet. Be the first!') + '</div>';
+        document.getElementById('qna-pager').innerHTML = '';
+        return;
+      }
+      wrap.innerHTML = d.items.map(renderItem).join('');
+      wrap.querySelectorAll('.qna-head').forEach(function (h) {
+        h.addEventListener('click', function () { h.parentNode.classList.toggle('open'); });
+      });
+      wrap.querySelectorAll('.att-img').forEach(function (im) {
+        im.addEventListener('click', function (e) {
+          e.stopPropagation();
+          document.getElementById('lb-img').src = im.getAttribute('data-full');
+          document.getElementById('lb').classList.add('open');
+        });
+      });
+      var pages = Math.max(1, Math.ceil(d.total / 10));
+      document.getElementById('qna-pager').innerHTML = pages <= 1 ? '' :
+        '<button ' + (page <= 1 ? 'disabled' : '') + ' onclick="loadList(' + (page - 1) + ')">←</button>' +
+        '<span>' + page + ' / ' + pages + '</span>' +
+        '<button ' + (page >= pages ? 'disabled' : '') + ' onclick="loadList(' + (page + 1) + ')">→</button>';
+    }).catch(function () {
+      wrap.innerHTML = '<div class="empty">' + (isKo() ? '불러오지 못했습니다.' : 'Failed to load.') + '</div>';
+    });
+  }
+
+  function renderItem(it) {
+    var atts = (it.attachments || []).map(function (a) {
+      if (a.kind === 'image') return '<img class="att-img" src="' + a.url + '" data-full="' + a.url + '" alt="' + esc(a.originalName) + '" loading="lazy">';
+      return '<a class="att-file" href="' + a.url + '" target="_blank" rel="noopener"><svg class="ic-svg"><use href="#ic-file"/></svg>' +
+             esc(a.originalName) + ' <span class="fsize">(' + fmtSize(a.size) + ')</span></a>';
+    }).join('');
+    var replies = (it.replies || []).map(function (r) {
+      return '<div class="reply"><div class="who"><svg class="ic-svg"><use href="#ic-badge"/></svg>' + esc(r.author) +
+             (isKo() ? ' · 개발자 답변' : ' · Developer') + '</div><div class="rbody">' + esc(r.body) +
+             '</div><div class="rdate">' + fmtDate(r.createdAt) + '</div></div>';
+    }).join('');
+    if (!replies) replies = '<div class="no-reply">' + (isKo() ? '아직 답변이 없습니다.' : 'No answer yet.') + '</div>';
+    return '<div class="qna-item"><div class="qna-head">' +
+      (it.rating ? stars(it.rating) + ' ' : '') +
+      '<span class="qna-title">' + esc(it.title) + '</span>' +
+      '<span class="qna-meta">' + esc(it.nickname) + ' · ' + fmtDate(it.createdAt) + '</span></div>' +
+      '<div class="qna-body"><div class="qna-content">' + (it.contentHtml || '') +
+      (atts ? '<div class="att">' + atts + '</div>' : '') + '</div>' + replies + '</div></div>';
+  }
+
+  // ---------- 작성 ----------
+  function openWrite() {
+    document.getElementById('q-msg').textContent = '';
+    document.getElementById('write-overlay').classList.add('open');
+  }
+  function closeWrite() { document.getElementById('write-overlay').classList.remove('open'); }
+
+  // 별점
+  document.getElementById('q-rate').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    var v = Number(b.getAttribute('data-v'));
+    rating = (rating === v) ? 0 : v; // 같은 별 다시 클릭 시 해제
+    this.querySelectorAll('button').forEach(function (btn) {
+      btn.classList.toggle('on', Number(btn.getAttribute('data-v')) <= rating);
+    });
+  });
+
+  // 리치텍스트 툴바
+  document.querySelector('.rt-toolbar').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    var cmd = b.getAttribute('data-cmd');
+    document.getElementById('q-editor').focus();
+    if (cmd === 'createLink') {
+      var url = prompt(isKo() ? '링크 URL을 입력하세요 (https://...)' : 'Enter link URL (https://...)');
+      if (url) document.execCommand('createLink', false, url);
+    } else {
+      document.execCommand(cmd, false, null);
+    }
+  });
+
+  // 파일 선택
+  document.getElementById('q-files').addEventListener('change', function () {
+    for (var i = 0; i < this.files.length; i++) {
+      var f = this.files[i];
+      if (f.size > 5 * 1024 * 1024) { alert((isKo() ? '5MB를 초과하는 파일은 제외됩니다: ' : 'File over 5MB skipped: ') + f.name); continue; }
+      if (files.length >= 5) { alert(isKo() ? '최대 5개까지 첨부할 수 있습니다.' : 'Up to 5 files.'); break; }
+      files.push(f);
+    }
+    this.value = '';
+    renderFiles();
+  });
+  function renderFiles() {
+    document.getElementById('q-filelist').innerHTML = files.map(function (f, i) {
+      return '<div class="filerow"><svg class="ic-svg"><use href="#ic-paperclip"/></svg>' +
+        '<span class="fname">' + esc(f.name) + '</span><span class="fsize">' + fmtSize(f.size) + '</span>' +
+        '<button type="button" onclick="removeFile(' + i + ')" aria-label="remove">✕</button></div>';
+    }).join('');
+  }
+  function removeFile(i) { files.splice(i, 1); renderFiles(); }
+
+  // 제출
+  document.getElementById('qna-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var msg = document.getElementById('q-msg'), btn = document.getElementById('q-submit');
+    var editor = document.getElementById('q-editor');
+    var plain = editor.innerText.replace(/\s| /g, '');
+    if (!plain && !files.length) {
+      msg.className = 'msg err';
+      msg.textContent = isKo() ? '내용을 입력하거나 파일을 첨부해 주세요.' : 'Enter content or attach a file.';
+      return;
+    }
+    msg.className = 'msg'; msg.textContent = ''; btn.disabled = true;
+    var fd = new FormData();
+    fd.append('nickname', document.getElementById('q-nick').value.trim());
+    fd.append('email', document.getElementById('q-email').value.trim());
+    fd.append('title', document.getElementById('q-title').value.trim());
+    fd.append('content', editor.innerHTML);
+    fd.append('rating', String(rating));
+    fd.append('website', document.getElementById('q-website').value);
+    files.forEach(function (f) { fd.append('files', f); });
+    fetch(API + '/qna', { method: 'POST', body: fd }).then(function (res) {
+      if (!res.ok) return res.json().catch(function () { return {}; }).then(function (b) {
+        var m = b && b.message; throw new Error((Array.isArray(m) ? m.join(', ') : m) || ('HTTP ' + res.status));
+      });
+      return res.json();
+    }).then(function () {
+      msg.className = 'msg ok';
+      msg.textContent = isKo() ? '질문이 등록되었습니다. 감사합니다!' : 'Your question has been posted. Thank you!';
+      document.getElementById('qna-form').reset();
+      editor.innerHTML = ''; files = []; rating = 0; renderFiles();
+      document.getElementById('q-rate').querySelectorAll('button').forEach(function (b) { b.classList.remove('on'); });
+      setTimeout(function () { closeWrite(); loadList(1); }, 900);
+    }).catch(function (err) {
+      msg.className = 'msg err'; msg.textContent = err.message;
+    }).finally(function () { btn.disabled = false; });
+  });
+
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeWrite(); document.getElementById('lb').classList.remove('open'); } });
+
+  loadList(1);
+</script>
+<script src="/consent-banner.js" defer></script>
+</body>
+</html>
