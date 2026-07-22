@@ -15,10 +15,10 @@ export class AuthController {
     return this.auth.login(dto.email, dto.password);
   }
 
-  /** 비밀번호 분실 재발급 — 공개 엔드포인트. 열거 방지 위해 항상 202. */
+  /** 비밀번호 분실 재발급 — 공개 엔드포인트. 열거 방지 위해 항상 202. 스로틀 5분 5회. */
   @Post('forgot-password')
   @HttpCode(202)
-  @Throttle({ default: { ttl: 600_000, limit: 3 } })
+  @Throttle({ default: { ttl: 300_000, limit: 5 } })
   async forgotPassword(@Body() dto: ForgotPasswordDto): Promise<{ ok: true }> {
     await this.auth.forgotPassword(dto.email, dto.destination);
     return { ok: true };
