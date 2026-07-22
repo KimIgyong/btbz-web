@@ -38,6 +38,20 @@
   .login-card button { width: 100%; margin-top: 1.1rem; padding: .55rem; }
   .login-card .msg { margin-top: .7rem; font-size: .85rem; }
 
+  /* 비밀번호 입력 + 보기 토글 (.login-card button 규칙보다 명시도 높게) */
+  .pw-wrap { position: relative; }
+  .pw-wrap input { width: 100%; padding-right: 2.7rem; }
+  .pw-wrap .pw-toggle { position: absolute; right: .3rem; top: 50%; transform: translateY(-50%);
+               width: auto; margin: 0; border: none; background: transparent; padding: .2rem .4rem;
+               font-size: 1.1rem; line-height: 1; }
+  .pw-wrap .pw-toggle:hover { background: transparent; }
+  .radio-row { display: flex; flex-direction: column; gap: .4rem; margin-top: .35rem; }
+  .radio-row label.radio { display: flex; align-items: center; gap: .45rem; font-size: .9rem;
+                           color: var(--fg); margin: 0; cursor: pointer; }
+  .radio-row input { width: auto; }
+  .link-row { margin-top: .9rem; text-align: center; }
+  .link-row a { font-size: .85rem; cursor: pointer; }
+
   /* 레이아웃 */
   .layout { display: none; min-height: 100vh; }
   .layout.on { display: flex; }
@@ -111,9 +125,36 @@
       <label for="lg-email">이메일</label>
       <input id="lg-email" type="email" autocomplete="username" required>
       <label for="lg-pw">비밀번호</label>
-      <input id="lg-pw" type="password" autocomplete="current-password" required>
+      <div class="pw-wrap">
+        <input id="lg-pw" type="password" autocomplete="current-password" required>
+        <button type="button" class="pw-toggle" data-target="lg-pw" aria-label="비밀번호 표시" title="비밀번호 표시">👁</button>
+      </div>
       <button class="primary" type="submit">로그인</button>
       <div class="msg" id="lg-msg"></div>
+      <div class="link-row"><a id="lg-forgot">비밀번호를 잊으셨나요?</a></div>
+    </form>
+  </div>
+</div>
+
+<!-- 비밀번호 분실 재발급 화면 -->
+<div class="login-wrap" id="view-forgot" style="display:none">
+  <div class="login-card">
+    <h1>비밀번호 재발급</h1>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.4rem">
+      가입한 관리자 이메일을 입력하면 임시 비밀번호를 보내드립니다.
+      임시 비밀번호로 로그인한 뒤 새 비밀번호를 설정하세요.
+    </p>
+    <form id="forgot-form">
+      <label for="fg-email">관리자 이메일</label>
+      <input id="fg-email" type="email" autocomplete="username" required>
+      <label>임시 비밀번호 받을 곳</label>
+      <div class="radio-row">
+        <label class="radio"><input type="radio" name="fg-dest" value="primary" checked> 가입 이메일로 받기</label>
+        <label class="radio"><input type="radio" name="fg-dest" value="recovery"> 복구 이메일로 받기</label>
+      </div>
+      <button class="primary" type="submit">임시 비밀번호 받기</button>
+      <div class="msg" id="fg-msg"></div>
+      <div class="link-row"><a id="fg-back">← 로그인으로 돌아가기</a></div>
     </form>
   </div>
 </div>
@@ -127,9 +168,15 @@
     </p>
     <form id="changepw-form">
       <label for="cp-cur">현재 비밀번호</label>
-      <input id="cp-cur" type="password" autocomplete="current-password" required>
+      <div class="pw-wrap">
+        <input id="cp-cur" type="password" autocomplete="current-password" required>
+        <button type="button" class="pw-toggle" data-target="cp-cur" aria-label="비밀번호 표시" title="비밀번호 표시">👁</button>
+      </div>
       <label for="cp-new">새 비밀번호 (8자 이상)</label>
-      <input id="cp-new" type="password" autocomplete="new-password" minlength="8" required>
+      <div class="pw-wrap">
+        <input id="cp-new" type="password" autocomplete="new-password" minlength="8" required>
+        <button type="button" class="pw-toggle" data-target="cp-new" aria-label="비밀번호 표시" title="비밀번호 표시">👁</button>
+      </div>
       <button class="primary" type="submit">변경하기</button>
       <div class="msg" id="cp-msg"></div>
     </form>
@@ -145,6 +192,7 @@
     <a class="item" href="#inquiries">💬 개발자 문의사항</a>
     <a class="item" href="#reviews">⭐ 사용후기 게시판</a>
     <a class="item" href="#users">👤 관리자 관리</a>
+    <a class="item" href="#settings">⚙️ 설정</a>
     <div class="foot">
       <div class="who" id="who"></div>
       <button class="small" onclick="logout()">로그아웃</button>

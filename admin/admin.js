@@ -46,10 +46,24 @@ function fmtDate(d) {
 // ---------- 화면 전환 ----------
 function show(id) {
   document.getElementById('view-login').style.display = id === 'login' ? '' : 'none';
+  document.getElementById('view-forgot').style.display = id === 'forgot' ? '' : 'none';
   document.getElementById('view-changepw').style.display = id === 'changepw' ? '' : 'none';
   document.getElementById('view-main').classList.toggle('on', id === 'main');
 }
 function showChangePw() { show('changepw'); }
+
+// ---------- 비밀번호 보기 토글 ----------
+document.querySelectorAll('.pw-toggle').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var input = document.getElementById(btn.getAttribute('data-target'));
+    if (!input) return;
+    var reveal = input.type === 'password';
+    input.type = reveal ? 'text' : 'password';
+    btn.textContent = reveal ? '🙈' : '👁';
+    btn.setAttribute('aria-label', reveal ? '비밀번호 숨김' : '비밀번호 표시');
+    btn.setAttribute('title', reveal ? '비밀번호 숨김' : '비밀번호 표시');
+  });
+});
 function logout() {
   sessionStorage.removeItem('btbz-admin-token');
   sessionStorage.removeItem('btbz-admin-email');
@@ -86,6 +100,42 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
   });
 });
 
+// ---------- 비밀번호 분실 재발급 ----------
+document.getElementById('lg-forgot').addEventListener('click', function () {
+  document.getElementById('fg-msg').textContent = '';
+  document.getElementById('fg-email').value = document.getElementById('lg-email').value.trim();
+  show('forgot');
+});
+document.getElementById('fg-back').addEventListener('click', function () { show('login'); });
+
+document.getElementById('forgot-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var msg = document.getElementById('fg-msg');
+  var btn = e.target.querySelector('button[type="submit"]');
+  var dest = (document.querySelector('input[name="fg-dest"]:checked') || {}).value || 'primary';
+  msg.className = 'msg';
+  msg.textContent = '';
+  btn.disabled = true;
+  fetch(API + '/admin/forgot-password', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: document.getElementById('fg-email').value.trim(), destination: dest })
+  }).then(function (res) {
+    if (!res.ok) return res.json().catch(function () { return {}; }).then(function (b) {
+      var m = b && b.message;
+      throw new Error((Array.isArray(m) ? m.join(', ') : m) || '요청 실패 (' + res.status + ')');
+    });
+    // 열거 방지: 계정 존재 여부와 무관하게 동일 안내
+    msg.className = 'msg ok';
+    msg.textContent = dest === 'recovery'
+      ? '해당 계정이 존재하면 등록된 복구 이메일로 임시 비밀번호를 보냈습니다. 메일함을 확인하세요.'
+      : '해당 계정이 존재하면 가입 이메일로 임시 비밀번호를 보냈습니다. 메일함을 확인하세요.';
+  }).catch(function (err) {
+    msg.className = 'msg err';
+    msg.textContent = err.message;
+  }).finally(function () { btn.disabled = false; });
+});
+
 // ---------- 비밀번호 변경 ----------
 document.getElementById('changepw-form').addEventListener('submit', function (e) {
   e.preventDefault();
@@ -110,7 +160,7 @@ document.getElementById('changepw-form').addEventListener('submit', function (e)
 
 // ---------- 라우팅 ----------
 var routes = { stats: renderStats, subscribers: renderSubscribers, inquiries: renderInquiries,
-               reviews: renderReviews, users: renderUsers };
+               reviews: renderReviews, users: renderUsers, settings: renderSettings };
 
 function currentRoute() {
   var h = (location.hash || '#stats').slice(1);
@@ -475,6 +525,54 @@ function renderUsers(main) {
         '<div class="actions"><button class="primary" id="au-done">확인</button></div>';
       document.getElementById('au-done').onclick = function () { dialog.close(); renderUsers(main); };
     }
+  });
+}
+
+// ---------- ⑥ 설정 (복구 이메일) ----------
+function renderSettings(main) {
+  return api('/admin/me').then(function (me) {
+    main.innerHTML =
+      '<h2>설정</h2>' +
+      '<h3 class="sec">복구 이메일</h3>' +
+      '<p class="subtitle">비밀번호를 분실하면 로그인 화면의 “비밀번호를 잊으셨나요?”에서 이 복구 이메일로 ' +
+      '임시 비밀번호를 받을 수 있습니다. 가입 이메일에 접근할 수 없을 때를 대비한 예비 수단입니다.</p>' +
+      '<div style="max-width:440px">' +
+      '<label style="display:block;font-size:.85rem;color:var(--muted);margin:.2rem 0 .3rem">복구 이메일</label>' +
+      '<input id="set-recovery" type="email" style="width:100%" placeholder="예: name@example.com" value="' +
+        esc(me.recoveryEmail) + '">' +
+      '<div class="msg" id="set-msg" style="margin:.6rem 0"></div>' +
+      '<div class="row-actions"><button class="primary" id="set-save">저장</button>' +
+      (me.recoveryEmail ? '<button class="danger" id="set-clear">복구 이메일 해제</button>' : '') +
+      '</div>' +
+      '<p class="subtitle" style="margin-top:1.2rem">로그인 이메일: <strong>' + esc(me.email) + '</strong></p>' +
+      '</div>';
+
+    function save(value) {
+      var msg = document.getElementById('set-msg');
+      msg.className = 'msg';
+      msg.textContent = '';
+      api('/admin/me/recovery-email', {
+        method: 'PATCH',
+        body: JSON.stringify({ recoveryEmail: value })
+      }).then(function () {
+        msg.className = 'msg ok';
+        msg.textContent = value ? '복구 이메일이 저장되었습니다.' : '복구 이메일이 해제되었습니다.';
+        setTimeout(function () { renderSettings(main); }, 700);
+      }).catch(function (err) {
+        if (err.message === 'unauthorized' || err.message === 'must-change-password') return;
+        msg.className = 'msg err';
+        msg.textContent = err.message;
+      });
+    }
+
+    document.getElementById('set-save').onclick = function () {
+      save(document.getElementById('set-recovery').value.trim());
+    };
+    var clearBtn = document.getElementById('set-clear');
+    if (clearBtn) clearBtn.onclick = function () {
+      if (!confirm('복구 이메일을 해제할까요? 이후에는 가입 이메일로만 재발급이 가능합니다.')) return;
+      save('');
+    };
   });
 }
 

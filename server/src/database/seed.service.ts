@@ -16,7 +16,10 @@ export class SeedService implements OnApplicationBootstrap {
 
   async onApplicationBootstrap(): Promise<void> {
     const count = await this.adminUsers.count();
-    if (count > 0) return;
+    if (count > 0) {
+      await this.backfillRecoveryEmail();
+      return;
+    }
 
     const email = process.env.SEED_ADMIN_EMAIL ?? 'admin@btbz.ai';
     let password = process.env.SEED_ADMIN_PASSWORD;
@@ -32,6 +35,30 @@ export class SeedService implements OnApplicationBootstrap {
         mustChangePassword: true,
       }),
     );
+    // 신규 시드 계정에도 복구 이메일 기본값 지정
+    const recovery = (process.env.SEED_ADMIN_RECOVERY_EMAIL ?? 'fremdung@gmail.com').toLowerCase().trim();
+    if (recovery && recovery !== email.toLowerCase().trim()) {
+      const seeded = await this.adminUsers.findOneBy({ email });
+      if (seeded) {
+        seeded.recoveryEmail = recovery;
+        await this.adminUsers.save(seeded);
+      }
+    }
     this.logger.log(`Seeded initial admin account: ${email} (must change password on first login)`);
+  }
+
+  /**
+   * 기존 배포 계정에 복구 이메일이 비어 있으면 기본값(SEED_ADMIN_RECOVERY_EMAIL,
+   * 기본 fremdung@gmail.com)을 첫 관리자에게 1회 백필. 요구사항: 현재 관리자에 복구이메일 등록.
+   */
+  private async backfillRecoveryEmail(): Promise<void> {
+    const recovery = (process.env.SEED_ADMIN_RECOVERY_EMAIL ?? 'fremdung@gmail.com').toLowerCase().trim();
+    if (!recovery) return;
+    const first = await this.adminUsers.findOne({ order: { id: 'ASC' }, where: {} });
+    if (first && !first.recoveryEmail && first.email.toLowerCase().trim() !== recovery) {
+      first.recoveryEmail = recovery;
+      await this.adminUsers.save(first);
+      this.logger.log(`Backfilled recovery email for admin #${first.id}.`);
+    }
   }
 }
