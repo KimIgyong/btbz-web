@@ -34,8 +34,16 @@ cd www.btbz.ai && rsync -az index.html robots.txt sitemap.xml 404.html og-image.
 ## .env (서버에만, 600 권한 — `/home/btbz/btbz-cms/.env`)
 `PORT=3110`, `DB_PATH`, `JWT_SECRET`(적용됨, 랜덤 96자), `MAIL_TO=fremdung@gmail.com`,
 `SEED_ADMIN_EMAIL/PASSWORD`(시드 완료 — 최초 로그인 시 변경 강제),
+`SEED_ADMIN_RECOVERY_EMAIL`(선택, 기본 `fremdung@gmail.com` — 복구 이메일 미설정 시 첫 관리자에 1회 백필),
 `SMTP_HOST=smtp.gmail.com` / `SMTP_PORT=587` / `SMTP_USER=no-reply@amoeba.site` / `SMTP_PASS`(Gmail 앱 비밀번호 —
 2026-07-20 설정·발송 검증 완료, mailSent=1 확인). 값 변경 시 `systemctl restart btbz-cms`.
+
+## 관리자 비밀번호 분실 재발급 (2026-07-22 추가)
+- 로그인 화면 "비밀번호를 잊으셨나요?" → `POST /api/admin/forgot-password {email,destination}` (공개, 10분 3회 스로틀).
+  임시 비밀번호를 **이메일로만** 발송(응답 미노출), 계정 열거 방지 위해 항상 202. 로그인 후 새 비밀번호 설정 강제.
+- `destination`: `primary`(가입 이메일) / `recovery`(복구 이메일, 미설정 시 가입 이메일로 폴백).
+- 복구 이메일 설정: 콘솔 ⚙️ 설정 → `GET /api/admin/me`, `PATCH /api/admin/me/recovery-email {recoveryEmail}`(빈 값=해제).
+- 현재 admin@btbz.ai 복구 이메일 = `fremdung@gmail.com`(백필 완료). SMTP 미설정 시 발송만 생략(계정 리셋은 진행).
 
 ## 백업 (2026-07-20 등록 완료)
 - 스크립트: `/home/btbz/backup-btbz-cms.sh` (sqlite3 online backup + gzip, 30일 보관)
