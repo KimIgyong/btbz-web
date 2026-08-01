@@ -41,7 +41,7 @@
     "url": "https://www.btbz.ai",
     "email": "fremdung@gmail.com"
   },
-  "inLanguage": ["ko", "en"]
+  "inLanguage": ["ko", "en", "vi", "es", "ru", "hi"]
 }
 </script>
 <style>
@@ -62,23 +62,20 @@
                margin-bottom: 3rem; }
   .logo { font-size: 1.25rem; font-weight: 800; letter-spacing: -.02em; }
   .logo span { color: var(--accent); }
-  .lang-switch { display: flex; gap: .4rem; }
-  .lang-switch button { border: 1px solid var(--border); background: var(--card);
+  .lang-select { border: 1px solid var(--border); background: var(--card);
     color: var(--fg); padding: .3rem .8rem; border-radius: 999px; cursor: pointer;
-    font-size: .85rem; }
-  .lang-switch button.active { background: var(--accent); border-color: var(--accent);
-    color: #fff; }
+    font-size: .85rem; font-family: inherit; }
   [data-lang] { display: none; }
-  html[data-show="ko"] [data-lang="ko"] { display: block; }
-  html[data-show="en"] [data-lang="en"] { display: block; }
+  html[data-show="ko"] [data-lang="ko"], html[data-show="en"] [data-lang="en"], html[data-show="vi"] [data-lang="vi"], html[data-show="es"] [data-lang="es"], html[data-show="ru"] [data-lang="ru"], html[data-show="hi"] [data-lang="hi"] { display: block; }
   .hero { text-align: center; margin-bottom: 3.5rem; }
   .hero .mark { font-size: 3rem; margin-bottom: .8rem; }
   h1 { font-size: 2rem; line-height: 1.35; margin-bottom: .8rem; letter-spacing: -.02em; }
   .hero p { color: var(--muted); max-width: 560px; margin: 0 auto; }
-  .badges { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap;
+  .badges { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap;
             margin-top: 1.4rem; }
+  /* 버튼 높이 2배 강조 (기존 .45rem → 1.35rem 수직 패딩) + 가독성 위해 글씨 확대 */
   .badge { border: 1px solid var(--border); background: var(--card); color: var(--muted);
-           padding: .45rem 1rem; border-radius: 10px; font-size: .85rem; }
+           padding: 1.35rem 1.5rem; border-radius: 13px; font-size: 1rem; line-height: 1.15; }
   a.badge.primary { background: var(--accent); border-color: var(--accent); color: #fff;
                     font-weight: 600; text-decoration: none; }
   a.badge.primary:hover { opacity: .9; text-decoration: none; }
@@ -133,8 +130,8 @@
   .note .ic-svg { color: var(--accent); }
   a.badge { text-decoration: none; }
   a.badge:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
-  html[data-show="ko"] .i18n-en { display: none; }
-  html[data-show="en"] .i18n-ko { display: none; }
+  .i18n-ko, .i18n-en, .i18n-vi, .i18n-es, .i18n-ru, .i18n-hi { display: none; }
+  html[data-show="ko"] .i18n-ko, html[data-show="en"] .i18n-en, html[data-show="vi"] .i18n-vi, html[data-show="es"] .i18n-es, html[data-show="ru"] .i18n-ru, html[data-show="hi"] .i18n-hi { display: inline; }
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: none;
                    align-items: center; justify-content: center; padding: 1rem; z-index: 50; }
   .modal-overlay.open { display: flex; }
@@ -181,10 +178,9 @@
 <div class="wrap">
   <header class="top">
     <div class="logo">Modora<span>.</span></div>
-    <div class="lang-switch">
-      <button id="btn-ko" onclick="setLang('ko')">한국어</button>
-      <button id="btn-en" onclick="setLang('en')">English</button>
-    </div>
+    <select id="lang-select" class="lang-select" aria-label="Language" onchange="setLang(this.value)">
+      <option value="ko">한국어</option><option value="en">English</option><option value="vi">Tiếng Việt</option><option value="es">Español</option><option value="ru">Русский</option><option value="hi">हिन्दी</option>
+    </select>
   </header>
 
   <!-- ================= 한국어 ================= -->
@@ -195,11 +191,12 @@
       <p>모더라(Modora)는 비밀메모·비밀번호·일정·자료를 <strong>사용자의 기기 안에 암호화해 보관</strong>하는
          로컬 우선(local-first) 앱입니다. 자체 서버가 없어 데이터가 밖으로 나가지 않습니다.</p>
       <div class="badges">
-        <a class="badge primary" href="/download/download.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-download"/></svg> 다운로드 — Windows · macOS · Android</a>
-        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-play"/></svg> Google Play — 준비 중</span>
-        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-apple"/></svg> App Store — 준비 중</span>
+        <a class="badge primary" href="/download/download.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-download"/></svg> 다운로드</a>
+        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-play"/></svg> 구글플레이 — 준비 중</span>
+        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-apple"/></svg> 앱스토어 — 준비 중</span>
       </div>
       <div class="badges">
+        <a class="badge" href="/guide/user_guide_1.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-note"/></svg> 유저 가이드</a>
         <a class="badge" href="/qna.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-help"/></svg> 제품 Q&amp;A</a>
         <span class="badge linkish" onclick="openInquiry()"><svg class="ic-svg" aria-hidden="true"><use href="#ic-chat"/></svg> 개발자에게 문의</span>
       </div>
@@ -250,11 +247,12 @@
          schedules and files <strong>encrypted on your device</strong>. There are no servers —
          your data never leaves.</p>
       <div class="badges">
-        <a class="badge primary" href="/download/download.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-download"/></svg> Download — Windows · macOS · Android</a>
-        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-play"/></svg> Google Play — coming soon</span>
-        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-apple"/></svg> App Store — coming soon</span>
+        <a class="badge primary" href="/download/download.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-download"/></svg> Download</a>
+        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-play"/></svg> Google Play — soon</span>
+        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-apple"/></svg> App Store — soon</span>
       </div>
       <div class="badges">
+        <a class="badge" href="/guide/user_guide_1.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-note"/></svg> User Guide</a>
         <a class="badge" href="/qna.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-help"/></svg> Product Q&amp;A</a>
         <span class="badge linkish" onclick="openInquiry()"><svg class="ic-svg" aria-hidden="true"><use href="#ic-chat"/></svg> Contact the developer</span>
       </div>
@@ -296,12 +294,236 @@
     </div>
   </div>
 
+  <!-- ================= Tiếng Việt ================= -->
+  <div data-lang="vi">
+    <section class="hero">
+      <div class="mark"><svg class="ic-svg" aria-hidden="true"><use href="#ic-shield"/></svg></div>
+      <h1>Mật khẩu và những ghi chép quý giá,<br>an toàn ngay trong thiết bị của bạn.</h1>
+      <p>Modora là ứng dụng <strong>local-first</strong> (ưu tiên lưu trữ cục bộ) giúp giữ ghi chú bí mật, mật khẩu,
+         lịch trình và tệp <strong>được mã hóa ngay trên thiết bị của bạn</strong>. Không có máy chủ —
+         dữ liệu của bạn không bao giờ rời khỏi thiết bị.</p>
+      <div class="badges">
+        <a class="badge primary" href="/download/download.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-download"/></svg> Tải xuống</a>
+        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-play"/></svg> Google Play — sắp ra mắt</span>
+        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-apple"/></svg> App Store — sắp ra mắt</span>
+      </div>
+      <div class="badges">
+        <a class="badge" href="/guide/user_guide_1.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-note"/></svg> Hướng dẫn sử dụng</a>
+        <a class="badge" href="/qna.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-help"/></svg> Hỏi &amp; Đáp</a>
+        <span class="badge linkish" onclick="openInquiry()"><svg class="ic-svg" aria-hidden="true"><use href="#ic-chat"/></svg> Liên hệ nhà phát triển</span>
+      </div>
+    </section>
+
+    <h2>Xem trước màn hình</h2>
+    <div class="shots">
+      <div class="shot"><img src="/assets/screens/scene1-grid.png" data-full="/assets/screens/full/scene1-grid.png" onclick="openShot(this)" alt="Chế độ xem lưới ghi chú bí mật với danh mục" loading="lazy">
+        <p>Xem lưới &amp; danh mục</p></div>
+      <div class="shot"><img src="/assets/screens/scene2-edit.png" data-full="/assets/screens/full/scene2-edit.png" onclick="openShot(this)" alt="Soạn ghi chú với hashtag được tô sáng" loading="lazy">
+        <p>Ghi chú hashtag</p></div>
+      <div class="shot"><img src="/assets/screens/scene3-schedule.png" data-full="/assets/screens/full/scene3-schedule.png" onclick="openShot(this)" alt="Lịch trình D-Day" loading="lazy">
+        <p>Nhắc nhở D-Day</p></div>
+      <div class="shot"><img src="/assets/screens/scene4-archive.png" data-full="/assets/screens/full/scene4-archive.png" onclick="openShot(this)" alt="Kho lưu trữ tệp" loading="lazy">
+        <p>Kho lưu trữ tệp</p></div>
+      <div class="shot"><img src="/assets/screens/scene5-lock.png" data-full="/assets/screens/full/scene5-lock.png" onclick="openShot(this)" alt="Màn hình khóa sinh trắc học" loading="lazy">
+        <p>Khóa sinh trắc học</p></div>
+    </div>
+
+    <h2>Tính năng chính</h2>
+    <div class="grid">
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-lock"/></svg></div><h3>Mã hóa mạnh mẽ trên thiết bị</h3>
+        <p>Mật khẩu chính được xử lý bằng Argon2id; mọi dữ liệu được mã hóa bằng AES-256-GCM.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-note"/></svg></div><h3>Ghi chú bí mật</h3>
+        <p>Lưu trang web, mật khẩu và gợi ý dưới dạng ghi chú — kèm lịch sử thay đổi mật khẩu đầy đủ.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-hash"/></svg></div><h3>Hashtag &amp; danh mục</h3>
+        <p>Gõ #tag ngay trong ghi chú; sắp xếp gọn gàng bằng danh mục, bộ sắp xếp và chế độ xem lưới.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-calendar"/></svg></div><h3>Lịch trình &amp; nhắc nhở</h3>
+        <p>Lưu sinh nhật, ngày kỷ niệm (dương/âm lịch) và ngày hết hạn, nhận thông báo trước 1 tháng/1 tuần/1 ngày.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-folder"/></svg></div><h3>Kho lưu trữ tệp</h3>
+        <p>Lưu giữ an toàn ảnh chụp màn hình đăng ký, giấy tờ, hình ảnh, PDF và tệp nén.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-cloud"/></svg></div><h3>Sao lưu Google Drive tùy chọn</h3>
+        <p>Mặc định tắt. Khi bật, chỉ tệp sao lưu đã mã hóa được lưu vào thư mục riêng của ứng dụng trên Drive của bạn.</p></div>
+    </div>
+
+    <div class="note">
+      <svg class="ic-svg" aria-hidden="true"><use href="#ic-key"/></svg> Modora không có tài khoản đăng nhập và không thu thập dữ liệu. Nếu bạn quên mật khẩu chính,
+      chúng tôi cũng không thể khôi phục — hãy ghi nhớ thật cẩn thận.
+    </div>
+  </div>
+
+  <!-- ================= Español ================= -->
+  <div data-lang="es">
+    <section class="hero">
+      <div class="mark"><svg class="ic-svg" aria-hidden="true"><use href="#ic-shield"/></svg></div>
+      <h1>Tus contraseñas y recuerdos,<br>seguros solo en tu dispositivo.</h1>
+      <p>Modora es una app <strong>local-first</strong> (con prioridad local) que mantiene tus notas secretas, contraseñas,
+         agenda y archivos <strong>cifrados en tu dispositivo</strong>. No hay servidores:
+         tus datos nunca salen.</p>
+      <div class="badges">
+        <a class="badge primary" href="/download/download.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-download"/></svg> Descargar</a>
+        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-play"/></svg> Google Play — próximamente</span>
+        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-apple"/></svg> App Store — próximamente</span>
+      </div>
+      <div class="badges">
+        <a class="badge" href="/guide/user_guide_1.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-note"/></svg> Guía del usuario</a>
+        <a class="badge" href="/qna.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-help"/></svg> Preguntas y respuestas</a>
+        <span class="badge linkish" onclick="openInquiry()"><svg class="ic-svg" aria-hidden="true"><use href="#ic-chat"/></svg> Contactar al desarrollador</span>
+      </div>
+    </section>
+
+    <h2>Capturas de pantalla</h2>
+    <div class="shots">
+      <div class="shot"><img src="/assets/screens/scene1-grid.png" data-full="/assets/screens/full/scene1-grid.png" onclick="openShot(this)" alt="Vista de cuadrícula de notas secretas con categorías" loading="lazy">
+        <p>Vista de cuadrícula y categorías</p></div>
+      <div class="shot"><img src="/assets/screens/scene2-edit.png" data-full="/assets/screens/full/scene2-edit.png" onclick="openShot(this)" alt="Edición de notas con hashtags resaltados" loading="lazy">
+        <p>Notas con hashtags</p></div>
+      <div class="shot"><img src="/assets/screens/scene3-schedule.png" data-full="/assets/screens/full/scene3-schedule.png" onclick="openShot(this)" alt="Agenda con D-Day" loading="lazy">
+        <p>Recordatorios D-Day</p></div>
+      <div class="shot"><img src="/assets/screens/scene4-archive.png" data-full="/assets/screens/full/scene4-archive.png" onclick="openShot(this)" alt="Bóveda de archivos" loading="lazy">
+        <p>Bóveda de archivos</p></div>
+      <div class="shot"><img src="/assets/screens/scene5-lock.png" data-full="/assets/screens/full/scene5-lock.png" onclick="openShot(this)" alt="Pantalla de bloqueo biométrico" loading="lazy">
+        <p>Bloqueo biométrico</p></div>
+    </div>
+
+    <h2>Funciones principales</h2>
+    <div class="grid">
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-lock"/></svg></div><h3>Cifrado potente en el dispositivo</h3>
+        <p>Tu contraseña maestra se procesa con Argon2id; todos los datos se cifran con AES-256-GCM.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-note"/></svg></div><h3>Notas secretas</h3>
+        <p>Guarda sitios, contraseñas y pistas como notas, con historial completo de cambios de contraseña.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-hash"/></svg></div><h3>Hashtags y categorías</h3>
+        <p>Escribe #etiquetas directamente en tus notas; organiza con categorías, ordenación y vista de cuadrícula.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-calendar"/></svg></div><h3>Agenda y recordatorios</h3>
+        <p>Guarda cumpleaños y aniversarios (calendario solar/lunar) y fechas de vencimiento con avisos de 1 mes/1 semana/1 día.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-folder"/></svg></div><h3>Bóveda de archivos</h3>
+        <p>Conserva de forma segura capturas de registro, documentos, imágenes, PDF y archivos comprimidos.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-cloud"/></svg></div><h3>Copia de seguridad opcional en Google Drive</h3>
+        <p>Desactivada por defecto. Al activarla, solo se guarda un archivo de copia cifrado en una carpeta privada de la app en tu Drive.</p></div>
+    </div>
+
+    <div class="note">
+      <svg class="ic-svg" aria-hidden="true"><use href="#ic-key"/></svg> Modora no tiene cuentas y no recopila datos. Si olvidas tu contraseña maestra,
+      no podemos recuperarla: guárdala en un lugar seguro.
+    </div>
+  </div>
+
+  <!-- ================= Русский ================= -->
+  <div data-lang="ru">
+    <section class="hero">
+      <div class="mark"><svg class="ic-svg" aria-hidden="true"><use href="#ic-shield"/></svg></div>
+      <h1>Ваши пароли и важные записи —<br>в безопасности только на вашем устройстве.</h1>
+      <p>Modora — это <strong>local-first</strong> приложение (данные хранятся локально), которое хранит секретные заметки, пароли,
+         расписание и файлы <strong>в зашифрованном виде на вашем устройстве</strong>. Серверов нет —
+         ваши данные никуда не передаются.</p>
+      <div class="badges">
+        <a class="badge primary" href="/download/download.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-download"/></svg> Скачать</a>
+        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-play"/></svg> Google Play — скоро</span>
+        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-apple"/></svg> App Store — скоро</span>
+      </div>
+      <div class="badges">
+        <a class="badge" href="/guide/user_guide_1.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-note"/></svg> Руководство пользователя</a>
+        <a class="badge" href="/qna.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-help"/></svg> Вопросы и ответы</a>
+        <span class="badge linkish" onclick="openInquiry()"><svg class="ic-svg" aria-hidden="true"><use href="#ic-chat"/></svg> Связаться с разработчиком</span>
+      </div>
+    </section>
+
+    <h2>Скриншоты</h2>
+    <div class="shots">
+      <div class="shot"><img src="/assets/screens/scene1-grid.png" data-full="/assets/screens/full/scene1-grid.png" onclick="openShot(this)" alt="Сетка секретных заметок с категориями" loading="lazy">
+        <p>Сетка и категории</p></div>
+      <div class="shot"><img src="/assets/screens/scene2-edit.png" data-full="/assets/screens/full/scene2-edit.png" onclick="openShot(this)" alt="Редактирование заметки с подсветкой хэштегов" loading="lazy">
+        <p>Заметки с хэштегами</p></div>
+      <div class="shot"><img src="/assets/screens/scene3-schedule.png" data-full="/assets/screens/full/scene3-schedule.png" onclick="openShot(this)" alt="Расписание с D-Day" loading="lazy">
+        <p>Напоминания D-Day</p></div>
+      <div class="shot"><img src="/assets/screens/scene4-archive.png" data-full="/assets/screens/full/scene4-archive.png" onclick="openShot(this)" alt="Хранилище файлов" loading="lazy">
+        <p>Хранилище файлов</p></div>
+      <div class="shot"><img src="/assets/screens/scene5-lock.png" data-full="/assets/screens/full/scene5-lock.png" onclick="openShot(this)" alt="Экран биометрической блокировки" loading="lazy">
+        <p>Биометрическая блокировка</p></div>
+    </div>
+
+    <h2>Основные возможности</h2>
+    <div class="grid">
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-lock"/></svg></div><h3>Надежное шифрование на устройстве</h3>
+        <p>Мастер-пароль обрабатывается с помощью Argon2id; все данные шифруются AES-256-GCM.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-note"/></svg></div><h3>Секретные заметки</h3>
+        <p>Сохраняйте сайты, пароли и подсказки в виде заметок — с полной историей изменений пароля.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-hash"/></svg></div><h3>Хэштеги и категории</h3>
+        <p>Пишите #теги прямо в заметках; наводите порядок с помощью категорий, сортировки и сетки.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-calendar"/></svg></div><h3>Расписание и напоминания</h3>
+        <p>Сохраняйте дни рождения и годовщины (по солнечному/лунному календарю), сроки действия — с напоминаниями за 1 месяц/1 неделю/1 день.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-folder"/></svg></div><h3>Хранилище файлов</h3>
+        <p>Надежно храните скриншоты регистраций, документы, изображения, PDF и архивы.</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-cloud"/></svg></div><h3>Необязательная резервная копия в Google Drive</h3>
+        <p>По умолчанию выключено. При включении в личную папку приложения на Drive сохраняется только зашифрованный файл резервной копии.</p></div>
+    </div>
+
+    <div class="note">
+      <svg class="ic-svg" aria-hidden="true"><use href="#ic-key"/></svg> В Modora нет учетных записей, и приложение не собирает данные. Если вы забудете мастер-пароль,
+      мы не сможем его восстановить — храните его в надежном месте.
+    </div>
+  </div>
+
+  <!-- ================= हिन्दी ================= -->
+  <div data-lang="hi">
+    <section class="hero">
+      <div class="mark"><svg class="ic-svg" aria-hidden="true"><use href="#ic-shield"/></svg></div>
+      <h1>आपके पासवर्ड और अनमोल रिकॉर्ड,<br>सिर्फ़ आपके डिवाइस में सुरक्षित।</h1>
+      <p>Modora एक <strong>local-first</strong> (लोकल-प्राथमिकता) ऐप है जो गुप्त नोट्स, पासवर्ड,
+         शेड्यूल और फ़ाइलों को <strong>आपके डिवाइस में एन्क्रिप्ट करके</strong> रखता है। कोई सर्वर नहीं —
+         आपका डेटा कभी बाहर नहीं जाता।</p>
+      <div class="badges">
+        <a class="badge primary" href="/download/download.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-download"/></svg> डाउनलोड</a>
+        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-play"/></svg> Google Play — जल्द आ रहा है</span>
+        <span class="badge disabled"><svg class="ic-svg" aria-hidden="true"><use href="#ic-apple"/></svg> App Store — जल्द आ रहा है</span>
+      </div>
+      <div class="badges">
+        <a class="badge" href="/guide/user_guide_1.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-note"/></svg> उपयोगकर्ता गाइड</a>
+        <a class="badge" href="/qna.html"><svg class="ic-svg" aria-hidden="true"><use href="#ic-help"/></svg> प्रश्नोत्तर</a>
+        <span class="badge linkish" onclick="openInquiry()"><svg class="ic-svg" aria-hidden="true"><use href="#ic-chat"/></svg> डेवलपर से संपर्क करें</span>
+      </div>
+    </section>
+
+    <h2>स्क्रीनशॉट</h2>
+    <div class="shots">
+      <div class="shot"><img src="/assets/screens/scene1-grid.png" data-full="/assets/screens/full/scene1-grid.png" onclick="openShot(this)" alt="श्रेणियों के साथ गुप्त नोट्स का ग्रिड व्यू" loading="lazy">
+        <p>ग्रिड व्यू और श्रेणियाँ</p></div>
+      <div class="shot"><img src="/assets/screens/scene2-edit.png" data-full="/assets/screens/full/scene2-edit.png" onclick="openShot(this)" alt="हैशटैग हाइलाइट के साथ नोट लेखन" loading="lazy">
+        <p>हैशटैग नोट्स</p></div>
+      <div class="shot"><img src="/assets/screens/scene3-schedule.png" data-full="/assets/screens/full/scene3-schedule.png" onclick="openShot(this)" alt="शेड्यूल D-Day" loading="lazy">
+        <p>D-Day रिमाइंडर</p></div>
+      <div class="shot"><img src="/assets/screens/scene4-archive.png" data-full="/assets/screens/full/scene4-archive.png" onclick="openShot(this)" alt="फ़ाइल वॉल्ट" loading="lazy">
+        <p>फ़ाइल वॉल्ट</p></div>
+      <div class="shot"><img src="/assets/screens/scene5-lock.png" data-full="/assets/screens/full/scene5-lock.png" onclick="openShot(this)" alt="बायोमेट्रिक लॉक स्क्रीन" loading="lazy">
+        <p>बायोमेट्रिक लॉक</p></div>
+    </div>
+
+    <h2>मुख्य विशेषताएँ</h2>
+    <div class="grid">
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-lock"/></svg></div><h3>मज़बूत ऑन-डिवाइस एन्क्रिप्शन</h3>
+        <p>आपका मास्टर पासवर्ड Argon2id से प्रोसेस होता है; सारा डेटा AES-256-GCM से एन्क्रिप्ट होता है।</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-note"/></svg></div><h3>गुप्त नोट्स</h3>
+        <p>साइट, पासवर्ड और संकेत नोट्स के रूप में सहेजें — पासवर्ड बदलाव के पूरे इतिहास के साथ।</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-hash"/></svg></div><h3>हैशटैग और श्रेणियाँ</h3>
+        <p>नोट्स में सीधे #टैग लिखें; श्रेणियों, सॉर्टिंग और ग्रिड व्यू से साफ़-सुथरा व्यवस्थित करें।</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-calendar"/></svg></div><h3>शेड्यूल और रिमाइंडर</h3>
+        <p>जन्मदिन और सालगिरह (सौर/चंद्र कैलेंडर) तथा समाप्ति तिथियाँ सहेजें — 1 महीने/1 सप्ताह/1 दिन पहले अलर्ट पाएँ।</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-folder"/></svg></div><h3>फ़ाइल वॉल्ट</h3>
+        <p>साइनअप स्क्रीनशॉट, दस्तावेज़, इमेज, PDF और आर्काइव फ़ाइलें सुरक्षित रखें।</p></div>
+      <div class="card"><div class="ic"><svg class="ic-svg" aria-hidden="true"><use href="#ic-cloud"/></svg></div><h3>वैकल्पिक Google Drive बैकअप</h3>
+        <p>डिफ़ॉल्ट रूप से बंद। चालू करने पर केवल एन्क्रिप्टेड बैकअप फ़ाइल आपके Drive के ऐप-निजी फ़ोल्डर में सहेजी जाती है।</p></div>
+    </div>
+
+    <div class="note">
+      <svg class="ic-svg" aria-hidden="true"><use href="#ic-key"/></svg> Modora में कोई लॉगिन खाता नहीं है और यह कोई डेटा एकत्र नहीं करता। यदि आप मास्टर पासवर्ड भूल जाते हैं,
+      तो हम भी उसे पुनर्प्राप्त नहीं कर सकते — इसे सुरक्षित रूप से याद रखें।
+    </div>
+  </div>
+
   <footer>
     <div>© 2026 BTBZ · Modora</div>
     <div>
-      <a href="/qna.html"><span class="i18n-ko">제품 Q&amp;A</span><span class="i18n-en">Q&amp;A</span></a> ·
-      <a href="/reviews.html"><span class="i18n-ko">사용후기</span><span class="i18n-en">Reviews</span></a> ·
-      <a href="/privacy.html" data-l="privacy">개인정보처리방침</a> ·
+      <a href="/qna.html"><span class="i18n-ko">제품 Q&amp;A</span><span class="i18n-en">Q&amp;A</span><span class="i18n-vi">Hỏi &amp; Đáp</span><span class="i18n-es">Preguntas y respuestas</span><span class="i18n-ru">Вопросы и ответы</span><span class="i18n-hi">प्रश्नोत्तर</span></a> ·
+      <a href="/reviews.html"><span class="i18n-ko">사용후기</span><span class="i18n-en">Reviews</span><span class="i18n-vi">Đánh giá</span><span class="i18n-es">Reseñas</span><span class="i18n-ru">Отзывы</span><span class="i18n-hi">समीक्षाएँ</span></a> ·
+      <a href="/privacy.html"><span class="i18n-ko">개인정보처리방침</span><span class="i18n-en">Privacy Policy</span><span class="i18n-vi">Chính sách quyền riêng tư</span><span class="i18n-es">Política de privacidad</span><span class="i18n-ru">Политика конфиденциальности</span><span class="i18n-hi">गोपनीयता नीति</span></a> ·
       <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a> ·
       <a href="https://www.btbz.ai">www.btbz.ai</a>
     </div>
@@ -322,13 +544,13 @@
 <!-- 개발자 문의 모달 / Contact modal -->
 <div class="modal-overlay" id="inquiry-overlay" onclick="if(event.target===this)closeInquiry()">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="inquiry-title">
-    <h3 id="inquiry-title"><svg class="ic-svg" aria-hidden="true"><use href="#ic-chat"/></svg> <span class="i18n-ko">개발자에게 문의</span><span class="i18n-en">Contact the developer</span></h3>
+    <h3 id="inquiry-title"><svg class="ic-svg" aria-hidden="true"><use href="#ic-chat"/></svg> <span class="i18n-ko">개발자에게 문의</span><span class="i18n-en">Contact the developer</span><span class="i18n-vi">Liên hệ nhà phát triển</span><span class="i18n-es">Contactar al desarrollador</span><span class="i18n-ru">Связаться с разработчиком</span><span class="i18n-hi">डेवलपर से संपर्क करें</span></h3>
     <form id="inquiry-form">
-      <label for="inq-subject"><span class="i18n-ko">제목 *</span><span class="i18n-en">Subject *</span></label>
+      <label for="inq-subject"><span class="i18n-ko">제목 *</span><span class="i18n-en">Subject *</span><span class="i18n-vi">Tiêu đề *</span><span class="i18n-es">Asunto *</span><span class="i18n-ru">Тема *</span><span class="i18n-hi">विषय *</span></label>
       <input id="inq-subject" name="subject" maxlength="200" required>
-      <label for="inq-email"><span class="i18n-ko">회신받을 이메일 *</span><span class="i18n-en">Your email *</span></label>
+      <label for="inq-email"><span class="i18n-ko">회신받을 이메일 *</span><span class="i18n-en">Your email *</span><span class="i18n-vi">Email nhận phản hồi *</span><span class="i18n-es">Tu correo electrónico *</span><span class="i18n-ru">Ваш email *</span><span class="i18n-hi">आपका ईमेल *</span></label>
       <input id="inq-email" name="senderEmail" type="email" maxlength="254" required>
-      <label for="inq-body"><span class="i18n-ko">내용 *</span><span class="i18n-en">Message *</span></label>
+      <label for="inq-body"><span class="i18n-ko">내용 *</span><span class="i18n-en">Message *</span><span class="i18n-vi">Nội dung *</span><span class="i18n-es">Mensaje *</span><span class="i18n-ru">Сообщение *</span><span class="i18n-hi">संदेश *</span></label>
       <textarea id="inq-body" name="body" maxlength="5000" required></textarea>
       <div class="hp" aria-hidden="true">
         <label>website<input name="website" tabindex="-1" autocomplete="off"></label>
@@ -336,36 +558,37 @@
       <p class="privacy-note">
         <span class="i18n-ko">ⓘ 전송 시 <a href="/privacy.html" target="_blank" rel="noopener">개인정보처리방침</a>에 따라 입력하신 정보(제목·내용·이메일)가 수집·이용됩니다.</span>
         <span class="i18n-en">ⓘ By sending, the information you entered is collected and used per the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+        <span class="i18n-vi">ⓘ Khi gửi, thông tin bạn nhập (tiêu đề, nội dung, email) sẽ được thu thập và sử dụng theo <a href="/privacy.html" target="_blank" rel="noopener">Chính sách quyền riêng tư</a>.</span>
+        <span class="i18n-es">ⓘ Al enviar, la información introducida (asunto, mensaje, correo) se recopila y utiliza conforme a la <a href="/privacy.html" target="_blank" rel="noopener">Política de privacidad</a>.</span>
+        <span class="i18n-ru">ⓘ При отправке введенные вами данные (тема, сообщение, email) собираются и используются в соответствии с <a href="/privacy.html" target="_blank" rel="noopener">Политикой конфиденциальности</a>.</span>
+        <span class="i18n-hi">ⓘ भेजने पर आपकी दर्ज की गई जानकारी (विषय, संदेश, ईमेल) <a href="/privacy.html" target="_blank" rel="noopener">गोपनीयता नीति</a> के अनुसार एकत्र और उपयोग की जाती है।</span>
       </p>
       <div class="msg" id="inq-msg"></div>
       <div class="actions">
-        <button type="button" onclick="closeInquiry()"><span class="i18n-ko">취소</span><span class="i18n-en">Cancel</span></button>
-        <button type="submit" class="primary" id="inq-submit"><span class="i18n-ko">보내기</span><span class="i18n-en">Send</span></button>
+        <button type="button" onclick="closeInquiry()"><span class="i18n-ko">취소</span><span class="i18n-en">Cancel</span><span class="i18n-vi">Hủy</span><span class="i18n-es">Cancelar</span><span class="i18n-ru">Отмена</span><span class="i18n-hi">रद्द करें</span></button>
+        <button type="submit" class="primary" id="inq-submit"><span class="i18n-ko">보내기</span><span class="i18n-en">Send</span><span class="i18n-vi">Gửi</span><span class="i18n-es">Enviar</span><span class="i18n-ru">Отправить</span><span class="i18n-hi">भेजें</span></button>
       </div>
     </form>
   </div>
 </div>
 
 <script>
+  var LANGS = ['ko','en','vi','es','ru','hi'];
   function setLang(l) {
+    if (LANGS.indexOf(l) < 0) l = 'en';
     document.documentElement.setAttribute('data-show', l);
     document.documentElement.setAttribute('lang', l);
-    document.getElementById('btn-ko').classList.toggle('active', l === 'ko');
-    document.getElementById('btn-en').classList.toggle('active', l === 'en');
-    document.getElementById('btn-ko').setAttribute('aria-pressed', l === 'ko');
-    document.getElementById('btn-en').setAttribute('aria-pressed', l === 'en');
-    document.querySelector('[data-l="privacy"]').textContent =
-      l === 'ko' ? '개인정보처리방침' : 'Privacy Policy';
+    var sel = document.getElementById('lang-select'); if (sel) sel.value = l;
     try { localStorage.setItem('modora-lang', l); } catch (e) {}
   }
   (function () {
-    var saved = null;
-    try { saved = localStorage.getItem('modora-lang'); } catch (e) {}
-    var nav = (navigator.language || 'ko').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en';
-    setLang(saved || nav);
+    var saved = null; try { saved = localStorage.getItem('modora-lang'); } catch (e) {}
+    if (LANGS.indexOf(saved) < 0) saved = null;
+    var nav = (navigator.language || 'en').toLowerCase().slice(0, 2);
+    setLang(saved || (LANGS.indexOf(nav) >= 0 ? nav : 'en'));
   })();
-
-  function isKo() { return document.documentElement.getAttribute('data-show') === 'ko'; }
+  function curLang() { return document.documentElement.getAttribute('data-show') || 'en'; }
+  function t(m) { return m[curLang()] || m.en; }
 
   var lbList = [], lbIdx = 0;
   function lbShow(i) {
@@ -441,14 +664,27 @@
       })
     }).then(function (res) {
       if (!res.ok) throw new Error('http ' + res.status);
-      msg.textContent = isKo() ? '문의가 전송되었습니다. 감사합니다!' : 'Your message has been sent. Thank you!';
+      msg.textContent = t({
+        ko: '문의가 전송되었습니다. 감사합니다!',
+        en: 'Your message has been sent. Thank you!',
+        vi: 'Tin nhắn của bạn đã được gửi. Cảm ơn bạn!',
+        es: 'Tu mensaje se ha enviado. ¡Gracias!',
+        ru: 'Ваше сообщение отправлено. Спасибо!',
+        hi: 'आपका संदेश भेज दिया गया है। धन्यवाद!'
+      });
       msg.className = 'msg ok';
       window.btbzAnalytics && btbzAnalytics.trackLead({ form: 'inquiry' });
       form.reset();
       setTimeout(closeInquiry, 1500);
     }).catch(function () {
-      msg.textContent = isKo() ? '전송에 실패했습니다. 잠시 후 다시 시도해 주세요.'
-                               : 'Failed to send. Please try again later.';
+      msg.textContent = t({
+        ko: '전송에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+        en: 'Failed to send. Please try again later.',
+        vi: 'Gửi không thành công. Vui lòng thử lại sau.',
+        es: 'No se pudo enviar. Inténtalo de nuevo más tarde.',
+        ru: 'Не удалось отправить. Пожалуйста, попробуйте позже.',
+        hi: 'भेजने में विफल। कृपया बाद में पुनः प्रयास करें।'
+      });
       msg.className = 'msg err';
     }).finally(function () { btn.disabled = false; });
   });

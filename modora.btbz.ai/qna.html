@@ -36,13 +36,12 @@
   .logo { font-size: 1.15rem; font-weight: 800; letter-spacing: -.02em; }
   .logo a { color: var(--fg); text-decoration: none; }
   .logo span { color: var(--accent); }
-  .lang-switch { display: flex; gap: .4rem; }
-  .lang-switch button { border: 1px solid var(--border); background: var(--card);
-    color: var(--fg); padding: .3rem .8rem; border-radius: 999px; cursor: pointer; font-size: .85rem; }
-  .lang-switch button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .lang-select { border: 1px solid var(--border); background: var(--card); color: var(--fg);
+    border-radius: 999px; padding: .3rem .8rem; font-size: .85rem; cursor: pointer; }
   [data-lang] { display: none; }
-  html[data-show="ko"] [data-lang="ko"] { display: inline; }
-  html[data-show="en"] [data-lang="en"] { display: inline; }
+  html[data-show="ko"] [data-lang="ko"], html[data-show="en"] [data-lang="en"], html[data-show="vi"] [data-lang="vi"], html[data-show="es"] [data-lang="es"], html[data-show="ru"] [data-lang="ru"], html[data-show="hi"] [data-lang="hi"] { display: block; }
+  .i18n-ko, .i18n-en, .i18n-vi, .i18n-es, .i18n-ru, .i18n-hi { display: none; }
+  html[data-show="ko"] .i18n-ko, html[data-show="en"] .i18n-en, html[data-show="vi"] .i18n-vi, html[data-show="es"] .i18n-es, html[data-show="ru"] .i18n-ru, html[data-show="hi"] .i18n-hi { display: inline; }
   h1 { font-size: 1.6rem; margin-bottom: .3rem; }
   .sub { color: var(--muted); font-size: .92rem; margin-bottom: 1.4rem; }
   a { color: var(--accent); text-decoration: none; }
@@ -138,69 +137,72 @@
 <div class="wrap">
   <header class="top">
     <div class="logo"><a href="/">Modora<span>.</span></a></div>
-    <div class="lang-switch">
-      <button id="btn-ko" onclick="setLang('ko')">한국어</button>
-      <button id="btn-en" onclick="setLang('en')">English</button>
-    </div>
+    <select id="lang-select" class="lang-select" aria-label="Language" onchange="setLang(this.value)">
+      <option value="ko">한국어</option><option value="en">English</option><option value="vi">Tiếng Việt</option><option value="es">Español</option><option value="ru">Русский</option><option value="hi">हिन्दी</option>
+    </select>
   </header>
 
   <a class="back" href="/"><svg class="ic-svg" aria-hidden="true"><use href="#ic-arrow-left"/></svg>
-    <span data-lang="ko">홈으로</span><span data-lang="en">Home</span></a>
+    <span class="i18n-ko">홈으로</span><span class="i18n-en">Home</span><span class="i18n-vi">Trang chủ</span><span class="i18n-es">Inicio</span><span class="i18n-ru">На главную</span><span class="i18n-hi">होम</span></a>
 
-  <h1 style="margin-top:.8rem"><span data-lang="ko">제품 Q&amp;A</span><span data-lang="en">Product Q&amp;A</span></h1>
+  <h1 style="margin-top:.8rem"><span class="i18n-ko">제품 Q&amp;A</span><span class="i18n-en">Product Q&amp;A</span><span class="i18n-vi">Hỏi &amp; Đáp</span><span class="i18n-es">Preguntas y respuestas</span><span class="i18n-ru">Вопросы и ответы</span><span class="i18n-hi">प्रश्नोत्तर</span></h1>
   <p class="sub">
-    <span data-lang="ko">Modora에 대한 질문을 남겨 주세요. 개발자가 확인 후 답변해 드립니다.</span>
-    <span data-lang="en">Ask anything about Modora. The developer will review and answer.</span>
+    <span class="i18n-ko">Modora에 대한 질문을 남겨 주세요. 개발자가 확인 후 답변해 드립니다.</span>
+    <span class="i18n-en">Ask anything about Modora. The developer will review and answer.</span>
+    <span class="i18n-vi">Hãy đặt câu hỏi về Modora. Nhà phát triển sẽ xem xét và trả lời bạn.</span>
+    <span class="i18n-es">Deja tu pregunta sobre Modora. El desarrollador la revisará y responderá.</span>
+    <span class="i18n-ru">Задайте вопрос о Modora. Разработчик рассмотрит его и ответит вам.</span>
+    <span class="i18n-hi">Modora के बारे में अपना प्रश्न पूछें। डेवलपर उसकी समीक्षा करके उत्तर देंगे।</span>
   </p>
 
   <div class="toolbar-row">
     <div class="qna-count" id="qna-count"></div>
     <button class="primary" onclick="openWrite()">
       <svg class="ic-svg" aria-hidden="true"><use href="#ic-help"/></svg>
-      <span data-lang="ko">질문 작성</span><span data-lang="en">Ask a question</span>
+      <span class="i18n-ko">질문 작성</span><span class="i18n-en">Ask a question</span><span class="i18n-vi">Đặt câu hỏi</span><span class="i18n-es">Hacer una pregunta</span><span class="i18n-ru">Задать вопрос</span><span class="i18n-hi">प्रश्न पूछें</span>
     </button>
   </div>
 
-  <div id="qna-list"><div class="empty" data-lang="ko">불러오는 중…</div><div class="empty" data-lang="en">Loading…</div></div>
+  <div id="qna-list"><div class="empty" data-lang="ko">불러오는 중…</div><div class="empty" data-lang="en">Loading…</div><div class="empty" data-lang="vi">Đang tải…</div><div class="empty" data-lang="es">Cargando…</div><div class="empty" data-lang="ru">Загрузка…</div><div class="empty" data-lang="hi">लोड हो रहा है…</div></div>
   <div class="pager" id="qna-pager"></div>
 
   <footer>
-    <a href="/">Modora</a> · <a href="/reviews.html"><span data-lang="ko">사용후기</span><span data-lang="en">Reviews</span></a>
-    · <a href="/privacy.html"><span data-lang="ko">개인정보처리방침</span><span data-lang="en">Privacy</span></a>
+    <a href="/">Modora</a> · <a href="/reviews.html"><span class="i18n-ko">사용후기</span><span class="i18n-en">Reviews</span><span class="i18n-vi">Đánh giá</span><span class="i18n-es">Reseñas</span><span class="i18n-ru">Отзывы</span><span class="i18n-hi">समीक्षाएँ</span></a>
+    · <a href="/privacy.html"><span class="i18n-ko">개인정보처리방침</span><span class="i18n-en">Privacy Policy</span><span class="i18n-vi">Chính sách quyền riêng tư</span><span class="i18n-es">Política de privacidad</span><span class="i18n-ru">Политика конфиденциальности</span><span class="i18n-hi">गोपनीयता नीति</span></a>
   </footer>
 </div>
 
 <!-- 질문 작성 모달 -->
 <div class="modal-overlay" id="write-overlay" onclick="if(event.target===this)closeWrite()">
   <div class="modal" role="dialog" aria-modal="true">
-    <h3><span data-lang="ko">질문 작성</span><span data-lang="en">Ask a question</span></h3>
+    <h3><span class="i18n-ko">질문 작성</span><span class="i18n-en">Ask a question</span><span class="i18n-vi">Đặt câu hỏi</span><span class="i18n-es">Hacer una pregunta</span><span class="i18n-ru">Задать вопрос</span><span class="i18n-hi">प्रश्न पूछें</span></h3>
     <form id="qna-form">
-      <label><span data-lang="ko">닉네임</span><span data-lang="en">Nickname</span></label>
+      <label><span class="i18n-ko">닉네임</span><span class="i18n-en">Nickname</span><span class="i18n-vi">Biệt danh</span><span class="i18n-es">Apodo</span><span class="i18n-ru">Никнейм</span><span class="i18n-hi">उपनाम</span></label>
       <input type="text" id="q-nick" maxlength="40" required>
-      <label><span data-lang="ko">이메일 (비공개 · 답변 알림용)</span><span data-lang="en">Email (private · for reply notice)</span></label>
+      <label><span class="i18n-ko">이메일 (비공개 · 답변 알림용)</span><span class="i18n-en">Email (private · for reply notice)</span><span class="i18n-vi">Email (riêng tư · để báo khi có phản hồi)</span><span class="i18n-es">Correo electrónico (privado · para avisar de la respuesta)</span><span class="i18n-ru">Эл. почта (не публикуется · для уведомления об ответе)</span><span class="i18n-hi">ईमेल (निजी · उत्तर की सूचना के लिए)</span></label>
       <input type="email" id="q-email" maxlength="254" required>
-      <label><span data-lang="ko">제목</span><span data-lang="en">Title</span></label>
+      <label><span class="i18n-ko">제목</span><span class="i18n-en">Title</span><span class="i18n-vi">Tiêu đề</span><span class="i18n-es">Título</span><span class="i18n-ru">Заголовок</span><span class="i18n-hi">शीर्षक</span></label>
       <input type="text" id="q-title" maxlength="200" required>
 
-      <label><span data-lang="ko">별점 (선택)</span><span data-lang="en">Rating (optional)</span></label>
+      <label><span class="i18n-ko">별점 (선택)</span><span class="i18n-en">Rating (optional)</span><span class="i18n-vi">Đánh giá sao (không bắt buộc)</span><span class="i18n-es">Valoración (opcional)</span><span class="i18n-ru">Оценка (необязательно)</span><span class="i18n-hi">रेटिंग (वैकल्पिक)</span></label>
       <div class="rate-input" id="q-rate" aria-label="rating">
         <button type="button" data-v="1">★</button><button type="button" data-v="2">★</button>
         <button type="button" data-v="3">★</button><button type="button" data-v="4">★</button>
         <button type="button" data-v="5">★</button>
       </div>
 
-      <label><span data-lang="ko">내용</span><span data-lang="en">Content</span></label>
+      <label><span class="i18n-ko">내용</span><span class="i18n-en">Content</span><span class="i18n-vi">Nội dung</span><span class="i18n-es">Contenido</span><span class="i18n-ru">Содержание</span><span class="i18n-hi">सामग्री</span></label>
       <div class="rt-toolbar" aria-label="format">
         <button type="button" data-cmd="bold" style="font-weight:800">B</button>
         <button type="button" data-cmd="italic" style="font-style:italic">I</button>
         <button type="button" data-cmd="underline" style="text-decoration:underline">U</button>
-        <button type="button" data-cmd="insertUnorderedList">•&nbsp;<span data-lang="ko">목록</span><span data-lang="en">List</span></button>
-        <button type="button" data-cmd="createLink"><span data-lang="ko">링크</span><span data-lang="en">Link</span></button>
+        <button type="button" data-cmd="insertUnorderedList">•&nbsp;<span class="i18n-ko">목록</span><span class="i18n-en">List</span><span class="i18n-vi">Danh sách</span><span class="i18n-es">Lista</span><span class="i18n-ru">Список</span><span class="i18n-hi">सूची</span></button>
+        <button type="button" data-cmd="createLink"><span class="i18n-ko">링크</span><span class="i18n-en">Link</span><span class="i18n-vi">Liên kết</span><span class="i18n-es">Enlace</span><span class="i18n-ru">Ссылка</span><span class="i18n-hi">लिंक</span></button>
       </div>
       <div class="editor" id="q-editor" contenteditable="true"
            data-ph="질문 내용을 입력하세요 / Write your question"></div>
 
-      <label><span data-lang="ko">이미지·파일 첨부 (png·jpg 이미지, 파일당 5MB, 최대 5개)</span><span data-lang="en">Attachments (png/jpg images, 5MB each, up to 5)</span></label>
+      <label><span class="i18n-ko">이미지·파일 첨부 (png·jpg 이미지, 파일당 5MB, 최대 5개)</span><span class="i18n-en">Attachments (png/jpg images, 5MB each, up to 5)</span><span class="i18n-vi">Đính kèm ảnh/tệp (ảnh png/jpg, tối đa 5MB mỗi tệp, tối đa 5 tệp)</span><span class="i18n-es">Adjuntos (imágenes png/jpg, 5MB cada uno, hasta 5)</span><span class="i18n-ru">Вложения (изображения png/jpg, до 5MB каждое, максимум 5)</span><span class="i18n-hi">अटैचमेंट (png/jpg छवियाँ, प्रत्येक 5MB, अधिकतम 5)</span></label>
       <input type="file" id="q-files" multiple accept="image/png,image/jpeg,.png,.jpg,.jpeg,.pdf,.zip,.txt,.doc,.docx,.hwp,.xlsx,.csv">
       <div class="filelist" id="q-filelist"></div>
 
@@ -209,8 +211,8 @@
 
       <div class="msg" id="q-msg"></div>
       <div class="actions">
-        <button type="button" onclick="closeWrite()"><span data-lang="ko">취소</span><span data-lang="en">Cancel</span></button>
-        <button type="submit" class="primary" id="q-submit"><span data-lang="ko">등록</span><span data-lang="en">Submit</span></button>
+        <button type="button" onclick="closeWrite()"><span class="i18n-ko">취소</span><span class="i18n-en">Cancel</span><span class="i18n-vi">Hủy</span><span class="i18n-es">Cancelar</span><span class="i18n-ru">Отмена</span><span class="i18n-hi">रद्द करें</span></button>
+        <button type="submit" class="primary" id="q-submit"><span class="i18n-ko">등록</span><span class="i18n-en">Submit</span><span class="i18n-vi">Gửi</span><span class="i18n-es">Enviar</span><span class="i18n-ru">Отправить</span><span class="i18n-hi">सबमिट करें</span></button>
       </div>
     </form>
   </div>
@@ -222,19 +224,25 @@
   var API = '/api';
   var page = 1, rating = 0, files = [];
 
+  var LANGS = ['ko','en','vi','es','ru','hi'];
   function setLang(l) {
+    if (LANGS.indexOf(l) < 0) l = 'en';
     document.documentElement.setAttribute('data-show', l);
     document.documentElement.setAttribute('lang', l);
-    document.getElementById('btn-ko').classList.toggle('active', l === 'ko');
-    document.getElementById('btn-en').classList.toggle('active', l === 'en');
+    var sel = document.getElementById('lang-select'); if (sel) sel.value = l;
     try { localStorage.setItem('modora-lang', l); } catch (e) {}
+    var ed = document.getElementById('q-editor');
+    if (ed) ed.setAttribute('data-ph', t({ ko: '질문 내용을 입력하세요', en: 'Write your question', vi: 'Nhập nội dung câu hỏi', es: 'Escribe tu pregunta', ru: 'Напишите ваш вопрос', hi: 'अपना प्रश्न लिखें' }));
+    if (lastData || lastError) renderList(); // JS로 렌더된 라벨 갱신
   }
   (function () {
     var saved = null; try { saved = localStorage.getItem('modora-lang'); } catch (e) {}
-    var nav = (navigator.language || 'ko').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en';
-    setLang(saved || nav);
+    if (LANGS.indexOf(saved) < 0) saved = null;
+    var nav = (navigator.language || 'en').toLowerCase().slice(0, 2);
+    setLang(saved || (LANGS.indexOf(nav) >= 0 ? nav : 'en'));
   })();
-  function isKo() { return document.documentElement.getAttribute('data-show') === 'ko'; }
+  function curLang() { return document.documentElement.getAttribute('data-show') || 'en'; }
+  function t(m) { return m[curLang()] || m.en; }
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -254,36 +262,47 @@
   }
 
   // ---------- 목록 ----------
+  var lastData = null, lastError = false;
   function loadList(p) {
     page = p || 1;
-    var wrap = document.getElementById('qna-list');
     fetch(API + '/qna?page=' + page).then(function (r) { return r.json(); }).then(function (d) {
-      document.getElementById('qna-count').innerHTML =
-        (isKo() ? '전체 ' : 'Total ') + '<strong>' + d.total + '</strong>' + (isKo() ? '건' : '');
-      if (!d.items.length) {
-        wrap.innerHTML = '<div class="empty">' + (isKo() ? '아직 질문이 없습니다. 첫 질문을 남겨보세요!' : 'No questions yet. Be the first!') + '</div>';
-        document.getElementById('qna-pager').innerHTML = '';
-        return;
-      }
-      wrap.innerHTML = d.items.map(renderItem).join('');
-      wrap.querySelectorAll('.qna-head').forEach(function (h) {
-        h.addEventListener('click', function () { h.parentNode.classList.toggle('open'); });
-      });
-      wrap.querySelectorAll('.att-img').forEach(function (im) {
-        im.addEventListener('click', function (e) {
-          e.stopPropagation();
-          document.getElementById('lb-img').src = im.getAttribute('data-full');
-          document.getElementById('lb').classList.add('open');
-        });
-      });
-      var pages = Math.max(1, Math.ceil(d.total / 10));
-      document.getElementById('qna-pager').innerHTML = pages <= 1 ? '' :
-        '<button ' + (page <= 1 ? 'disabled' : '') + ' onclick="loadList(' + (page - 1) + ')">←</button>' +
-        '<span>' + page + ' / ' + pages + '</span>' +
-        '<button ' + (page >= pages ? 'disabled' : '') + ' onclick="loadList(' + (page + 1) + ')">→</button>';
+      lastData = d; lastError = false; renderList();
     }).catch(function () {
-      wrap.innerHTML = '<div class="empty">' + (isKo() ? '불러오지 못했습니다.' : 'Failed to load.') + '</div>';
+      lastData = null; lastError = true; renderList();
     });
+  }
+  function renderList() {
+    var wrap = document.getElementById('qna-list');
+    if (lastError) {
+      wrap.innerHTML = '<div class="empty">' + t({ ko: '불러오지 못했습니다.', en: 'Failed to load.', vi: 'Không thể tải dữ liệu.', es: 'No se pudo cargar.', ru: 'Не удалось загрузить.', hi: 'लोड नहीं हो सका।' }) + '</div>';
+      return;
+    }
+    if (!lastData) return;
+    var d = lastData;
+    document.getElementById('qna-count').innerHTML =
+      t({ ko: '전체 ', en: 'Total ', vi: 'Tổng cộng ', es: 'Total: ', ru: 'Всего: ', hi: 'कुल ' }) +
+      '<strong>' + d.total + '</strong>' + t({ ko: '건', en: '', vi: '', es: '', ru: '', hi: '' });
+    if (!d.items.length) {
+      wrap.innerHTML = '<div class="empty">' + t({ ko: '아직 질문이 없습니다. 첫 질문을 남겨보세요!', en: 'No questions yet. Be the first!', vi: 'Chưa có câu hỏi nào. Hãy là người đầu tiên đặt câu hỏi!', es: 'Aún no hay preguntas. ¡Sé el primero en preguntar!', ru: 'Пока нет вопросов. Задайте вопрос первым!', hi: 'अभी तक कोई प्रश्न नहीं है। पहला प्रश्न पूछें!' }) + '</div>';
+      document.getElementById('qna-pager').innerHTML = '';
+      return;
+    }
+    wrap.innerHTML = d.items.map(renderItem).join('');
+    wrap.querySelectorAll('.qna-head').forEach(function (h) {
+      h.addEventListener('click', function () { h.parentNode.classList.toggle('open'); });
+    });
+    wrap.querySelectorAll('.att-img').forEach(function (im) {
+      im.addEventListener('click', function (e) {
+        e.stopPropagation();
+        document.getElementById('lb-img').src = im.getAttribute('data-full');
+        document.getElementById('lb').classList.add('open');
+      });
+    });
+    var pages = Math.max(1, Math.ceil(d.total / 10));
+    document.getElementById('qna-pager').innerHTML = pages <= 1 ? '' :
+      '<button ' + (page <= 1 ? 'disabled' : '') + ' onclick="loadList(' + (page - 1) + ')">←</button>' +
+      '<span>' + page + ' / ' + pages + '</span>' +
+      '<button ' + (page >= pages ? 'disabled' : '') + ' onclick="loadList(' + (page + 1) + ')">→</button>';
   }
 
   function renderItem(it) {
@@ -294,10 +313,10 @@
     }).join('');
     var replies = (it.replies || []).map(function (r) {
       return '<div class="reply"><div class="who"><svg class="ic-svg"><use href="#ic-badge"/></svg>' + esc(r.author) +
-             (isKo() ? ' · 개발자 답변' : ' · Developer') + '</div><div class="rbody">' + esc(r.body) +
+             ' · ' + t({ ko: '개발자 답변', en: 'Developer reply', vi: 'Phản hồi từ nhà phát triển', es: 'Respuesta del desarrollador', ru: 'Ответ разработчика', hi: 'डेवलपर का उत्तर' }) + '</div><div class="rbody">' + esc(r.body) +
              '</div><div class="rdate">' + fmtDate(r.createdAt) + '</div></div>';
     }).join('');
-    if (!replies) replies = '<div class="no-reply">' + (isKo() ? '아직 답변이 없습니다.' : 'No answer yet.') + '</div>';
+    if (!replies) replies = '<div class="no-reply">' + t({ ko: '아직 답변이 없습니다.', en: 'No answer yet.', vi: 'Chưa có câu trả lời.', es: 'Aún no hay respuesta.', ru: 'Ответа пока нет.', hi: 'अभी तक कोई उत्तर नहीं है।' }) + '</div>';
     return '<div class="qna-item"><div class="qna-head">' +
       (it.rating ? stars(it.rating) + ' ' : '') +
       '<span class="qna-title">' + esc(it.title) + '</span>' +
@@ -329,7 +348,7 @@
     var cmd = b.getAttribute('data-cmd');
     document.getElementById('q-editor').focus();
     if (cmd === 'createLink') {
-      var url = prompt(isKo() ? '링크 URL을 입력하세요 (https://...)' : 'Enter link URL (https://...)');
+      var url = prompt(t({ ko: '링크 URL을 입력하세요 (https://...)', en: 'Enter link URL (https://...)', vi: 'Nhập URL liên kết (https://...)', es: 'Introduce la URL del enlace (https://...)', ru: 'Введите URL ссылки (https://...)', hi: 'लिंक URL दर्ज करें (https://...)' }));
       if (url) document.execCommand('createLink', false, url);
     } else {
       document.execCommand(cmd, false, null);
@@ -340,8 +359,8 @@
   document.getElementById('q-files').addEventListener('change', function () {
     for (var i = 0; i < this.files.length; i++) {
       var f = this.files[i];
-      if (f.size > 5 * 1024 * 1024) { alert((isKo() ? '5MB를 초과하는 파일은 제외됩니다: ' : 'File over 5MB skipped: ') + f.name); continue; }
-      if (files.length >= 5) { alert(isKo() ? '최대 5개까지 첨부할 수 있습니다.' : 'Up to 5 files.'); break; }
+      if (f.size > 5 * 1024 * 1024) { alert(t({ ko: '5MB를 초과하는 파일은 제외됩니다: ', en: 'File over 5MB skipped: ', vi: 'Tệp vượt quá 5MB sẽ bị bỏ qua: ', es: 'Se omiten los archivos de más de 5MB: ', ru: 'Файлы больше 5MB пропускаются: ', hi: '5MB से बड़ी फ़ाइल छोड़ दी जाएगी: ' }) + f.name); continue; }
+      if (files.length >= 5) { alert(t({ ko: '최대 5개까지 첨부할 수 있습니다.', en: 'Up to 5 files.', vi: 'Chỉ có thể đính kèm tối đa 5 tệp.', es: 'Se pueden adjuntar hasta 5 archivos.', ru: 'Можно прикрепить не более 5 файлов.', hi: 'अधिकतम 5 फ़ाइलें ही संलग्न की जा सकती हैं।' })); break; }
       files.push(f);
     }
     this.value = '';
@@ -364,7 +383,7 @@
     var plain = editor.innerText.replace(/\s| /g, '');
     if (!plain && !files.length) {
       msg.className = 'msg err';
-      msg.textContent = isKo() ? '내용을 입력하거나 파일을 첨부해 주세요.' : 'Enter content or attach a file.';
+      msg.textContent = t({ ko: '내용을 입력하거나 파일을 첨부해 주세요.', en: 'Enter content or attach a file.', vi: 'Vui lòng nhập nội dung hoặc đính kèm tệp.', es: 'Escribe el contenido o adjunta un archivo.', ru: 'Введите текст или прикрепите файл.', hi: 'कृपया सामग्री लिखें या फ़ाइल संलग्न करें।' });
       return;
     }
     msg.className = 'msg'; msg.textContent = ''; btn.disabled = true;
@@ -383,7 +402,7 @@
       return res.json();
     }).then(function () {
       msg.className = 'msg ok';
-      msg.textContent = isKo() ? '질문이 등록되었습니다. 감사합니다!' : 'Your question has been posted. Thank you!';
+      msg.textContent = t({ ko: '질문이 등록되었습니다. 감사합니다!', en: 'Your question has been posted. Thank you!', vi: 'Câu hỏi của bạn đã được đăng. Cảm ơn bạn!', es: 'Tu pregunta ha sido publicada. ¡Gracias!', ru: 'Ваш вопрос опубликован. Спасибо!', hi: 'आपका प्रश्न पोस्ट कर दिया गया है। धन्यवाद!' });
       document.getElementById('qna-form').reset();
       editor.innerHTML = ''; files = []; rating = 0; renderFiles();
       document.getElementById('q-rate').querySelectorAll('button').forEach(function (b) { b.classList.remove('on'); });

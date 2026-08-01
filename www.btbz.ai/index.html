@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-show="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BTBZ — 신뢰할 수 있는 소프트웨어를 만듭니다</title>
-<meta name="description" content="BTBZ는 프라이버시를 존중하는 소프트웨어와 AI 기술로 일상과 비즈니스의 문제를 해결합니다.">
+<title>BTBZ — 신뢰할 수 있는 소프트웨어 | Trusted software</title>
+<meta name="description" content="BTBZ는 프라이버시를 존중하는 소프트웨어와 AI 기술로 일상과 비즈니스의 문제를 해결합니다. | BTBZ solves everyday and business problems with privacy-respecting software and AI.">
 <link rel="canonical" href="https://www.btbz.ai/">
 <meta property="og:title" content="BTBZ">
-<meta property="og:description" content="프라이버시를 존중하는 소프트웨어와 AI 기술로 문제를 해결합니다.">
+<meta property="og:description" content="프라이버시를 존중하는 소프트웨어와 AI 기술로 문제를 해결합니다. | Privacy-respecting software and AI that solve real problems.">
 <meta property="og:url" content="https://www.btbz.ai/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="BTBZ">
@@ -28,7 +28,7 @@
   "url": "https://www.btbz.ai/",
   "logo": "https://www.btbz.ai/apple-touch-icon.png",
   "email": "fremdung@gmail.com",
-  "description": "프라이버시를 존중하는 소프트웨어와 AI 기술로 일상과 비즈니스의 문제를 해결합니다."
+  "description": "프라이버시를 존중하는 소프트웨어와 AI 기술로 일상과 비즈니스의 문제를 해결합니다. | BTBZ solves everyday and business problems with privacy-respecting software and AI."
 }
 </script>
 <style>
@@ -185,6 +185,18 @@
   }
   .contact-mail:hover { border-color: var(--accent-2); }
 
+  .nav-right { display: flex; align-items: center; gap: 24px; }
+  .lang-select {
+    border: 1px solid var(--line); background: var(--bg-soft); color: var(--text);
+    border-radius: 999px; padding: 6px 12px; font-size: .85rem;
+    font-family: inherit; cursor: pointer;
+  }
+
+  [data-lang] { display: none; }
+  html[data-show="ko"] [data-lang="ko"], html[data-show="en"] [data-lang="en"], html[data-show="vi"] [data-lang="vi"], html[data-show="es"] [data-lang="es"], html[data-show="ru"] [data-lang="ru"], html[data-show="hi"] [data-lang="hi"] { display: block; }
+  .i18n-ko, .i18n-en, .i18n-vi, .i18n-es, .i18n-ru, .i18n-hi { display: none; }
+  html[data-show="ko"] .i18n-ko, html[data-show="en"] .i18n-en, html[data-show="vi"] .i18n-vi, html[data-show="es"] .i18n-es, html[data-show="ru"] .i18n-ru, html[data-show="hi"] .i18n-hi { display: inline; }
+
   footer { border-top: 1px solid var(--line); padding: 36px 0; font-size: 0.85rem; color: var(--text-dim); }
   .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
   .footer-inner a:hover { color: var(--text); }
@@ -204,11 +216,16 @@
 <header>
   <div class="wrap nav">
     <a href="#" class="logo">BTBZ</a>
-    <nav class="nav-links">
-      <a href="#modora">Modora</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <div class="nav-right">
+      <nav class="nav-links">
+        <a href="#modora">Modora</a>
+        <a href="#about"><span class="i18n-ko">소개</span><span class="i18n-en">About</span><span class="i18n-vi">Giới thiệu</span><span class="i18n-es">Nosotros</span><span class="i18n-ru">О нас</span><span class="i18n-hi">परिचय</span></a>
+        <a href="#contact"><span class="i18n-ko">문의</span><span class="i18n-en">Contact</span><span class="i18n-vi">Liên hệ</span><span class="i18n-es">Contacto</span><span class="i18n-ru">Связаться</span><span class="i18n-hi">संपर्क करें</span></a>
+      </nav>
+      <select id="lang-select" class="lang-select" aria-label="Language" onchange="setLang(this.value)">
+        <option value="ko">한국어</option><option value="en">English</option><option value="vi">Tiếng Việt</option><option value="es">Español</option><option value="ru">Русский</option><option value="hi">हिन्दी</option>
+      </select>
+    </div>
   </div>
 </header>
 
@@ -216,42 +233,62 @@
   <div class="hero-grid"></div>
   <div class="wrap hero-inner">
     <span class="eyebrow">BTBZ · SOFTWARE &amp; AI</span>
-    <h1>신뢰할 수 있는<br><span class="grad">소프트웨어</span>를 만듭니다</h1>
-    <p>BTBZ는 프라이버시를 존중하는 소프트웨어와 AI 기술로 일상과 비즈니스의 문제를 해결합니다. 데이터는 사용자의 것이라는 원칙 위에서 제품을 만듭니다.</p>
-    <a class="cta" href="#modora">제품 보기 <span aria-hidden="true">→</span></a>
+    <h1><span class="i18n-ko">신뢰할 수 있는<br><span class="grad">소프트웨어</span>를 만듭니다</span><span class="i18n-en">We build <span class="grad">software</span><br>you can trust</span><span class="i18n-vi">Chúng tôi tạo ra <span class="grad">phần mềm</span><br>đáng tin cậy</span><span class="i18n-es">Creamos <span class="grad">software</span><br>en el que puedes confiar</span><span class="i18n-ru">Мы создаём <span class="grad">надёжное</span><br>программное обеспечение</span><span class="i18n-hi">हम बनाते हैं ऐसा <span class="grad">सॉफ़्टवेयर</span><br>जिस पर आप भरोसा कर सकें</span></h1>
+    <p><span class="i18n-ko">BTBZ는 프라이버시를 존중하는 소프트웨어와 AI 기술로 일상과 비즈니스의 문제를 해결합니다. 데이터는 사용자의 것이라는 원칙 위에서 제품을 만듭니다.</span><span class="i18n-en">BTBZ solves everyday and business problems with privacy-respecting software and AI. Every product we build rests on one principle: your data belongs to you.</span><span class="i18n-vi">BTBZ giải quyết những vấn đề trong đời sống và kinh doanh bằng phần mềm tôn trọng quyền riêng tư và công nghệ AI. Mọi sản phẩm của chúng tôi đều dựa trên một nguyên tắc: dữ liệu thuộc về bạn.</span><span class="i18n-es">BTBZ resuelve problemas cotidianos y de negocio con software que respeta la privacidad y tecnología de IA. Creamos cada producto sobre un principio: tus datos te pertenecen.</span><span class="i18n-ru">BTBZ решает повседневные и бизнес-задачи с помощью программного обеспечения, уважающего конфиденциальность, и технологий ИИ. Мы создаём продукты, исходя из одного принципа: ваши данные принадлежат вам.</span><span class="i18n-hi">BTBZ प्राइवेसी का सम्मान करने वाले सॉफ़्टवेयर और AI तकनीक से रोज़मर्रा और बिज़नेस की समस्याएँ हल करता है। हमारा हर उत्पाद एक ही सिद्धांत पर बनता है: आपका डेटा आपका है।</span></p>
+    <a class="cta" href="https://modora.btbz.ai/"><span class="i18n-ko">제품 보기</span><span class="i18n-en">View product</span><span class="i18n-vi">Xem sản phẩm</span><span class="i18n-es">Ver producto</span><span class="i18n-ru">Смотреть продукт</span><span class="i18n-hi">उत्पाद देखें</span> <span aria-hidden="true">→</span></a>
   </div>
 </div>
 
 <section id="modora" class="product">
   <div class="wrap">
-    <div class="section-label">Product</div>
+    <div class="section-label"><span class="i18n-ko">제품</span><span class="i18n-en">Product</span><span class="i18n-vi">Sản phẩm</span><span class="i18n-es">Producto</span><span class="i18n-ru">Продукт</span><span class="i18n-hi">उत्पाद</span></div>
     <div class="product-hero">
       <div>
         <div class="product-name">Modora <small>LOCAL-FIRST</small></div>
-        <h2>비밀메모와 비밀번호,<br>내 기기 안에 안전하게</h2>
-        <p>Modora는 비밀메모, 비밀번호, 첨부 파일, 생일·기념일·만료일 일정을 한곳에서 관리하는 로컬 우선(local-first) 앱입니다.</p>
-        <p>모든 데이터는 사용자의 기기 안에 암호화되어 저장됩니다. 개발사는 서버를 운영하지 않으며, 사용자의 데이터에 접근할 수 없습니다.</p>
+        <h2><span class="i18n-ko">비밀메모와 비밀번호,<br>내 기기 안에 안전하게</span><span class="i18n-en">Secret memos and passwords,<br>safe on your device</span><span class="i18n-vi">Ghi chú bí mật và mật khẩu,<br>an toàn ngay trên thiết bị của bạn</span><span class="i18n-es">Notas secretas y contraseñas,<br>seguras en tu dispositivo</span><span class="i18n-ru">Секретные заметки и пароли —<br>в безопасности на вашем устройстве</span><span class="i18n-hi">गुप्त नोट्स और पासवर्ड,<br>आपके डिवाइस में सुरक्षित</span></h2>
+        <p><span class="i18n-ko">Modora는 비밀메모, 비밀번호, 첨부 파일, 생일·기념일·만료일 일정을 한곳에서 관리하는 로컬 우선(local-first) 앱입니다.</span><span class="i18n-en">Modora is a local-first app that brings together secret memos, passwords, attachments, and birthday, anniversary, and expiry-date schedules in one place.</span><span class="i18n-vi">Modora là ứng dụng local-first giúp bạn quản lý ghi chú bí mật, mật khẩu, tệp đính kèm cùng lịch sinh nhật, ngày kỷ niệm và ngày hết hạn ở một nơi.</span><span class="i18n-es">Modora es una aplicación local-first que reúne en un solo lugar notas secretas, contraseñas, archivos adjuntos y fechas de cumpleaños, aniversarios y vencimientos.</span><span class="i18n-ru">Modora — это local-first приложение, которое объединяет секретные заметки, пароли, вложения и даты дней рождения, годовщин и сроков действия в одном месте.</span><span class="i18n-hi">Modora एक local-first ऐप है, जो गुप्त नोट्स, पासवर्ड, अटैचमेंट और जन्मदिन, सालगिरह व समाप्ति-तिथि के शेड्यूल — सबको एक ही जगह संभालता है।</span></p>
+        <p><span class="i18n-ko">모든 데이터는 사용자의 기기 안에 암호화되어 저장됩니다. 개발사는 서버를 운영하지 않으며, 사용자의 데이터에 접근할 수 없습니다.</span><span class="i18n-en">All data is stored encrypted on your device. We operate no servers and cannot access your data.</span><span class="i18n-vi">Mọi dữ liệu đều được mã hóa và lưu ngay trên thiết bị của bạn. Chúng tôi không vận hành máy chủ nào và không thể truy cập dữ liệu của bạn.</span><span class="i18n-es">Todos los datos se guardan cifrados en tu dispositivo. No operamos servidores y no podemos acceder a tus datos.</span><span class="i18n-ru">Все данные хранятся на вашем устройстве в зашифрованном виде. Мы не используем серверы и не имеем доступа к вашим данным.</span><span class="i18n-hi">सारा डेटा आपके डिवाइस में एन्क्रिप्ट होकर सहेजा जाता है। हम कोई सर्वर नहीं चलाते और आपके डेटा तक हमारी कोई पहुँच नहीं है।</span></p>
         <div class="product-links">
-          <a class="link-quiet" href="https://modora.btbz.ai/">Modora 자세히 보기 →</a>
-          <a class="link-quiet" href="https://modora.btbz.ai/privacy.html">개인정보처리방침 · Privacy Policy</a>
+          <a class="link-quiet" href="https://modora.btbz.ai/"><span class="i18n-ko">Modora 자세히 보기 →</span><span class="i18n-en">Learn more about Modora →</span><span class="i18n-vi">Tìm hiểu thêm về Modora →</span><span class="i18n-es">Conoce más sobre Modora →</span><span class="i18n-ru">Подробнее о Modora →</span><span class="i18n-hi">Modora के बारे में और जानें →</span></a>
+          <a class="link-quiet" href="https://modora.btbz.ai/privacy.html"><span class="i18n-ko">개인정보처리방침 · Privacy Policy</span><span class="i18n-en">Privacy Policy</span><span class="i18n-vi">Chính sách quyền riêng tư</span><span class="i18n-es">Política de privacidad</span><span class="i18n-ru">Политика конфиденциальности</span><span class="i18n-hi">गोपनीयता नीति</span></a>
         </div>
       </div>
       <div class="feature-list">
         <div class="feature">
           <div class="f-icon" aria-hidden="true">🔐</div>
-          <div><strong>기기 내 암호화 저장</strong><span>모든 기록은 암호화되어 오직 내 기기에만 저장됩니다.</span></div>
+          <div data-lang="ko"><strong>기기 내 암호화 저장</strong><span>모든 기록은 암호화되어 오직 내 기기에만 저장됩니다.</span></div>
+          <div data-lang="en"><strong>Encrypted on-device storage</strong><span>Every record is encrypted and stored only on your device.</span></div>
+          <div data-lang="vi"><strong>Lưu trữ mã hóa trên thiết bị</strong><span>Mọi bản ghi đều được mã hóa và chỉ lưu trên thiết bị của bạn.</span></div>
+          <div data-lang="es"><strong>Almacenamiento cifrado en el dispositivo</strong><span>Cada registro se cifra y se guarda solo en tu dispositivo.</span></div>
+          <div data-lang="ru"><strong>Шифрованное хранение на устройстве</strong><span>Все записи шифруются и хранятся только на вашем устройстве.</span></div>
+          <div data-lang="hi"><strong>डिवाइस में एन्क्रिप्टेड स्टोरेज</strong><span>हर रिकॉर्ड एन्क्रिप्ट होकर सिर्फ़ आपके डिवाइस में रहता है।</span></div>
         </div>
         <div class="feature">
           <div class="f-icon" aria-hidden="true">🪪</div>
-          <div><strong>생체인증 잠금</strong><span>Face ID·지문으로 앱을 안전하게 잠글 수 있습니다.</span></div>
+          <div data-lang="ko"><strong>생체인증 잠금</strong><span>Face ID·지문으로 앱을 안전하게 잠글 수 있습니다.</span></div>
+          <div data-lang="en"><strong>Biometric lock</strong><span>Lock the app securely with Face ID or your fingerprint.</span></div>
+          <div data-lang="vi"><strong>Khóa sinh trắc học</strong><span>Khóa ứng dụng an toàn bằng Face ID hoặc vân tay.</span></div>
+          <div data-lang="es"><strong>Bloqueo biométrico</strong><span>Bloquea la aplicación de forma segura con Face ID o tu huella.</span></div>
+          <div data-lang="ru"><strong>Биометрическая блокировка</strong><span>Надёжно блокируйте приложение с помощью Face ID или отпечатка пальца.</span></div>
+          <div data-lang="hi"><strong>बायोमेट्रिक लॉक</strong><span>Face ID या फ़िंगरप्रिंट से ऐप को सुरक्षित रूप से लॉक करें।</span></div>
         </div>
         <div class="feature">
           <div class="f-icon" aria-hidden="true">☁️</div>
-          <div><strong>선택적 Google Drive 백업</strong><span>원할 때만, 내 드라이브로 암호화 백업을 남길 수 있습니다.</span></div>
+          <div data-lang="ko"><strong>선택적 Google Drive 백업</strong><span>원할 때만, 내 드라이브로 암호화 백업을 남길 수 있습니다.</span></div>
+          <div data-lang="en"><strong>Optional Google Drive backup</strong><span>Only when you choose, keep an encrypted backup in your own Drive.</span></div>
+          <div data-lang="vi"><strong>Sao lưu Google Drive tùy chọn</strong><span>Chỉ khi bạn muốn, lưu bản sao lưu mã hóa vào Drive của riêng bạn.</span></div>
+          <div data-lang="es"><strong>Copia de seguridad opcional en Google Drive</strong><span>Solo cuando tú lo decidas, guarda una copia cifrada en tu propio Drive.</span></div>
+          <div data-lang="ru"><strong>Резервная копия в Google Drive — по желанию</strong><span>Только по вашему решению — зашифрованная резервная копия в вашем Google Drive.</span></div>
+          <div data-lang="hi"><strong>वैकल्पिक Google Drive बैकअप</strong><span>जब आप चाहें, तभी अपनी Drive में एन्क्रिप्टेड बैकअप रखें।</span></div>
         </div>
         <div class="feature">
           <div class="f-icon" aria-hidden="true">🔔</div>
-          <div><strong>일정 알림</strong><span>생일·기념일·만료일을 잊지 않도록 알려 드립니다.</span></div>
+          <div data-lang="ko"><strong>일정 알림</strong><span>생일·기념일·만료일을 잊지 않도록 알려 드립니다.</span></div>
+          <div data-lang="en"><strong>Schedule reminders</strong><span>Never miss a birthday, anniversary, or expiry date.</span></div>
+          <div data-lang="vi"><strong>Nhắc lịch</strong><span>Không bao giờ quên sinh nhật, ngày kỷ niệm hay ngày hết hạn.</span></div>
+          <div data-lang="es"><strong>Recordatorios</strong><span>No vuelvas a olvidar un cumpleaños, aniversario o vencimiento.</span></div>
+          <div data-lang="ru"><strong>Напоминания</strong><span>Не забывайте о днях рождения, годовщинах и сроках действия.</span></div>
+          <div data-lang="hi"><strong>शेड्यूल रिमाइंडर</strong><span>जन्मदिन, सालगिरह और समाप्ति तिथि कभी न भूलें।</span></div>
         </div>
       </div>
     </div>
@@ -260,24 +297,36 @@
 
 <section id="about">
   <div class="wrap">
-    <div class="section-label">About</div>
-    <h2>BTBZ가 일하는 방식</h2>
-    <p class="section-desc">기술을 위한 기술이 아니라, 실제로 쓰이는 제품을 만듭니다.</p>
+    <div class="section-label"><span class="i18n-ko">소개</span><span class="i18n-en">About</span><span class="i18n-vi">Giới thiệu</span><span class="i18n-es">Nosotros</span><span class="i18n-ru">О нас</span><span class="i18n-hi">परिचय</span></div>
+    <h2><span class="i18n-ko">BTBZ가 일하는 방식</span><span class="i18n-en">How BTBZ works</span><span class="i18n-vi">Cách BTBZ làm việc</span><span class="i18n-es">Cómo trabaja BTBZ</span><span class="i18n-ru">Как работает BTBZ</span><span class="i18n-hi">BTBZ के काम करने का तरीक़ा</span></h2>
+    <p class="section-desc"><span class="i18n-ko">기술을 위한 기술이 아니라, 실제로 쓰이는 제품을 만듭니다.</span><span class="i18n-en">Not technology for its own sake — we build products people actually use.</span><span class="i18n-vi">Không phải công nghệ vì công nghệ — chúng tôi tạo ra những sản phẩm thực sự được sử dụng.</span><span class="i18n-es">No tecnología por la tecnología: creamos productos que la gente realmente usa.</span><span class="i18n-ru">Не технологии ради технологий — мы создаём продукты, которыми действительно пользуются.</span><span class="i18n-hi">तकनीक के लिए तकनीक नहीं — हम ऐसे उत्पाद बनाते हैं जो सच में इस्तेमाल होते हैं।</span></p>
     <div class="cards">
       <div class="card">
         <div class="icon" aria-hidden="true">🛡️</div>
-        <h3>프라이버시 우선</h3>
-        <p>수집하지 않는 것이 가장 안전합니다. 데이터는 사용자의 기기와 사용자의 손에 남깁니다.</p>
+        <div data-lang="ko"><h3>프라이버시 우선</h3><p>수집하지 않는 것이 가장 안전합니다. 데이터는 사용자의 기기와 사용자의 손에 남깁니다.</p></div>
+        <div data-lang="en"><h3>Privacy first</h3><p>The safest data is the data we never collect. It stays on your device, in your hands.</p></div>
+        <div data-lang="vi"><h3>Quyền riêng tư trước tiên</h3><p>Không thu thập chính là cách an toàn nhất. Dữ liệu ở lại trên thiết bị của bạn, trong tay bạn.</p></div>
+        <div data-lang="es"><h3>Privacidad ante todo</h3><p>Lo más seguro es no recopilar nada. Tus datos se quedan en tu dispositivo y en tus manos.</p></div>
+        <div data-lang="ru"><h3>Конфиденциальность прежде всего</h3><p>Безопаснее всего — ничего не собирать. Данные остаются на вашем устройстве и в ваших руках.</p></div>
+        <div data-lang="hi"><h3>प्राइवेसी सबसे पहले</h3><p>जो डेटा इकट्ठा ही नहीं होता, वही सबसे सुरक्षित है। डेटा आपके डिवाइस में, आपके हाथ में रहता है।</p></div>
       </div>
       <div class="card">
         <div class="icon" aria-hidden="true">🤖</div>
-        <h3>AI 활용</h3>
-        <p>AI 기술을 제품과 업무에 실용적으로 적용해, 더 빠르고 정확한 경험을 만듭니다.</p>
+        <div data-lang="ko"><h3>AI 활용</h3><p>AI 기술을 제품과 업무에 실용적으로 적용해, 더 빠르고 정확한 경험을 만듭니다.</p></div>
+        <div data-lang="en"><h3>Practical AI</h3><p>We apply AI pragmatically to our products and our work, for faster and more accurate experiences.</p></div>
+        <div data-lang="vi"><h3>Ứng dụng AI</h3><p>Chúng tôi áp dụng AI một cách thiết thực vào sản phẩm và công việc, mang lại trải nghiệm nhanh và chính xác hơn.</p></div>
+        <div data-lang="es"><h3>IA aplicada</h3><p>Aplicamos la IA de forma práctica a nuestros productos y procesos para lograr experiencias más rápidas y precisas.</p></div>
+        <div data-lang="ru"><h3>Практичный ИИ</h3><p>Мы практично применяем ИИ в продуктах и рабочих процессах, делая работу быстрее и точнее.</p></div>
+        <div data-lang="hi"><h3>AI का व्यावहारिक उपयोग</h3><p>हम AI को उत्पादों और काम में व्यावहारिक रूप से लागू करते हैं, ताकि अनुभव और तेज़ व सटीक बने।</p></div>
       </div>
       <div class="card">
         <div class="icon" aria-hidden="true">⚙️</div>
-        <h3>작게, 빠르게, 꾸준히</h3>
-        <p>작게 시작해 빠르게 검증하고, 검증된 것을 꾸준히 다듬어 나갑니다.</p>
+        <div data-lang="ko"><h3>작게, 빠르게, 꾸준히</h3><p>작게 시작해 빠르게 검증하고, 검증된 것을 꾸준히 다듬어 나갑니다.</p></div>
+        <div data-lang="en"><h3>Small, fast, steady</h3><p>Start small, validate fast, and keep polishing what works.</p></div>
+        <div data-lang="vi"><h3>Nhỏ gọn, nhanh chóng, bền bỉ</h3><p>Bắt đầu nhỏ, kiểm chứng nhanh và kiên trì hoàn thiện những gì đã được chứng minh.</p></div>
+        <div data-lang="es"><h3>Pequeño, rápido, constante</h3><p>Empezamos en pequeño, validamos rápido y pulimos con constancia lo que funciona.</p></div>
+        <div data-lang="ru"><h3>Маленькие шаги, быстро и постоянно</h3><p>Начинаем с малого, быстро проверяем и постоянно совершенствуем то, что работает.</p></div>
+        <div data-lang="hi"><h3>छोटा, तेज़, निरंतर</h3><p>छोटी शुरुआत, तेज़ परख — और जो कारगर हो, उसे लगातार निखारते रहना।</p></div>
       </div>
     </div>
   </div>
@@ -285,9 +334,9 @@
 
 <section id="contact" class="contact">
   <div class="wrap">
-    <div class="section-label">Contact</div>
-    <h2>문의하기</h2>
-    <p class="section-desc">제품 문의, 제안, 피드백 모두 환영합니다.</p>
+    <div class="section-label"><span class="i18n-ko">문의</span><span class="i18n-en">Contact</span><span class="i18n-vi">Liên hệ</span><span class="i18n-es">Contacto</span><span class="i18n-ru">Контакты</span><span class="i18n-hi">संपर्क</span></div>
+    <h2><span class="i18n-ko">문의하기</span><span class="i18n-en">Contact</span><span class="i18n-vi">Liên hệ</span><span class="i18n-es">Contacto</span><span class="i18n-ru">Связаться</span><span class="i18n-hi">संपर्क करें</span></h2>
+    <p class="section-desc"><span class="i18n-ko">제품 문의, 제안, 피드백 모두 환영합니다.</span><span class="i18n-en">Questions, ideas, and feedback are all welcome.</span><span class="i18n-vi">Mọi câu hỏi về sản phẩm, đề xuất và phản hồi đều được hoan nghênh.</span><span class="i18n-es">Preguntas sobre el producto, propuestas y comentarios: todo es bienvenido.</span><span class="i18n-ru">Мы рады вопросам о продукте, предложениям и отзывам.</span><span class="i18n-hi">उत्पाद से जुड़े सवाल, सुझाव और फ़ीडबैक — सबका स्वागत है।</span></p>
     <a class="contact-mail" href="mailto:fremdung@gmail.com">fremdung@gmail.com</a>
   </div>
 </section>
@@ -295,10 +344,26 @@
 <footer>
   <div class="wrap footer-inner">
     <span>© 2026 BTBZ. All rights reserved.</span>
-    <span><a href="https://modora.btbz.ai/privacy.html">Privacy Policy</a> · www.btbz.ai</span>
+    <span><a href="https://modora.btbz.ai/privacy.html"><span class="i18n-ko">개인정보처리방침</span><span class="i18n-en">Privacy Policy</span><span class="i18n-vi">Chính sách quyền riêng tư</span><span class="i18n-es">Política de privacidad</span><span class="i18n-ru">Политика конфиденциальности</span><span class="i18n-hi">गोपनीयता नीति</span></a> · www.btbz.ai</span>
   </div>
 </footer>
 
 <script src="/consent-banner.js" defer></script>
+<script>
+var LANGS = ['ko','en','vi','es','ru','hi'];
+function setLang(l) {
+  if (LANGS.indexOf(l) < 0) l = 'en';
+  document.documentElement.setAttribute('data-show', l);
+  document.documentElement.setAttribute('lang', l);
+  var sel = document.getElementById('lang-select'); if (sel) sel.value = l;
+  try { localStorage.setItem('btbz-lang', l); } catch (e) {}
+}
+(function () {
+  var saved = null; try { saved = localStorage.getItem('btbz-lang'); } catch (e) {}
+  if (LANGS.indexOf(saved) < 0) saved = null;
+  var nav = (navigator.language || 'en').toLowerCase().slice(0, 2);
+  setLang(saved || (LANGS.indexOf(nav) >= 0 ? nav : 'en'));
+})();
+</script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-show="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,14 +47,13 @@
           border-radius: 10px; padding: 1rem 1.2rem; margin: 1rem 0; }
   a { color: var(--accent); }
   .lang-switch { display: flex; gap: .5rem; margin-bottom: 1.5rem; }
-  .lang-switch button { border: 1px solid var(--border); background: var(--card);
-    color: var(--fg); padding: .35rem .9rem; border-radius: 999px; cursor: pointer;
-    font-size: .9rem; }
-  .lang-switch button.active { background: var(--accent); border-color: var(--accent);
-    color: #fff; }
+  .lang-select { border: 1px solid var(--border); background: var(--card);
+    color: var(--fg); border-radius: 999px; padding: .3rem .8rem;
+    font-size: .85rem; cursor: pointer; }
   [data-lang] { display: none; }
-  html[data-show="ko"] [data-lang="ko"] { display: block; }
-  html[data-show="en"] [data-lang="en"] { display: block; }
+  html[data-show="ko"] [data-lang="ko"], html[data-show="en"] [data-lang="en"], html[data-show="vi"] [data-lang="vi"], html[data-show="es"] [data-lang="es"], html[data-show="ru"] [data-lang="ru"], html[data-show="hi"] [data-lang="hi"] { display: block; }
+  .i18n-ko, .i18n-en, .i18n-vi, .i18n-es, .i18n-ru, .i18n-hi { display: none; }
+  html[data-show="ko"] .i18n-ko, html[data-show="en"] .i18n-en, html[data-show="vi"] .i18n-vi, html[data-show="es"] .i18n-es, html[data-show="ru"] .i18n-ru, html[data-show="hi"] .i18n-hi { display: inline; }
   table { width: 100%; border-collapse: collapse; margin: .8rem 0; font-size: .95rem; }
   th, td { text-align: left; padding: .5rem .6rem; border: 1px solid var(--border);
            vertical-align: top; }
@@ -65,8 +64,9 @@
 <body>
 <div class="wrap">
   <div class="lang-switch">
-    <button id="btn-ko" onclick="setLang('ko')">한국어</button>
-    <button id="btn-en" onclick="setLang('en')">English</button>
+    <select id="lang-select" class="lang-select" aria-label="Language" onchange="setLang(this.value)">
+      <option value="ko">한국어</option><option value="en">English</option><option value="vi">Tiếng Việt</option><option value="es">Español</option><option value="ru">Русский</option><option value="hi">हिन्दी</option>
+    </select>
   </div>
 
   <!-- ================= 한국어 ================= -->
@@ -276,21 +276,442 @@
       <li>Website: <a href="https://www.btbz.ai">www.btbz.ai</a></li>
     </ul>
   </div>
+
+  <!-- ================= Tiếng Việt ================= -->
+  <div data-lang="vi">
+    <p class="meta"><em>Bản dịch này được cung cấp nhằm mục đích thuận tiện. Trong trường hợp có bất kỳ sự khác biệt nào, bản tiếng Hàn sẽ được ưu tiên áp dụng.</em></p>
+    <header>
+      <h1>Chính sách quyền riêng tư của Modora</h1>
+      <p class="meta">Ngày hiệu lực: 21 tháng 7 năm 2026 · Phiên bản 1.1</p>
+    </header>
+
+    <div class="card">
+      <strong>Tóm tắt:</strong> Modora là ứng dụng ưu tiên lưu trữ cục bộ (local-first). Mọi thứ bạn ghi lại đều được
+      <strong>mã hóa và lưu trữ trên thiết bị của bạn</strong>. Chúng tôi không vận hành máy chủ riêng nào
+      và không thể truy cập dữ liệu của bạn.
+    </div>
+
+    <h2>1. Dữ liệu chúng tôi lưu trữ</h2>
+    <p>Modora lưu trữ các dữ liệu sau <strong>chỉ trên thiết bị của bạn</strong>:</p>
+    <ul>
+      <li>Ghi chú bí mật (tiêu đề, nội dung, thông tin trang web)</li>
+      <li>Mật khẩu và lịch sử chỉnh sửa mật khẩu</li>
+      <li>Tệp đính kèm (hình ảnh, PDF, tệp nén)</li>
+      <li>Lịch (sinh nhật, ngày kỷ niệm, ngày hết hạn) và cài đặt nhắc nhở</li>
+    </ul>
+    <p>Chúng tôi không thu thập bất kỳ dữ liệu nào nêu trên, và cũng không thu thập dữ liệu cá nhân cho mục đích phân tích hay quảng cáo.</p>
+
+    <h2>2. Mã hóa</h2>
+    <ul>
+      <li>Mật khẩu chính của bạn được xử lý bằng hàm dẫn xuất khóa <strong>Argon2id</strong>; bản thân mật khẩu không bao giờ được lưu ở bất kỳ đâu.</li>
+      <li>Mọi dữ liệu đều được mã hóa ngay trên thiết bị bằng <strong>AES-256-GCM</strong>.</li>
+      <li>Chúng tôi không vận hành máy chủ nào, vì vậy dữ liệu của bạn không bao giờ được truyền đến chúng tôi.</li>
+      <li>Do thiết kế này, nếu bạn quên mật khẩu chính, chúng tôi không thể khôi phục dữ liệu của bạn.</li>
+    </ul>
+
+    <h2>3. Quyền truy cập trên thiết bị</h2>
+    <table>
+      <tr><th>Quyền</th><th>Mục đích sử dụng</th></tr>
+      <tr><td>Máy ảnh</td><td>Chụp ảnh để đính kèm vào ghi chú (tùy chọn)</td></tr>
+      <tr><td>Thư viện ảnh</td><td>Chọn hình ảnh để đính kèm vào ghi chú (tùy chọn)</td></tr>
+      <tr><td>Sinh trắc học (Face ID / vân tay)</td><td>Mở khóa ứng dụng (tùy chọn; dữ liệu sinh trắc học do hệ điều hành quản lý — ứng dụng chỉ nhận kết quả đạt/không đạt)</td></tr>
+      <tr><td>Thông báo</td><td>Nhắc nhở sinh nhật, ngày kỷ niệm và ngày hết hạn (tùy chọn)</td></tr>
+    </table>
+    <p>Mỗi quyền chỉ được yêu cầu khi bạn sử dụng tính năng liên quan; việc từ chối không ảnh hưởng đến các tính năng khác.</p>
+
+    <h2>4. Sao lưu Google Drive (tùy chọn)</h2>
+    <ul>
+      <li>Tính năng tự động sao lưu lên Google Drive <strong>mặc định TẮT</strong>.</li>
+      <li>Chỉ khi bạn bật rõ ràng trong phần Cài đặt, <strong>tệp sao lưu đã mã hóa (.modora)</strong> mới được tải lên Google Drive của bạn.</li>
+      <li>Ứng dụng chỉ truy cập <strong>thư mục dữ liệu riêng của ứng dụng trên Google Drive (drive.appdata)</strong>; ứng dụng không thể xem hay chỉnh sửa bất kỳ tệp Drive nào khác của bạn.</li>
+      <li>Trong quá trình đăng nhập Google, <strong>email tài khoản Google và mã thông báo OAuth</strong> của bạn có thể được xử lý — chỉ trên thiết bị và chỉ nhằm cung cấp tính năng sao lưu.</li>
+      <li>Tệp sao lưu được mã hóa trước khi tải lên, vì vậy ngay cả tệp nằm trong Google Drive của bạn cũng không thể mở được nếu không có mật khẩu chính.</li>
+    </ul>
+
+    <h2>5. Xóa dữ liệu của bạn</h2>
+    <ul>
+      <li>Tính năng <strong>đặt lại cục bộ</strong> trong ứng dụng sẽ xóa dữ liệu lưu trên thiết bị của bạn.</li>
+      <li>Tuy nhiên, <strong>các bản sao lưu trong Google Drive không bị xóa tự động</strong> — bạn cần tự xóa chúng trong Google Drive (Cài đặt → Quản lý ứng dụng → Modora → Xóa dữ liệu ứng dụng ẩn).</li>
+      <li>Việc gỡ cài đặt ứng dụng có thể vẫn để lại tệp sao lưu tại vị trí lưu trữ bạn đã chọn và trong Google Drive.</li>
+    </ul>
+
+    <h2>6. Quyền của bạn và việc quản lý dữ liệu</h2>
+    <ul>
+      <li><strong>Xem, chỉnh sửa, xóa:</strong> mọi dữ liệu đều có thể được xem, chỉnh sửa và xóa trực tiếp trong ứng dụng.</li>
+      <li><strong>Xuất dữ liệu:</strong> trong Cài đặt, bạn có thể xuất tệp sao lưu đã mã hóa (.modora); tính năng nhập hàng loạt bằng CSV cũng được hỗ trợ.</li>
+      <li><strong>Khôi phục:</strong> bản sao lưu có thể được khôi phục trên thiết bị khác hoặc sau khi cài đặt lại.</li>
+      <li>Mọi câu hỏi về việc xử lý dữ liệu, vui lòng liên hệ với chúng tôi theo thông tin bên dưới và chúng tôi sẽ phản hồi nhanh chóng.</li>
+    </ul>
+
+    <h2>7. Thông tin do trang web này (modora.btbz.ai) thu thập</h2>
+    <p><strong>Ứng dụng</strong> Modora vẫn không thu thập bất cứ điều gì. Tuy nhiên, <strong>trang web</strong> này thu thập và lưu trữ các thông tin sau để vận hành dịch vụ.</p>
+    <p><strong>Bên kiểm soát dữ liệu (Controller):</strong> BTBZ · email <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a></p>
+    <table>
+      <tr><th>Dữ liệu</th><th>Thời điểm</th><th>Mục đích</th><th>Cơ sở pháp lý</th><th>Thời gian lưu giữ</th></tr>
+      <tr><td><strong>Địa chỉ IP đã ẩn danh</strong> (xóa octet cuối, ví dụ: 125.133.49.0), thời điểm truy cập/tải xuống, thông tin trình duyệt (User-Agent)</td><td>Khi bạn truy cập trang tải xuống hoặc tải tệp cài đặt</td><td>Thống kê lượt tải xuống</td><td>Lợi ích chính đáng</td><td>12 tháng kể từ khi thu thập</td></tr>
+      <tr><td>Địa chỉ email (nhập tùy chọn)</td><td>Khi bạn đăng ký nhận tin trong lúc tải xuống</td><td>Thông báo tin tức như nâng cấp phiên bản</td><td>Sự đồng ý</td><td>Cho đến khi bạn hủy đăng ký</td></tr>
+      <tr><td>Tiêu đề và nội dung câu hỏi, email để phản hồi, địa chỉ IP</td><td>Khi bạn gửi qua "Liên hệ nhà phát triển"</td><td>Tiếp nhận và trả lời câu hỏi; ngăn chặn spam và hành vi lạm dụng</td><td>Sự đồng ý (câu hỏi), lợi ích chính đáng (IP)</td><td>12 tháng sau khi xử lý xong</td></tr>
+      <tr><td>Đánh giá của người dùng (biệt danh, nội dung, số sao), địa chỉ IP</td><td>Khi bạn đăng đánh giá</td><td>Vận hành bảng đánh giá; ngăn chặn hành vi lạm dụng</td><td>Sự đồng ý (đánh giá), lợi ích chính đáng (IP)</td><td>Cho đến khi có yêu cầu xóa</td></tr>
+    </table>
+    <ul>
+      <li>Thông tin thu thập chỉ được sử dụng cho các mục đích nêu trên và không bao giờ được bán cho bên thứ ba. Về cookie và phân tích web (Google Analytics) dùng cho thống kê lượt truy cập, vui lòng xem mục <strong>8. Cookie và Google Analytics</strong> bên dưới.</li>
+      <li><strong>Quyền của bạn:</strong> bạn có thể yêu cầu truy cập, chỉnh sửa, xóa, hạn chế xử lý hoặc chuyển giao dữ liệu của mình, và rút lại sự đồng ý bất cứ lúc nào. Vui lòng gửi yêu cầu theo thông tin liên hệ bên dưới; chúng tôi sẽ xử lý không chậm trễ (trong vòng một tháng).</li>
+      <li><strong>Cư dân EU/EEA (GDPR):</strong> ngoài các quyền trên, bạn còn có quyền khiếu nại với Cơ quan Bảo vệ Dữ liệu (Data Protection Authority) tại nơi cư trú.</li>
+      <li><strong>Vị trí lưu trữ:</strong> thông tin thu thập được lưu trên máy chủ đặt tại Hàn Quốc (Đại Hàn Dân Quốc).</li>
+    </ul>
+
+    <h2>8. Cookie và Google Analytics</h2>
+    <p>Trang web này (www.btbz.ai, modora.btbz.ai) sử dụng <strong>Google Analytics 4 (GA4)</strong> để thống kê lượt truy cập và phân tích nguồn truy cập/chuyển đổi, theo các nguyên tắc sau.</p>
+    <ul>
+      <li><strong>Sự đồng ý trước:</strong> biểu ngữ xin đồng ý về cookie được hiển thị trong lần truy cập đầu tiên, và <strong>không cookie phân tích nào được đặt cũng như không dữ liệu nào được gửi đi trước khi bạn chọn "Đồng ý"</strong> (Google Consent Mode v2 — mặc định từ chối).</li>
+      <li><strong>Cookie được đặt:</strong> khi bạn đồng ý, các cookie <code>_ga</code> và <code>_ga_&lt;ID đo lường&gt;</code> được đặt để phân biệt khách truy cập và duy trì phiên (lưu tối đa khoảng 13 tháng).</li>
+      <li><strong>Dữ liệu thu thập:</strong> IP đã ẩn danh (bật <code>anonymize_ip</code>), lượt xem trang, nguồn truy cập (tham số UTM/nguồn giới thiệu), vị trí gần đúng (mức quốc gia/thành phố), thông tin thiết bị/trình duyệt, và các sự kiện chuyển đổi (tải xuống, đăng ký, liên hệ, đánh giá, v.v.). Chúng tôi không gửi đến GA4 các dữ liệu nhận dạng trực tiếp như tên hay thông tin liên hệ của bạn.</li>
+      <li><strong>Bên xử lý và chuyển dữ liệu ra nước ngoài:</strong> dữ liệu phân tích có thể được xử lý bởi bên xử lý của chúng tôi là <strong>Google LLC</strong> (Hoa Kỳ); Google áp dụng các cơ chế chuyển giao hợp pháp như Điều khoản Hợp đồng Chuẩn (SCC). Xem: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.</li>
+      <li><strong>Cơ sở pháp lý:</strong> sự đồng ý của bạn (Điều 6(1)(a) GDPR và ePrivacy).</li>
+      <li><strong>Rút lại sự đồng ý:</strong> nhấp vào <a href="#" onclick="if(window.btbzAnalytics){btbzAnalytics.resetConsent();}return false;">thay đổi cài đặt cookie (đặt lại sự đồng ý)</a> để hiển thị lại biểu ngữ và thay đổi lựa chọn của bạn bất cứ lúc nào. Bạn cũng có thể xóa cookie trong trình duyệt hoặc cài đặt <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">tiện ích chọn không tham gia Google Analytics</a>. Việc từ chối không hạn chế việc bạn sử dụng trang web.</li>
+      <li><strong>Tùy chọn ngôn ngữ:</strong> ngôn ngữ hiển thị bạn chọn chỉ được lưu trong bộ nhớ cục bộ (local storage) của trình duyệt, không phải trong cookie, và không bao giờ được truyền ra bên ngoài.</li>
+    </ul>
+
+    <h2>9. Thay đổi chính sách này</h2>
+    <p>Nếu chính sách này thay đổi, chúng tôi sẽ đăng nội dung sửa đổi và ngày hiệu lực trên trang này. Các thay đổi quan trọng cũng sẽ được thông báo trong ứng dụng.</p>
+
+    <h2>10. Liên hệ</h2>
+    <ul>
+      <li>Email: <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a></li>
+      <li>Trang web: <a href="https://www.btbz.ai">www.btbz.ai</a></li>
+    </ul>
+  </div>
+
+  <!-- ================= Español ================= -->
+  <div data-lang="es">
+    <p class="meta"><em>Esta traducción se ofrece únicamente para su comodidad. En caso de discrepancia, prevalecerá la versión en coreano.</em></p>
+    <header>
+      <h1>Política de privacidad de Modora</h1>
+      <p class="meta">Fecha de entrada en vigor: 21 de julio de 2026 · Versión 1.1</p>
+    </header>
+
+    <div class="card">
+      <strong>Resumen:</strong> Modora es una aplicación de tipo «local-first» (prioridad local). Todo lo que usted registra se
+      <strong>cifra y almacena en su dispositivo</strong>. No operamos servidores propios
+      y no podemos acceder a sus datos.
+    </div>
+
+    <h2>1. Datos que almacenamos</h2>
+    <p>Modora almacena los siguientes datos <strong>únicamente en su dispositivo</strong>:</p>
+    <ul>
+      <li>Notas secretas (título, contenido, información del sitio)</li>
+      <li>Contraseñas e historial de revisiones de contraseñas</li>
+      <li>Archivos adjuntos (imágenes, PDF, archivos comprimidos)</li>
+      <li>Calendario (cumpleaños, aniversarios, fechas de vencimiento) y configuración de recordatorios</li>
+    </ul>
+    <p>No recopilamos ninguno de estos datos, ni recopilamos datos personales con fines analíticos o publicitarios.</p>
+
+    <h2>2. Cifrado</h2>
+    <ul>
+      <li>Su contraseña maestra se procesa con la función de derivación de claves <strong>Argon2id</strong>; la contraseña en sí nunca se almacena en ningún lugar.</li>
+      <li>Todos los datos se cifran en el dispositivo con <strong>AES-256-GCM</strong>.</li>
+      <li>No operamos servidores, por lo que sus datos nunca se nos transmiten.</li>
+      <li>Debido a este diseño, si olvida su contraseña maestra, no podemos recuperar sus datos.</li>
+    </ul>
+
+    <h2>3. Permisos del dispositivo</h2>
+    <table>
+      <tr><th>Permiso</th><th>Finalidad</th></tr>
+      <tr><td>Cámara</td><td>Tomar fotos para adjuntarlas a las notas (opcional)</td></tr>
+      <tr><td>Biblioteca de fotos</td><td>Elegir imágenes para adjuntarlas a las notas (opcional)</td></tr>
+      <tr><td>Biometría (Face ID / huella dactilar)</td><td>Desbloquear la aplicación (opcional; los datos biométricos los gestiona el sistema operativo — la aplicación solo recibe el resultado de éxito o fallo)</td></tr>
+      <tr><td>Notificaciones</td><td>Recordatorios de cumpleaños, aniversarios y fechas de vencimiento (opcional)</td></tr>
+    </table>
+    <p>Cada permiso se solicita solo cuando usted utiliza la función correspondiente; rechazarlo no afecta a las demás funciones.</p>
+
+    <h2>4. Copia de seguridad en Google Drive (opcional)</h2>
+    <ul>
+      <li>La copia de seguridad automática en Google Drive está <strong>DESACTIVADA de forma predeterminada</strong>.</li>
+      <li>Solo cuando usted la activa expresamente en Ajustes se sube un <strong>archivo de copia de seguridad cifrado (.modora)</strong> a su Google Drive.</li>
+      <li>La aplicación accede únicamente a la <strong>carpeta de datos privada de la aplicación en Google Drive (drive.appdata)</strong>; no puede ver ni modificar ninguno de sus otros archivos de Drive.</li>
+      <li>Durante el inicio de sesión en Google, pueden procesarse <strong>el correo electrónico de su cuenta de Google y los tokens de OAuth</strong>, únicamente en el dispositivo y solo para ofrecer la función de copia de seguridad.</li>
+      <li>Los archivos de copia de seguridad se cifran antes de subirse, por lo que ni siquiera el archivo en su Google Drive puede abrirse sin su contraseña maestra.</li>
+    </ul>
+
+    <h2>5. Eliminación de sus datos</h2>
+    <ul>
+      <li>El <strong>restablecimiento local</strong> dentro de la aplicación elimina los datos almacenados en su dispositivo.</li>
+      <li>Sin embargo, <strong>las copias de seguridad en Google Drive no se eliminan automáticamente</strong>; debe eliminarlas usted mismo en Google Drive (Configuración → Administrar aplicaciones → Modora → Eliminar datos ocultos de la aplicación).</li>
+      <li>Desinstalar la aplicación puede dejar archivos de copia de seguridad en la ubicación de copia que usted eligió y en Google Drive.</li>
+    </ul>
+
+    <h2>6. Sus derechos y la gestión de sus datos</h2>
+    <ul>
+      <li><strong>Acceso, edición, eliminación:</strong> todos los datos pueden verse, editarse y eliminarse directamente en la aplicación.</li>
+      <li><strong>Exportación:</strong> en Ajustes puede exportar un archivo de copia de seguridad cifrado (.modora); también se admite la importación masiva mediante CSV.</li>
+      <li><strong>Restauración:</strong> las copias de seguridad pueden restaurarse en otro dispositivo o tras una reinstalación.</li>
+      <li>Para cualquier pregunta sobre el tratamiento de datos, contáctenos a través de los datos que figuran más abajo y le responderemos con prontitud.</li>
+    </ul>
+
+    <h2>7. Información que recopila este sitio web (modora.btbz.ai)</h2>
+    <p>La <strong>aplicación</strong> Modora sigue sin recopilar nada. Sin embargo, este <strong>sitio web</strong> recopila y almacena la siguiente información para operar el servicio.</p>
+    <p><strong>Responsable del tratamiento (Controller):</strong> BTBZ · correo electrónico <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a></p>
+    <table>
+      <tr><th>Datos</th><th>Momento</th><th>Finalidad</th><th>Base jurídica</th><th>Conservación</th></tr>
+      <tr><td><strong>Dirección IP anonimizada</strong> (último octeto eliminado, p. ej., 125.133.49.0), hora de visita/descarga, información del navegador (User-Agent)</td><td>Cuando visita la página de descarga o descarga un instalador</td><td>Estadísticas de descargas</td><td>Interés legítimo</td><td>12 meses desde la recopilación</td></tr>
+      <tr><td>Dirección de correo electrónico (opcional)</td><td>Cuando se suscribe a las novedades durante la descarga</td><td>Noticias como actualizaciones de versión</td><td>Consentimiento</td><td>Hasta que cancele la suscripción</td></tr>
+      <tr><td>Asunto y contenido de la consulta, correo de respuesta, dirección IP</td><td>Cuando utiliza «Contactar con el desarrollador»</td><td>Recepción y respuesta de consultas; prevención de spam y otros abusos</td><td>Consentimiento (consulta), interés legítimo (IP)</td><td>12 meses tras la resolución</td></tr>
+      <tr><td>Reseñas (apodo, contenido, valoración), dirección IP</td><td>Cuando publica una reseña</td><td>Funcionamiento del tablón de reseñas; prevención de abusos</td><td>Consentimiento (reseña), interés legítimo (IP)</td><td>Hasta que se solicite su eliminación</td></tr>
+    </table>
+    <ul>
+      <li>Esta información se utiliza únicamente para los fines indicados y nunca se vende a terceros. Sobre las cookies y la analítica web (Google Analytics) usadas para las estadísticas de visitas, consulte la sección <strong>8. Cookies y Google Analytics</strong> más abajo.</li>
+      <li><strong>Sus derechos:</strong> puede solicitar el acceso, la rectificación, la supresión, la limitación del tratamiento o la portabilidad de sus datos, así como retirar su consentimiento en cualquier momento. Contáctenos a través de los datos que figuran más abajo y actuaremos sin dilación indebida (en el plazo de un mes).</li>
+      <li><strong>Residentes de la UE/EEE (RGPD):</strong> además, tiene derecho a presentar una reclamación ante la autoridad de protección de datos (Data Protection Authority) de su lugar de residencia.</li>
+      <li><strong>Ubicación de almacenamiento:</strong> los datos recopilados se almacenan en servidores situados en la República de Corea.</li>
+    </ul>
+
+    <h2>8. Cookies y Google Analytics</h2>
+    <p>Este sitio web (www.btbz.ai, modora.btbz.ai) utiliza <strong>Google Analytics 4 (GA4)</strong> para las estadísticas de visitas y el análisis de tráfico/conversiones, conforme a los siguientes principios.</p>
+    <ul>
+      <li><strong>Consentimiento previo:</strong> en su primera visita se muestra un banner de consentimiento de cookies, y <strong>no se instala ninguna cookie analítica ni se envía ningún dato antes de que usted elija «Aceptar»</strong> (Google Consent Mode v2 — denegado de forma predeterminada).</li>
+      <li><strong>Cookies instaladas:</strong> con su consentimiento, se instalan las cookies <code>_ga</code> y <code>_ga_&lt;ID de medición&gt;</code> para distinguir a los visitantes y mantener las sesiones (se conservan hasta unos 13 meses).</li>
+      <li><strong>Datos recopilados:</strong> IP anonimizada (<code>anonymize_ip</code> activado), páginas vistas, fuente de tráfico (parámetros UTM/referente), ubicación aproximada (nivel de país/ciudad), información del dispositivo/navegador y eventos de conversión (descarga, suscripción, consulta, reseña, etc.). No enviamos a GA4 datos directamente identificativos, como su nombre o sus datos de contacto.</li>
+      <li><strong>Encargado del tratamiento y transferencia internacional:</strong> los datos analíticos pueden ser tratados por nuestro encargado <strong>Google LLC</strong> (EE. UU.), que aplica mecanismos de transferencia lícitos, como las Cláusulas Contractuales Tipo (SCC). Consulte <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.</li>
+      <li><strong>Base jurídica:</strong> su consentimiento (art. 6(1)(a) del RGPD y ePrivacy).</li>
+      <li><strong>Retirada del consentimiento:</strong> haga clic en <a href="#" onclick="if(window.btbzAnalytics){btbzAnalytics.resetConsent();}return false;">cambiar la configuración de cookies (restablecer el consentimiento)</a> para volver a mostrar el banner y cambiar su elección en cualquier momento. También puede borrar las cookies en su navegador o instalar el <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">complemento de inhabilitación de Google Analytics</a>. Rechazar no limita en absoluto su uso del sitio.</li>
+      <li><strong>Preferencia de idioma:</strong> el idioma de visualización que usted elige se guarda únicamente en el almacenamiento local de su navegador, no en una cookie, y nunca se transmite al exterior.</li>
+    </ul>
+
+    <h2>9. Cambios en esta política</h2>
+    <p>Si esta política cambia, publicaremos la revisión y su fecha de entrada en vigor en esta página. Los cambios importantes también se anunciarán en la aplicación.</p>
+
+    <h2>10. Contacto</h2>
+    <ul>
+      <li>Correo electrónico: <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a></li>
+      <li>Sitio web: <a href="https://www.btbz.ai">www.btbz.ai</a></li>
+    </ul>
+  </div>
+
+  <!-- ================= Русский ================= -->
+  <div data-lang="ru">
+    <p class="meta"><em>Данный перевод предоставлен для удобства. В случае каких-либо расхождений преимущественную силу имеет версия на корейском языке.</em></p>
+    <header>
+      <h1>Политика конфиденциальности Modora</h1>
+      <p class="meta">Дата вступления в силу: 21 июля 2026 г. · Версия 1.1</p>
+    </header>
+
+    <div class="card">
+      <strong>Кратко:</strong> Modora — это приложение с локальным приоритетом (local-first). Всё, что вы записываете,
+      <strong>шифруется и хранится на вашем устройстве</strong>. Мы не используем собственных серверов
+      и не имеем доступа к вашим данным.
+    </div>
+
+    <h2>1. Какие данные мы храним</h2>
+    <p>Modora хранит следующие данные <strong>только на вашем устройстве</strong>:</p>
+    <ul>
+      <li>Секретные заметки (заголовок, содержимое, сведения о сайте)</li>
+      <li>Пароли и историю изменений паролей</li>
+      <li>Вложения (изображения, PDF, архивы)</li>
+      <li>Календарь (дни рождения, годовщины, сроки действия) и настройки напоминаний</li>
+    </ul>
+    <p>Мы не собираем ни одну из перечисленных категорий данных и не собираем персональные данные в целях аналитики или рекламы.</p>
+
+    <h2>2. Шифрование</h2>
+    <ul>
+      <li>Ваш мастер-пароль обрабатывается функцией формирования ключа <strong>Argon2id</strong>; сам пароль нигде не сохраняется.</li>
+      <li>Все данные шифруются на устройстве алгоритмом <strong>AES-256-GCM</strong>.</li>
+      <li>Мы не используем серверов, поэтому ваши данные никогда нам не передаются.</li>
+      <li>Из-за такой архитектуры, если вы забудете мастер-пароль, мы не сможем восстановить ваши данные.</li>
+    </ul>
+
+    <h2>3. Разрешения устройства</h2>
+    <table>
+      <tr><th>Разрешение</th><th>Назначение</th></tr>
+      <tr><td>Камера</td><td>Съёмка фотографий для прикрепления к заметкам (по желанию)</td></tr>
+      <tr><td>Фотогалерея</td><td>Выбор изображений для прикрепления к заметкам (по желанию)</td></tr>
+      <tr><td>Биометрия (Face ID / отпечаток пальца)</td><td>Разблокировка приложения (по желанию; биометрические данные обрабатываются операционной системой — приложение получает только результат проверки)</td></tr>
+      <tr><td>Уведомления</td><td>Напоминания о днях рождения, годовщинах и сроках действия (по желанию)</td></tr>
+    </table>
+    <p>Каждое разрешение запрашивается только при использовании соответствующей функции; отказ не влияет на работу остальных функций.</p>
+
+    <h2>4. Резервное копирование в Google Drive (по желанию)</h2>
+    <ul>
+      <li>Автоматическое резервное копирование в Google Drive <strong>по умолчанию ВЫКЛЮЧЕНО</strong>.</li>
+      <li>Только если вы явно включите его в настройках, <strong>зашифрованный файл резервной копии (.modora)</strong> будет загружен в ваш Google Drive.</li>
+      <li>Приложение обращается только к <strong>служебной папке приложения в Google Drive (drive.appdata)</strong>; оно не может просматривать или изменять другие ваши файлы в Drive.</li>
+      <li>При входе в аккаунт Google могут обрабатываться <strong>адрес электронной почты вашего аккаунта Google и токены OAuth</strong> — исключительно на устройстве и только для работы функции резервного копирования.</li>
+      <li>Файлы резервных копий шифруются перед загрузкой, поэтому даже файл в вашем Google Drive невозможно открыть без мастер-пароля.</li>
+    </ul>
+
+    <h2>5. Удаление ваших данных</h2>
+    <ul>
+      <li>Функция <strong>локального сброса</strong> в приложении удаляет данные, хранящиеся на вашем устройстве.</li>
+      <li>Однако <strong>резервные копии в Google Drive не удаляются автоматически</strong> — удалите их самостоятельно в Google Drive (Настройки → Управление приложениями → Modora → Удалить скрытые данные приложения).</li>
+      <li>После удаления приложения файлы резервных копий могут остаться в выбранном вами месте хранения и в Google Drive.</li>
+    </ul>
+
+    <h2>6. Ваши права и управление данными</h2>
+    <ul>
+      <li><strong>Просмотр, изменение, удаление:</strong> все данные можно просматривать, изменять и удалять непосредственно в приложении.</li>
+      <li><strong>Экспорт:</strong> в настройках можно экспортировать зашифрованный файл резервной копии (.modora); также поддерживается массовый импорт из CSV.</li>
+      <li><strong>Восстановление:</strong> резервные копии можно восстановить на другом устройстве или после переустановки.</li>
+      <li>По любым вопросам об обработке данных обращайтесь по указанным ниже контактам — мы ответим незамедлительно.</li>
+    </ul>
+
+    <h2>7. Сведения, собираемые этим веб-сайтом (modora.btbz.ai)</h2>
+    <p><strong>Приложение</strong> Modora по-прежнему ничего не собирает. Однако этот <strong>веб-сайт</strong> собирает и хранит следующие сведения для обеспечения работы сервиса.</p>
+    <p><strong>Оператор данных (Controller):</strong> BTBZ · эл. почта <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a></p>
+    <table>
+      <tr><th>Данные</th><th>Когда</th><th>Цель</th><th>Правовое основание</th><th>Срок хранения</th></tr>
+      <tr><td><strong>Анонимизированный IP-адрес</strong> (последний октет удалён, например 125.133.49.0), время посещения/загрузки, сведения о браузере (User-Agent)</td><td>При посещении страницы загрузки или скачивании установочного файла</td><td>Статистика загрузок</td><td>Законный интерес</td><td>12 месяцев с момента сбора</td></tr>
+      <tr><td>Адрес электронной почты (по желанию)</td><td>При подписке на новости во время загрузки</td><td>Новости, например об обновлениях версий</td><td>Согласие</td><td>До отмены подписки</td></tr>
+      <tr><td>Тема и текст обращения, адрес для ответа, IP-адрес</td><td>При отправке через «Связаться с разработчиком»</td><td>Приём обращений и ответы на них; предотвращение спама и злоупотреблений</td><td>Согласие (обращение), законный интерес (IP)</td><td>12 месяцев после завершения обработки</td></tr>
+      <tr><td>Отзывы (псевдоним, содержание, оценка), IP-адрес</td><td>При публикации отзыва</td><td>Работа раздела отзывов; предотвращение злоупотреблений</td><td>Согласие (отзыв), законный интерес (IP)</td><td>До поступления запроса на удаление</td></tr>
+    </table>
+    <ul>
+      <li>Эти сведения используются только в указанных целях и никогда не продаются третьим лицам. О файлах cookie и веб-аналитике (Google Analytics), используемых для статистики посещений, см. раздел <strong>8. Файлы cookie и Google Analytics</strong> ниже.</li>
+      <li><strong>Ваши права:</strong> вы можете запросить доступ к своим данным, их исправление, удаление, ограничение обработки или перенос, а также в любой момент отозвать согласие. Обратитесь к нам по указанным ниже контактам — мы выполним запрос без неоправданной задержки (в течение одного месяца).</li>
+      <li><strong>Жители ЕС/ЕЭЗ (GDPR):</strong> кроме того, вы вправе подать жалобу в надзорный орган по защите данных (Data Protection Authority) по месту жительства.</li>
+      <li><strong>Место хранения:</strong> собранные данные хранятся на серверах, расположенных в Республике Корея.</li>
+    </ul>
+
+    <h2>8. Файлы cookie и Google Analytics</h2>
+    <p>Этот веб-сайт (www.btbz.ai, modora.btbz.ai) использует <strong>Google Analytics 4 (GA4)</strong> для статистики посещений и анализа источников трафика/конверсий на следующих принципах.</p>
+    <ul>
+      <li><strong>Предварительное согласие:</strong> при первом посещении отображается баннер согласия на использование cookie, и <strong>до тех пор, пока вы не выберете «Принять», аналитические cookie не устанавливаются и никакие данные не отправляются</strong> (Google Consent Mode v2 — по умолчанию отказ).</li>
+      <li><strong>Устанавливаемые cookie:</strong> после согласия устанавливаются файлы cookie <code>_ga</code> и <code>_ga_&lt;идентификатор измерения&gt;</code> для различения посетителей и поддержания сеансов (хранятся до ~13 месяцев).</li>
+      <li><strong>Собираемые данные:</strong> анонимизированный IP (включён <code>anonymize_ip</code>), просмотры страниц, источник трафика (параметры UTM/реферер), приблизительное местоположение (на уровне страны/города), сведения об устройстве/браузере и события конверсии (загрузка, подписка, обращение, отзыв и т. д.). Мы не передаём в GA4 напрямую идентифицирующие данные, такие как ваше имя или контактные данные.</li>
+      <li><strong>Обработчик и трансграничная передача:</strong> аналитические данные могут обрабатываться нашим обработчиком — компанией <strong>Google LLC</strong> (США), которая применяет законные механизмы передачи, такие как стандартные договорные условия (SCC). См. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.</li>
+      <li><strong>Правовое основание:</strong> ваше согласие (ст. 6(1)(a) GDPR и ePrivacy).</li>
+      <li><strong>Отзыв согласия:</strong> нажмите <a href="#" onclick="if(window.btbzAnalytics){btbzAnalytics.resetConsent();}return false;">изменить настройки cookie (сбросить согласие)</a>, чтобы снова открыть баннер и в любой момент изменить свой выбор. Вы также можете удалить cookie в браузере или установить <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">дополнение для отключения Google Analytics</a>. Отказ никак не ограничивает использование сайта.</li>
+      <li><strong>Языковые настройки:</strong> выбранный вами язык отображения сохраняется только в локальном хранилище браузера, а не в cookie, и никогда не передаётся вовне.</li>
+    </ul>
+
+    <h2>9. Изменения настоящей политики</h2>
+    <p>В случае изменения настоящей политики мы опубликуем на этой странице новую редакцию и дату её вступления в силу. О существенных изменениях мы также сообщим в приложении.</p>
+
+    <h2>10. Контакты</h2>
+    <ul>
+      <li>Эл. почта: <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a></li>
+      <li>Веб-сайт: <a href="https://www.btbz.ai">www.btbz.ai</a></li>
+    </ul>
+  </div>
+
+  <!-- ================= हिन्दी ================= -->
+  <div data-lang="hi">
+    <p class="meta"><em>यह अनुवाद केवल सुविधा के लिए प्रदान किया गया है। किसी भी विसंगति की स्थिति में कोरियाई संस्करण मान्य होगा।</em></p>
+    <header>
+      <h1>Modora गोपनीयता नीति</h1>
+      <p class="meta">प्रभावी तिथि: 21 जुलाई 2026 · संस्करण 1.1</p>
+    </header>
+
+    <div class="card">
+      <strong>सारांश:</strong> Modora एक लोकल-फ़र्स्ट (local-first) ऐप है। आप जो कुछ भी दर्ज करते हैं, वह
+      <strong>एन्क्रिप्ट होकर आपके डिवाइस पर ही संग्रहीत</strong> होता है। हम अपना कोई सर्वर नहीं चलाते
+      और आपके डेटा तक नहीं पहुँच सकते।
+    </div>
+
+    <h2>1. हम कौन-सा डेटा संग्रहीत करते हैं</h2>
+    <p>Modora निम्नलिखित डेटा <strong>केवल आपके डिवाइस पर</strong> संग्रहीत करता है:</p>
+    <ul>
+      <li>गुप्त मेमो (शीर्षक, सामग्री, साइट की जानकारी)</li>
+      <li>पासवर्ड और पासवर्ड संशोधन इतिहास</li>
+      <li>अटैचमेंट (छवियाँ, PDF, संपीड़ित फ़ाइलें)</li>
+      <li>कैलेंडर (जन्मदिन, वर्षगाँठ, समाप्ति तिथियाँ) और अनुस्मारक सेटिंग्स</li>
+    </ul>
+    <p>हम उपरोक्त में से कोई भी डेटा एकत्र नहीं करते, और विश्लेषण या विज्ञापन के उद्देश्य से भी कोई व्यक्तिगत डेटा एकत्र नहीं करते।</p>
+
+    <h2>2. एन्क्रिप्शन</h2>
+    <ul>
+      <li>आपका मास्टर पासवर्ड <strong>Argon2id</strong> कुंजी-व्युत्पत्ति फलन (KDF) से संसाधित किया जाता है; पासवर्ड स्वयं कहीं भी संग्रहीत नहीं होता।</li>
+      <li>सारा डेटा डिवाइस पर ही <strong>AES-256-GCM</strong> से एन्क्रिप्ट किया जाता है।</li>
+      <li>हम कोई सर्वर नहीं चलाते, इसलिए आपका डेटा कभी हम तक प्रेषित नहीं होता।</li>
+      <li>इस संरचना के कारण, यदि आप अपना मास्टर पासवर्ड भूल जाते हैं, तो हम आपका डेटा पुनर्प्राप्त नहीं कर सकते।</li>
+    </ul>
+
+    <h2>3. डिवाइस अनुमतियाँ</h2>
+    <table>
+      <tr><th>अनुमति</th><th>उपयोग का उद्देश्य</th></tr>
+      <tr><td>कैमरा</td><td>मेमो में संलग्न करने के लिए फ़ोटो लेना (वैकल्पिक)</td></tr>
+      <tr><td>फ़ोटो लाइब्रेरी</td><td>मेमो में संलग्न करने के लिए छवियाँ चुनना (वैकल्पिक)</td></tr>
+      <tr><td>बायोमेट्रिक्स (Face ID / फ़िंगरप्रिंट)</td><td>ऐप अनलॉक करना (वैकल्पिक; बायोमेट्रिक डेटा OS द्वारा प्रबंधित होता है — ऐप को केवल सफल/असफल परिणाम मिलता है)</td></tr>
+      <tr><td>सूचनाएँ</td><td>जन्मदिन, वर्षगाँठ और समाप्ति तिथियों के अनुस्मारक भेजना (वैकल्पिक)</td></tr>
+    </table>
+    <p>प्रत्येक अनुमति केवल तभी माँगी जाती है जब आप संबंधित सुविधा का उपयोग करते हैं; अस्वीकार करने पर भी अन्य सुविधाएँ सामान्य रूप से काम करती हैं।</p>
+
+    <h2>4. Google Drive बैकअप (वैकल्पिक)</h2>
+    <ul>
+      <li>Google Drive स्वचालित बैकअप <strong>डिफ़ॉल्ट रूप से बंद है</strong>।</li>
+      <li>केवल जब आप सेटिंग्स में इसे स्पष्ट रूप से चालू करते हैं, तभी <strong>एन्क्रिप्टेड बैकअप फ़ाइल (.modora)</strong> आपके Google Drive पर अपलोड होती है।</li>
+      <li>ऐप केवल Google Drive के <strong>ऐप-निजी डेटा फ़ोल्डर (drive.appdata)</strong> तक पहुँचता है; यह आपकी अन्य Drive फ़ाइलों को न देख सकता है, न बदल सकता है।</li>
+      <li>Google साइन-इन के दौरान आपके <strong>Google खाते का ईमेल और OAuth टोकन</strong> संसाधित हो सकते हैं — केवल डिवाइस पर और केवल बैकअप सुविधा प्रदान करने के लिए।</li>
+      <li>बैकअप फ़ाइलें अपलोड से पहले ही एन्क्रिप्ट की जाती हैं, इसलिए आपके Google Drive में मौजूद फ़ाइल भी मास्टर पासवर्ड के बिना नहीं खोली जा सकती।</li>
+    </ul>
+
+    <h2>5. अपना डेटा हटाना</h2>
+    <ul>
+      <li>ऐप के भीतर <strong>लोकल रीसेट</strong> आपके डिवाइस पर संग्रहीत डेटा को हटा देता है।</li>
+      <li>हालाँकि, <strong>Google Drive में मौजूद बैकअप स्वतः नहीं हटते</strong> — उन्हें Google Drive में स्वयं हटाएँ (सेटिंग्स → ऐप्स प्रबंधित करें → Modora → छिपा हुआ ऐप डेटा हटाएँ)।</li>
+      <li>ऐप अनइंस्टॉल करने पर भी आपके चुने हुए बैकअप स्थान और Google Drive में बैकअप फ़ाइलें बनी रह सकती हैं।</li>
+    </ul>
+
+    <h2>6. आपके अधिकार और डेटा प्रबंधन</h2>
+    <ul>
+      <li><strong>देखना, संपादित करना, हटाना:</strong> सारा डेटा ऐप में सीधे देखा, संपादित और हटाया जा सकता है।</li>
+      <li><strong>निर्यात:</strong> सेटिंग्स से एन्क्रिप्टेड बैकअप फ़ाइल (.modora) निर्यात की जा सकती है; CSV से एक साथ आयात भी समर्थित है।</li>
+      <li><strong>पुनर्स्थापना:</strong> बैकअप को दूसरे डिवाइस पर या पुनः इंस्टॉल के बाद पुनर्स्थापित किया जा सकता है।</li>
+      <li>डेटा के प्रसंस्करण से जुड़े किसी भी प्रश्न के लिए नीचे दिए गए संपर्क पर लिखें; हम शीघ्र उत्तर देंगे।</li>
+    </ul>
+
+    <h2>7. इस वेबसाइट (modora.btbz.ai) द्वारा एकत्र की जाने वाली जानकारी</h2>
+    <p>Modora <strong>ऐप</strong> अब भी कोई डेटा एकत्र नहीं करता। हालाँकि, यह <strong>वेबसाइट</strong> सेवा संचालन के लिए निम्नलिखित जानकारी एकत्र और संग्रहीत करती है।</p>
+    <p><strong>डेटा नियंत्रक (Controller):</strong> BTBZ · ईमेल <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a></p>
+    <table>
+      <tr><th>डेटा</th><th>संग्रह का समय</th><th>उद्देश्य</th><th>कानूनी आधार</th><th>प्रतिधारण अवधि</th></tr>
+      <tr><td><strong>अनामीकृत IP पता</strong> (अंतिम ऑक्टेट हटाया गया, जैसे 125.133.49.0), विज़िट/डाउनलोड का समय, ब्राउज़र जानकारी (User-Agent)</td><td>जब आप डाउनलोड पृष्ठ पर जाते हैं या इंस्टॉलर डाउनलोड करते हैं</td><td>डाउनलोड आँकड़ों का संकलन</td><td>वैध हित</td><td>संग्रह की तिथि से 12 माह</td></tr>
+      <tr><td>ईमेल पता (वैकल्पिक प्रविष्टि)</td><td>जब आप डाउनलोड के समय समाचार पाने (सदस्यता) के लिए आवेदन करते हैं</td><td>संस्करण अपग्रेड जैसी सूचनाएँ</td><td>सहमति</td><td>सदस्यता रद्द करने तक</td></tr>
+      <tr><td>पूछताछ का विषय और सामग्री, उत्तर हेतु ईमेल, IP पता</td><td>जब आप "डेवलपर से संपर्क करें" के माध्यम से भेजते हैं</td><td>पूछताछ प्राप्त करना और उत्तर देना; स्पैम आदि दुरुपयोग की रोकथाम</td><td>सहमति (पूछताछ), वैध हित (IP)</td><td>निपटान पूर्ण होने के बाद 12 माह</td></tr>
+      <tr><td>समीक्षाएँ (उपनाम, सामग्री, रेटिंग), IP पता</td><td>जब आप समीक्षा पोस्ट करते हैं</td><td>समीक्षा बोर्ड का संचालन; दुरुपयोग की रोकथाम</td><td>सहमति (समीक्षा), वैध हित (IP)</td><td>हटाने का अनुरोध होने तक</td></tr>
+    </table>
+    <ul>
+      <li>एकत्रित जानकारी उपर्युक्त उद्देश्यों के अलावा किसी अन्य उद्देश्य के लिए उपयोग नहीं की जाती और कभी तीसरे पक्ष को नहीं बेची जाती। विज़िट आँकड़ों हेतु उपयोग की जाने वाली कुकीज़ और वेब एनालिटिक्स (Google Analytics) के लिए नीचे <strong>8. कुकीज़ और Google Analytics</strong> अनुभाग देखें।</li>
+      <li><strong>आपके अधिकार:</strong> आप अपनी जानकारी तक पहुँच, सुधार, विलोपन, प्रसंस्करण की सीमा या पोर्टेबिलिटी का अनुरोध कर सकते हैं, और कभी भी सहमति वापस ले सकते हैं। नीचे दिए गए संपर्क पर अनुरोध भेजें; हम बिना अनुचित विलंब के (एक माह के भीतर) कार्रवाई करेंगे।</li>
+      <li><strong>EU/EEA निवासी (GDPR):</strong> उपरोक्त अधिकारों के अतिरिक्त, आपको अपने निवास स्थान के डेटा संरक्षण प्राधिकरण (Data Protection Authority) के पास शिकायत दर्ज करने का अधिकार है।</li>
+      <li><strong>भंडारण स्थान:</strong> एकत्रित जानकारी कोरिया गणराज्य (दक्षिण कोरिया) में स्थित सर्वरों पर संग्रहीत की जाती है।</li>
+    </ul>
+
+    <h2>8. कुकीज़ और Google Analytics</h2>
+    <p>यह वेबसाइट (www.btbz.ai, modora.btbz.ai) विज़िट आँकड़ों तथा ट्रैफ़िक/रूपांतरण विश्लेषण के लिए <strong>Google Analytics 4 (GA4)</strong> का उपयोग करती है। संबंधित प्रसंस्करण निम्नलिखित सिद्धांतों का पालन करता है।</p>
+    <ul>
+      <li><strong>पूर्व सहमति:</strong> पहली विज़िट पर कुकी सहमति बैनर दिखाया जाता है, और <strong>जब तक आप "सहमत" नहीं चुनते, तब तक कोई एनालिटिक्स कुकी सेट नहीं होती और कोई डेटा नहीं भेजा जाता</strong> (Google Consent Mode v2 — डिफ़ॉल्ट रूप से अस्वीकृत)।</li>
+      <li><strong>सेट होने वाली कुकीज़:</strong> सहमति देने पर <code>_ga</code> और <code>_ga_&lt;मापन ID&gt;</code> कुकीज़ सेट होती हैं, जो आगंतुकों को अलग पहचानने और सत्र बनाए रखने के लिए उपयोग होती हैं (अधिकतम लगभग 13 माह तक संग्रहीत)।</li>
+      <li><strong>एकत्रित डेटा:</strong> अनामीकृत IP (<code>anonymize_ip</code> लागू), पृष्ठ दृश्य, ट्रैफ़िक स्रोत (UTM पैरामीटर/रेफ़रर), अनुमानित स्थान (देश/शहर स्तर), डिवाइस/ब्राउज़र जानकारी, और रूपांतरण इवेंट (डाउनलोड, सदस्यता, पूछताछ, समीक्षा आदि)। हम नाम या संपर्क विवरण जैसी प्रत्यक्ष पहचान करने वाली जानकारी GA4 को नहीं भेजते।</li>
+      <li><strong>प्रसंस्करणकर्ता और अंतरराष्ट्रीय स्थानांतरण:</strong> एनालिटिक्स डेटा हमारे प्रसंस्करणकर्ता <strong>Google LLC</strong> (अमेरिका) द्वारा संसाधित किया जा सकता है; Google मानक अनुबंध खंड (SCC) जैसे वैध स्थानांतरण उपाय लागू करता है। देखें: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>।</li>
+      <li><strong>कानूनी आधार:</strong> आपकी सहमति (GDPR अनुच्छेद 6(1)(a) तथा ePrivacy)।</li>
+      <li><strong>सहमति वापस लेना:</strong> <a href="#" onclick="if(window.btbzAnalytics){btbzAnalytics.resetConsent();}return false;">कुकी सेटिंग बदलें (सहमति रीसेट करें)</a> पर क्लिक करने से बैनर फिर दिखाई देगा और आप कभी भी अपना चुनाव बदल सकते हैं। आप ब्राउज़र में कुकीज़ हटा सकते हैं या <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics ऑप्ट-आउट ऐड-ऑन</a> इंस्टॉल कर सकते हैं — इससे भी संग्रह रुक जाता है। अस्वीकार करने पर साइट के उपयोग पर कोई सीमा नहीं लगती।</li>
+      <li><strong>भाषा वरीयता:</strong> आपके द्वारा चुनी गई प्रदर्शन भाषा कुकी में नहीं, बल्कि केवल ब्राउज़र के लोकल स्टोरेज में सहेजी जाती है, और कभी बाहर प्रेषित नहीं होती।</li>
+    </ul>
+
+    <h2>9. इस नीति में परिवर्तन</h2>
+    <p>यदि इस नीति में परिवर्तन होता है, तो हम संशोधित सामग्री और उसकी प्रभावी तिथि इस पृष्ठ पर प्रकाशित करेंगे। महत्वपूर्ण परिवर्तनों की सूचना ऐप के भीतर भी दी जाएगी।</p>
+
+    <h2>10. संपर्क</h2>
+    <ul>
+      <li>ईमेल: <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a></li>
+      <li>वेबसाइट: <a href="https://www.btbz.ai">www.btbz.ai</a></li>
+    </ul>
+  </div>
 </div>
 
 <script>
+  var LANGS = ['ko','en','vi','es','ru','hi'];
   function setLang(l) {
+    if (LANGS.indexOf(l) < 0) l = 'en';
     document.documentElement.setAttribute('data-show', l);
     document.documentElement.setAttribute('lang', l);
-    document.getElementById('btn-ko').classList.toggle('active', l === 'ko');
-    document.getElementById('btn-en').classList.toggle('active', l === 'en');
-    try { localStorage.setItem('modora-privacy-lang', l); } catch (e) {}
+    var sel = document.getElementById('lang-select'); if (sel) sel.value = l;
+    try { localStorage.setItem('modora-lang', l); } catch (e) {}
   }
   (function () {
-    var saved = null;
-    try { saved = localStorage.getItem('modora-privacy-lang'); } catch (e) {}
-    var nav = (navigator.language || 'ko').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en';
-    setLang(saved || nav);
+    var saved = null; try { saved = localStorage.getItem('modora-lang'); } catch (e) {}
+    if (LANGS.indexOf(saved) < 0) saved = null;
+    var nav = (navigator.language || 'en').toLowerCase().slice(0, 2);
+    setLang(saved || (LANGS.indexOf(nav) >= 0 ? nav : 'en'));
   })();
 </script>
 </body>

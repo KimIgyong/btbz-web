@@ -39,14 +39,13 @@
   .logo { font-size: 1.15rem; font-weight: 800; }
   .logo a { color: var(--fg); text-decoration: none; }
   .logo span { color: var(--accent); }
-  .lang-switch { display: flex; gap: .4rem; }
-  .lang-switch button { border: 1px solid var(--border); background: var(--card);
-    color: var(--fg); padding: .3rem .8rem; border-radius: 999px; cursor: pointer;
-    font-size: .85rem; }
-  .lang-switch button.active { background: var(--accent); border-color: var(--accent);
-    color: #fff; }
-  html[data-show="ko"] .i18n-en { display: none; }
-  html[data-show="en"] .i18n-ko { display: none; }
+  .lang-select { border: 1px solid var(--border); background: var(--card);
+    color: var(--fg); border-radius: 999px; padding: .3rem .8rem; font-size: .85rem;
+    cursor: pointer; font-family: inherit; }
+  [data-lang] { display: none; }
+  html[data-show="ko"] [data-lang="ko"], html[data-show="en"] [data-lang="en"], html[data-show="vi"] [data-lang="vi"], html[data-show="es"] [data-lang="es"], html[data-show="ru"] [data-lang="ru"], html[data-show="hi"] [data-lang="hi"] { display: block; }
+  .i18n-ko, .i18n-en, .i18n-vi, .i18n-es, .i18n-ru, .i18n-hi { display: none; }
+  html[data-show="ko"] .i18n-ko, html[data-show="en"] .i18n-en, html[data-show="vi"] .i18n-vi, html[data-show="es"] .i18n-es, html[data-show="ru"] .i18n-ru, html[data-show="hi"] .i18n-hi { display: inline; }
   .head-row { display: flex; align-items: center; justify-content: space-between;
               gap: .8rem; flex-wrap: wrap; margin-bottom: .4rem; }
   h1 { font-size: 1.6rem; }
@@ -105,27 +104,34 @@
 <div class="wrap">
   <header class="top">
     <div class="logo"><a href="/">Modora<span>.</span></a></div>
-    <div class="lang-switch">
-      <button id="btn-ko" onclick="setLang('ko')">한국어</button>
-      <button id="btn-en" onclick="setLang('en')">English</button>
-    </div>
+    <select id="lang-select" class="lang-select" aria-label="Language" onchange="setLang(this.value)">
+      <option value="ko">한국어</option><option value="en">English</option><option value="vi">Tiếng Việt</option><option value="es">Español</option><option value="ru">Русский</option><option value="hi">हिन्दी</option>
+    </select>
   </header>
 
   <div class="head-row">
-    <h1><span class="i18n-ko">사용후기</span><span class="i18n-en">Reviews</span></h1>
+    <h1><span class="i18n-ko">사용후기</span><span class="i18n-en">Reviews</span><span class="i18n-vi">Đánh giá</span><span class="i18n-es">Reseñas</span><span class="i18n-ru">Отзывы</span><span class="i18n-hi">समीक्षाएँ</span></h1>
     <button class="btn" onclick="openWrite()">
-      <span class="i18n-ko">✍️ 후기 쓰기</span><span class="i18n-en">✍️ Write a review</span>
+      <span class="i18n-ko">✍️ 후기 쓰기</span><span class="i18n-en">✍️ Write a review</span><span class="i18n-vi">✍️ Viết đánh giá</span><span class="i18n-es">✍️ Escribir una reseña</span><span class="i18n-ru">✍️ Написать отзыв</span><span class="i18n-hi">✍️ समीक्षा लिखें</span>
     </button>
   </div>
   <p class="sub">
     <span class="i18n-ko">Modora를 써 보신 소감을 들려주세요. 등록된 후기는 관리자 확인 후 게시됩니다.</span>
     <span class="i18n-en">Tell us what you think of Modora. Reviews appear after moderation.</span>
+    <span class="i18n-vi">Hãy chia sẻ cảm nhận của bạn về Modora. Đánh giá sẽ hiển thị sau khi được duyệt.</span>
+    <span class="i18n-es">Cuéntanos qué te parece Modora. Las reseñas se publican tras ser moderadas.</span>
+    <span class="i18n-ru">Расскажите, что вы думаете о Modora. Отзывы публикуются после проверки модератором.</span>
+    <span class="i18n-hi">हमें बताएँ कि आपको Modora कैसा लगा। समीक्षाएँ मॉडरेशन के बाद प्रकाशित होती हैं।</span>
   </p>
 
   <div id="review-list"></div>
   <div class="empty" id="review-empty" style="display:none">
     <span class="i18n-ko">아직 등록된 후기가 없습니다. 첫 후기를 남겨주세요!</span>
     <span class="i18n-en">No reviews yet — be the first to write one!</span>
+    <span class="i18n-vi">Chưa có đánh giá nào — hãy là người đầu tiên viết đánh giá!</span>
+    <span class="i18n-es">Aún no hay reseñas. ¡Sé la primera persona en escribir una!</span>
+    <span class="i18n-ru">Отзывов пока нет — станьте первым, кто оставит отзыв!</span>
+    <span class="i18n-hi">अभी तक कोई समीक्षा नहीं है — पहली समीक्षा आप लिखें!</span>
   </div>
   <div class="pager" id="pager" style="display:none">
     <button id="pg-prev" onclick="loadReviews(page-1)">←</button>
@@ -133,8 +139,8 @@
   </div>
 
   <footer>
-    <a href="/" data-l="home">← 홈으로</a> ·
-    <a href="/privacy.html" data-l="privacy">개인정보처리방침</a> ·
+    <a href="/"><span class="i18n-ko">← 홈으로</span><span class="i18n-en">← Home</span><span class="i18n-vi">← Trang chủ</span><span class="i18n-es">← Inicio</span><span class="i18n-ru">← На главную</span><span class="i18n-hi">← होम</span></a> ·
+    <a href="/privacy.html"><span class="i18n-ko">개인정보처리방침</span><span class="i18n-en">Privacy Policy</span><span class="i18n-vi">Chính sách quyền riêng tư</span><span class="i18n-es">Política de privacidad</span><span class="i18n-ru">Политика конфиденциальности</span><span class="i18n-hi">गोपनीयता नीति</span></a> ·
     <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a>
   </footer>
 </div>
@@ -142,16 +148,16 @@
 <!-- 후기 작성 모달 / Write modal -->
 <div class="modal-overlay" id="write-overlay" onclick="if(event.target===this)closeWrite()">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="write-title">
-    <h3 id="write-title"><span class="i18n-ko">✍️ 후기 쓰기</span><span class="i18n-en">✍️ Write a review</span></h3>
+    <h3 id="write-title"><span class="i18n-ko">✍️ 후기 쓰기</span><span class="i18n-en">✍️ Write a review</span><span class="i18n-vi">✍️ Viết đánh giá</span><span class="i18n-es">✍️ Escribir una reseña</span><span class="i18n-ru">✍️ Написать отзыв</span><span class="i18n-hi">✍️ समीक्षा लिखें</span></h3>
     <form id="write-form">
-      <label for="rv-nick"><span class="i18n-ko">닉네임 *</span><span class="i18n-en">Nickname *</span></label>
+      <label for="rv-nick"><span class="i18n-ko">닉네임 *</span><span class="i18n-en">Nickname *</span><span class="i18n-vi">Biệt danh *</span><span class="i18n-es">Apodo *</span><span class="i18n-ru">Никнейм *</span><span class="i18n-hi">उपनाम *</span></label>
       <input id="rv-nick" maxlength="20" required>
-      <label><span class="i18n-ko">별점 *</span><span class="i18n-en">Rating *</span></label>
+      <label><span class="i18n-ko">별점 *</span><span class="i18n-en">Rating *</span><span class="i18n-vi">Xếp hạng *</span><span class="i18n-es">Calificación *</span><span class="i18n-ru">Оценка *</span><span class="i18n-hi">रेटिंग *</span></label>
       <div class="star-pick" id="star-pick" role="slider" tabindex="0" aria-label="별점 / Rating"
            aria-valuemin="1" aria-valuemax="5" aria-valuenow="0">
         <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
       </div>
-      <label for="rv-content"><span class="i18n-ko">내용 *</span><span class="i18n-en">Review *</span></label>
+      <label for="rv-content"><span class="i18n-ko">내용 *</span><span class="i18n-en">Review *</span><span class="i18n-vi">Nội dung *</span><span class="i18n-es">Reseña *</span><span class="i18n-ru">Отзыв *</span><span class="i18n-hi">समीक्षा *</span></label>
       <textarea id="rv-content" maxlength="1000" required></textarea>
       <div class="hp" aria-hidden="true">
         <label>website<input id="rv-website" tabindex="-1" autocomplete="off"></label>
@@ -159,36 +165,40 @@
       <p class="privacy-note">
         <span class="i18n-ko">ⓘ 등록 시 <a href="/privacy.html" target="_blank" rel="noopener">개인정보처리방침</a>에 따라 입력하신 정보(닉네임·내용·별점)가 수집·이용됩니다.</span>
         <span class="i18n-en">ⓘ By submitting, the information you entered is collected and used per the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+        <span class="i18n-vi">ⓘ Khi gửi, thông tin bạn nhập (biệt danh, nội dung, xếp hạng) sẽ được thu thập và sử dụng theo <a href="/privacy.html" target="_blank" rel="noopener">Chính sách quyền riêng tư</a>.</span>
+        <span class="i18n-es">ⓘ Al enviar, la información introducida (apodo, contenido y calificación) se recopila y utiliza conforme a la <a href="/privacy.html" target="_blank" rel="noopener">Política de privacidad</a>.</span>
+        <span class="i18n-ru">ⓘ При отправке введённые вами данные (никнейм, текст и оценка) собираются и используются в соответствии с <a href="/privacy.html" target="_blank" rel="noopener">Политикой конфиденциальности</a>.</span>
+        <span class="i18n-hi">ⓘ सबमिट करने पर आपकी दर्ज की गई जानकारी (उपनाम, सामग्री, रेटिंग) <a href="/privacy.html" target="_blank" rel="noopener">गोपनीयता नीति</a> के अनुसार एकत्र और उपयोग की जाती है।</span>
       </p>
       <div class="msg" id="rv-msg"></div>
       <div class="actions">
-        <button type="button" onclick="closeWrite()"><span class="i18n-ko">취소</span><span class="i18n-en">Cancel</span></button>
-        <button type="submit" class="primary" id="rv-submit"><span class="i18n-ko">등록</span><span class="i18n-en">Submit</span></button>
+        <button type="button" onclick="closeWrite()"><span class="i18n-ko">취소</span><span class="i18n-en">Cancel</span><span class="i18n-vi">Hủy</span><span class="i18n-es">Cancelar</span><span class="i18n-ru">Отмена</span><span class="i18n-hi">रद्द करें</span></button>
+        <button type="submit" class="primary" id="rv-submit"><span class="i18n-ko">등록</span><span class="i18n-en">Submit</span><span class="i18n-vi">Gửi</span><span class="i18n-es">Enviar</span><span class="i18n-ru">Отправить</span><span class="i18n-hi">सबमिट करें</span></button>
       </div>
     </form>
   </div>
 </div>
 
 <script>
+  var LANGS = ['ko','en','vi','es','ru','hi'];
   function setLang(l) {
+    if (LANGS.indexOf(l) < 0) l = 'en';
     document.documentElement.setAttribute('data-show', l);
     document.documentElement.setAttribute('lang', l);
-    document.getElementById('btn-ko').classList.toggle('active', l === 'ko');
-    document.getElementById('btn-en').classList.toggle('active', l === 'en');
-    document.getElementById('btn-ko').setAttribute('aria-pressed', l === 'ko');
-    document.getElementById('btn-en').setAttribute('aria-pressed', l === 'en');
-    document.querySelector('[data-l="home"]').textContent = l === 'ko' ? '← 홈으로' : '← Home';
-    document.querySelector('[data-l="privacy"]').textContent =
-      l === 'ko' ? '개인정보처리방침' : 'Privacy Policy';
+    var sel = document.getElementById('lang-select'); if (sel) sel.value = l;
+    var sp = document.getElementById('star-pick');
+    if (sp) sp.setAttribute('aria-label',
+      t({ko:'별점',en:'Rating',vi:'Xếp hạng',es:'Calificación',ru:'Оценка',hi:'रेटिंग'}));
     try { localStorage.setItem('modora-lang', l); } catch (e) {}
   }
   (function () {
-    var saved = null;
-    try { saved = localStorage.getItem('modora-lang'); } catch (e) {}
-    var nav = (navigator.language || 'ko').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en';
-    setLang(saved || nav);
+    var saved = null; try { saved = localStorage.getItem('modora-lang'); } catch (e) {}
+    if (LANGS.indexOf(saved) < 0) saved = null;
+    var nav = (navigator.language || 'en').toLowerCase().slice(0, 2);
+    setLang(saved || (LANGS.indexOf(nav) >= 0 ? nav : 'en'));
   })();
-  function isKo() { return document.documentElement.getAttribute('data-show') === 'ko'; }
+  function curLang() { return document.documentElement.getAttribute('data-show') || 'en'; }
+  function t(m) { return m[curLang()] || m.en; }
 
   // ---- 목록 ----
   var page = 1, pageSize = 10;
@@ -260,7 +270,14 @@
     var msg = document.getElementById('rv-msg');
     var btn = document.getElementById('rv-submit');
     if (!rating) {
-      msg.textContent = isKo() ? '별점을 선택해 주세요.' : 'Please pick a rating.';
+      msg.textContent = t({
+        ko: '별점을 선택해 주세요.',
+        en: 'Please pick a rating.',
+        vi: 'Vui lòng chọn xếp hạng.',
+        es: 'Selecciona una calificación.',
+        ru: 'Пожалуйста, выберите оценку.',
+        hi: 'कृपया रेटिंग चुनें।'
+      });
       msg.className = 'msg err';
       return;
     }
@@ -277,15 +294,27 @@
       })
     }).then(function (res) {
       if (!res.ok) throw new Error('http ' + res.status);
-      msg.textContent = isKo() ? '등록되었습니다. 관리자 확인 후 게시됩니다. 감사합니다!'
-                               : 'Submitted! Your review will appear after moderation. Thank you!';
+      msg.textContent = t({
+        ko: '등록되었습니다. 관리자 확인 후 게시됩니다. 감사합니다!',
+        en: 'Submitted! Your review will appear after moderation. Thank you!',
+        vi: 'Đã gửi! Đánh giá của bạn sẽ hiển thị sau khi được duyệt. Cảm ơn bạn!',
+        es: '¡Enviado! Tu reseña se publicará tras ser moderada. ¡Gracias!',
+        ru: 'Отправлено! Ваш отзыв появится после проверки модератором. Спасибо!',
+        hi: 'सबमिट हो गया! आपकी समीक्षा मॉडरेशन के बाद दिखाई देगी। धन्यवाद!'
+      });
       msg.className = 'msg ok';
       window.btbzAnalytics && btbzAnalytics.trackReview({ rating: rating });
       document.getElementById('write-form').reset();
       setTimeout(closeWrite, 1800);
     }).catch(function () {
-      msg.textContent = isKo() ? '등록에 실패했습니다. 잠시 후 다시 시도해 주세요.'
-                               : 'Failed to submit. Please try again later.';
+      msg.textContent = t({
+        ko: '등록에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+        en: 'Failed to submit. Please try again later.',
+        vi: 'Gửi không thành công. Vui lòng thử lại sau.',
+        es: 'No se pudo enviar. Inténtalo de nuevo más tarde.',
+        ru: 'Не удалось отправить. Пожалуйста, попробуйте позже.',
+        hi: 'सबमिट नहीं हो सका। कृपया कुछ देर बाद फिर से प्रयास करें।'
+      });
       msg.className = 'msg err';
     }).finally(function () { btn.disabled = false; });
   });

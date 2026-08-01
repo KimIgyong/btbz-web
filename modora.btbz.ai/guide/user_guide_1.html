@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ko" data-show="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modora 사용자 설명서 | User Guide</title>
+<meta name="description" content="Modora 데스크탑 사용자 설명서 — 설치·마스터 비밀번호·잠금해제, CSV 일괄 가져오기, 메모·일정·사이트/아이디/비밀번호. / Modora desktop user guide.">
+<link rel="canonical" href="https://modora.btbz.ai/guide/user_guide_1.html">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="Modora 사용자 설명서 | User Guide">
+<meta property="og:description" content="설치·CSV 가져오기·메모/일정/사이트 작성까지 단계별 안내. / Step-by-step Modora desktop guide.">
+<meta property="og:url" content="https://modora.btbz.ai/guide/user_guide_1.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modora.btbz.ai/og-image.png">
+<style>
+  :root {
+    --bg:#fff; --fg:#1a1d21; --muted:#5c6470; --accent:#2563eb;
+    --border:#e5e8ec; --card:#f6f8fa; --warn:#b45309; --warnbg:#fef3c7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#14161a; --fg:#e6e9ed; --muted:#9aa3af; --accent:#60a5fa;
+            --border:#2a2f36; --card:#1d2127; --warn:#fbbf24; --warnbg:#3a2f10; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { background: var(--bg); color: var(--fg); line-height: 1.75;
+    overflow-x: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo",
+      "Noto Sans KR", Roboto, sans-serif;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* 가운데 정렬 컨테이너 (반응형) */
+  .wrap { max-width: 860px; margin: 0 auto; padding: clamp(1.25rem, 4vw, 2.5rem) clamp(1rem, 5vw, 2rem) 4rem; }
+
+  /* 언어 선택 헤더 */
+  header.top { display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap; margin-bottom: 1.6rem; }
+  .logo { font-size: 1.15rem; font-weight: 800; }
+  .logo a { color: var(--fg); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  .nav-right { display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; }
+  .back { font-size: .85rem; color: var(--accent); text-decoration: none; }
+  .lang-select { border: 1px solid var(--border); background: var(--card);
+    color: var(--fg); padding: .3rem .8rem; border-radius: 999px; cursor: pointer;
+    font: inherit; font-size: .85rem; }
+
+  /* 언어 표시/숨김 */
+  [data-lang] { display: none; }
+  html[data-show="ko"] [data-lang="ko"], html[data-show="en"] [data-lang="en"], html[data-show="vi"] [data-lang="vi"], html[data-show="es"] [data-lang="es"], html[data-show="ru"] [data-lang="ru"], html[data-show="hi"] [data-lang="hi"] { display: block; }
+  .i18n-ko, .i18n-en, .i18n-vi, .i18n-es, .i18n-ru, .i18n-hi { display: none; }
+  html[data-show="ko"] .i18n-ko, html[data-show="en"] .i18n-en, html[data-show="vi"] .i18n-vi, html[data-show="es"] .i18n-es, html[data-show="ru"] .i18n-ru, html[data-show="hi"] .i18n-hi { display: inline; }
+
+  /* 타이틀 영역 가운데 정렬 */
+  .hero { text-align: center; margin: 1rem 0 2.4rem; }
+  .hero h1 { font-size: clamp(1.5rem, 5vw, 2rem); line-height: 1.3; margin-bottom: .5rem; }
+  .hero .ver { color: var(--muted); font-size: .9rem; margin-bottom: 1rem; }
+  .hero p { color: var(--fg); max-width: 640px; margin: 0 auto; font-size: .98rem; }
+
+  h2 { font-size: clamp(1.2rem, 4vw, 1.42rem); margin: 2.6rem 0 .3rem; padding-top: 1.4rem;
+    border-top: 1px solid var(--border); }
+  h3 { font-size: clamp(1.02rem, 3.4vw, 1.12rem); margin: 1.8rem 0 .5rem; }
+  section.step { margin-bottom: .5rem; }
+  p, li { font-size: clamp(.95rem, 2.6vw, 1rem); }
+  ol, ul { margin: .5rem 0 .5rem 1.3rem; }
+  li { margin-bottom: .3rem; }
+  strong { font-weight: 700; }
+  code { background: var(--card); padding: .12em .45em; border-radius: 5px; font-size: .9em;
+    word-break: break-word; }
+  pre { background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: .9rem 1rem; overflow-x: auto; margin: .8rem 0; }
+  pre code { background: none; padding: 0; }
+
+  .note { background: var(--warnbg); color: var(--warn); border-radius: 10px;
+    padding: .8rem 1.1rem; font-size: .92rem; margin: 1.1rem 0; }
+  .tip { background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: .7rem 1rem; font-size: .88rem; color: var(--muted); margin: .9rem 0; }
+
+  /* 이미지 가운데 정렬 · 반응형 */
+  figure { margin: 1.1rem auto 1.4rem; text-align: center; }
+  figure img { max-width: 100%; height: auto; border: 1px solid var(--border);
+    border-radius: 12px; box-shadow: 0 6px 22px rgba(20,24,50,.06); }
+  figure figcaption { color: var(--muted); font-size: .82rem; margin-top: .5rem; }
+
+  .table-wrap { overflow-x: auto; margin: 1rem 0; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; min-width: 380px; }
+  th, td { border: 1px solid var(--border); padding: .5rem .7rem; text-align: left; }
+  th { background: var(--card); white-space: nowrap; }
+
+  hr { border: 0; border-top: 1px solid var(--border); margin: 2.4rem 0; }
+  a { color: var(--accent); }
+  footer { margin-top: 2.6rem; padding-top: 1.2rem; border-top: 1px solid var(--border);
+    font-size: .85rem; color: var(--muted); text-align: center; }
+  footer a { margin: 0 .3rem; }
+
+  @media (max-width: 480px) {
+    ol, ul { margin-left: 1.1rem; }
+    figure img { border-radius: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="logo"><a href="/">Modora<span>.</span></a></div>
+    <div class="nav-right">
+      <a class="back" href="/download/download.html"><span class="i18n-ko">← 다운로드</span><span class="i18n-en">← Download</span><span class="i18n-vi">← Tải xuống</span><span class="i18n-es">← Descargar</span><span class="i18n-ru">← Скачать</span><span class="i18n-hi">← डाउनलोड</span></a>
+      <select id="lang-select" class="lang-select" aria-label="Language" onchange="setLang(this.value)">
+        <option value="ko">한국어</option><option value="en">English</option><option value="vi">Tiếng Việt</option><option value="es">Español</option><option value="ru">Русский</option><option value="hi">हिन्दी</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- ============================== 한국어 ============================== -->
+  <div data-lang="ko">
+
+  <div class="hero">
+    <h1>Modora 데스크탑 사용자 설명서</h1>
+    <div class="ver">버전 1.3.0 · 2026-07</div>
+    <p>Modora(모더라)는 사이트·아이디·비밀번호와 메모·일정을 <strong>기기 안에만 암호화(Argon2id · AES-256-GCM)</strong>해서 보관하는 앱입니다. 데이터는 어떤 서버로도 전송되지 않습니다.</p>
+  </div>
+
+  <div class="note">⚠️ <strong>마스터 비밀번호를 잊으면 데이터를 복구할 수 없습니다.</strong> 안전한 곳에 따로 보관하세요.</div>
+
+  <!-- 1. 설치 -->
+  <h2>1. 설치 및 시작</h2>
+
+  <section class="step">
+    <h3>1.1 다운로드</h3>
+    <ol>
+      <li>브라우저에서 <a href="/download/download.html"><strong>modora.btbz.ai/download</strong></a> 에 접속합니다.</li>
+      <li>사용하는 운영체제 버튼을 눌러 설치 파일을 내려받습니다.
+        <ul>
+          <li><strong>Windows</strong>: <code>ModoraSetup.exe</code> — 실행하면 설치 마법사가 진행됩니다. SmartScreen 경고가 뜨면 <strong>추가 정보 → 실행</strong>.</li>
+          <li><strong>macOS</strong>: <code>Modora.dmg</code> — 열고 Modora를 <strong>응용 프로그램</strong> 폴더로 드래그합니다.</li>
+        </ul>
+      </li>
+    </ol>
+    <figure><img src="img/01_download.png" alt="다운로드 페이지">
+      <figcaption>다운로드 페이지</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>1.2 최초 마스터 비밀번호 설정</h3>
+    <p>앱을 <strong>처음 실행</strong>하면 마스터 비밀번호를 만드는 화면이 나옵니다.</p>
+    <ol>
+      <li>사용할 <strong>마스터 비밀번호</strong>를 입력하고, 아래 칸에 <strong>한 번 더</strong> 입력해 확인합니다.</li>
+      <li>(선택) 떠올릴 <strong>힌트</strong>를 적을 수 있습니다. 힌트에 비밀번호 자체를 적지 마세요.</li>
+      <li><strong>시작하기</strong>를 누르면 볼트가 생성됩니다.</li>
+    </ol>
+    <div class="tip">비밀번호는 <strong>영문·숫자·기호</strong> 기준입니다. 입력 시 한/영 상태를 확인하세요.</div>
+    <figure><img src="img/02_setup.png" alt="마스터 비밀번호 설정">
+      <figcaption>최초 마스터 비밀번호 설정</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>1.3 잠금 해제</h3>
+    <p>다음부터는 앱을 열 때 마스터 비밀번호로 잠금을 해제합니다. 👁 아이콘으로 입력값을 확인할 수 있고, 비밀번호가 기억나지 않으면 <strong>힌트 보기</strong>를 누르세요.</p>
+    <figure><img src="img/03_unlock.png" alt="잠금 해제 화면">
+      <figcaption>잠금 해제</figcaption></figure>
+  </section>
+
+  <!-- 2. CSV -->
+  <h2>2. 기존 메모 일괄 가져오기 (CSV)</h2>
+  <p>이미 정리해 둔 계정·메모가 있다면 <strong>CSV 파일</strong>로 한 번에 등록할 수 있습니다.</p>
+
+  <section class="step">
+    <h3>2.1 CSV 형식</h3>
+    <p>첫 줄은 <strong>머리글</strong>, 둘째 줄부터 데이터입니다. 열 순서:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>열</th><th>설명</th><th>예시</th></tr></thead>
+      <tbody>
+        <tr><td>제목 / title</td><td>메모 제목</td><td>네이버</td></tr>
+        <tr><td>내용 / contents</td><td>메모 내용</td><td>업무용 계정</td></tr>
+        <tr><td>비밀번호 / pw</td><td>비밀번호</td><td>pw1234</td></tr>
+        <tr><td>날짜(월/일)</td><td>일정 월/일 (선택)</td><td>7/17</td></tr>
+        <tr><td>연도 / year</td><td>일정 연도 (선택)</td><td>2002</td></tr>
+        <tr><td>종류 / kind</td><td>생일/반복/만기 (선택)</td><td>birthday</td></tr>
+        <tr><td>양력/음력</td><td>양력=solar, 음력=lunar</td><td>lunar</td></tr>
+      </tbody>
+    </table></div>
+    <pre><code>제목,내용,비밀번호,날짜(월/일),연도,생일/반복/만기,양력/음력
+title,contents,pw1234,7/17,2002,birthday,lunar</code></pre>
+    <div class="tip">파일은 <strong>UTF-8</strong>로 저장하세요(엑셀은 "CSV UTF-8"). 날짜·연도·종류·양력/음력 열은 비워도 됩니다.</div>
+  </section>
+
+  <section class="step">
+    <h3>2.2 샘플 내려받기</h3>
+    <p><strong>설정</strong> 탭 → <strong>CSV 일괄 등록</strong> 항목에서 <strong>CSV 샘플 받기</strong>를 눌러 예시 파일을 내려받고, 그 형식에 맞춰 데이터를 채웁니다.</p>
+    <figure><img src="img/04_csv_sample.png" alt="CSV 샘플 받기">
+      <figcaption>설정 → CSV 샘플 받기</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>2.3 파일 선택 &amp; 가져오기</h3>
+    <p><strong>CSV 일괄 등록</strong>을 눌러 준비한 파일을 선택하면, 가져오기가 끝난 뒤 <strong>추가된 개수</strong>가 표시되고 항목이 목록에 나타납니다.</p>
+    <figure><img src="img/05_csv_import.png" alt="가져오기 결과">
+      <figcaption>가져오기 결과</figcaption></figure>
+  </section>
+
+  <!-- 3. 메모 작성 -->
+  <h2>3. 메모 작성</h2>
+  <p>메모·일정·사이트·아이디·비밀번호는 <strong>한 화면</strong>에서 함께 입력합니다.</p>
+
+  <section class="step">
+    <h3>3.1 새 메모</h3>
+    <p><strong>비밀메모</strong> 목록에서 오른쪽 아래 <strong>＋</strong> 버튼을 눌러 새 메모를 시작합니다.</p>
+    <figure><img src="img/06_memo_list.png" alt="비밀메모 목록">
+      <figcaption>비밀메모 목록 + 등록(＋)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.2 제목·내용</h3>
+    <p><strong>제목</strong>과 <strong>내용</strong>을 입력합니다(둘 다 필수). 내용에 <code>#태그</code>를 적으면 나중에 검색·분류에 쓸 수 있습니다.</p>
+    <figure><img src="img/07_memo_edit.png" alt="메모 편집">
+      <figcaption>메모 편집 (제목·내용)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.3 사이트·아이디·비밀번호</h3>
+    <ol>
+      <li>하단 <strong>사이트</strong> 아이콘을 눌러 패널을 엽니다.</li>
+      <li><strong>사이트(URL)</strong>, <strong>아이디</strong>, <strong>비밀번호</strong>를 입력합니다.</li>
+      <li>비밀번호는 🎲 <strong>추천 생성</strong>으로 강력하게 만들 수 있고, 저장 후엔 마스킹되며 <strong>복사</strong> 버튼으로 복사합니다.</li>
+      <li>저장하면 URL 칸 오른쪽 <strong>🔗</strong> 버튼으로 기본 브라우저에서 사이트를 바로 열 수 있습니다.</li>
+    </ol>
+    <figure><img src="img/08_site_id_pw.png" alt="사이트·아이디·비밀번호">
+      <figcaption>사이트·아이디·비밀번호 (+🔗 사이트 열기)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.4 일정 등록</h3>
+    <p>하단 <strong>일정</strong> 아이콘을 눌러 <strong>날짜</strong>, 종류(기념일/생일/만기), <strong>양력·음력</strong>, 미리 알림을 설정합니다.</p>
+    <figure><img src="img/09_schedule.png" alt="일정 등록">
+      <figcaption>일정 등록</figcaption></figure>
+    <div class="note">ℹ️ <strong>일정이 등록된 메모는 비밀메모 목록에서는 숨겨지고 일정기록 화면에만 표시됩니다.</strong> 편집하려면 일정기록에서 해당 항목을 여세요.</div>
+  </section>
+
+  <!-- 부록 -->
+  <h2>안전하게 쓰기</h2>
+  <ul>
+    <li><strong>마스터 비밀번호</strong>는 복구가 불가능합니다 — 반드시 따로 안전하게 보관하세요.</li>
+    <li><strong>자동 잠금</strong>: 일정 시간 미사용 시 자동으로 잠깁니다(설정에서 조절).</li>
+    <li><strong>백업</strong>: 설정 → 백업 내보내기로 암호화 백업 파일을 만들어 두면 기기 교체·재설치 시 복원할 수 있습니다.</li>
+    <li>모든 데이터는 이 기기 안에만 있습니다 — 분실·초기화에 대비해 백업을 권장합니다.</li>
+  </ul>
+
+  </div>
+
+  <!-- ============================== English ============================== -->
+  <div data-lang="en">
+
+  <div class="hero">
+    <h1>Modora Desktop User Guide</h1>
+    <div class="ver">Version 1.3.0 · 2026-07</div>
+    <p>Modora keeps your sites, IDs, passwords, memos and schedules <strong>encrypted on your own device only</strong> (Argon2id · AES-256-GCM). Nothing is ever sent to a server.</p>
+  </div>
+
+  <div class="note">⚠️ <strong>If you forget your master password, your data cannot be recovered.</strong> Keep it somewhere safe.</div>
+
+  <h2>1. Install &amp; Get Started</h2>
+
+  <section class="step">
+    <h3>1.1 Download</h3>
+    <ol>
+      <li>Open <a href="/download/download.html"><strong>modora.btbz.ai/download</strong></a> in your browser.</li>
+      <li>Click your OS button to download the installer.
+        <ul>
+          <li><strong>Windows</strong>: run <code>ModoraSetup.exe</code> — the setup wizard will guide you. If SmartScreen appears, choose <strong>More info → Run anyway</strong>.</li>
+          <li><strong>macOS</strong>: open <code>Modora.dmg</code> and drag Modora into the <strong>Applications</strong> folder.</li>
+        </ul>
+      </li>
+    </ol>
+    <figure><img src="img/01_download.png" alt="Download page">
+      <figcaption>Download page</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>1.2 Set Your Master Password</h3>
+    <p>On <strong>first launch</strong>, a screen for creating your master password appears.</p>
+    <ol>
+      <li>Type the <strong>master password</strong> you want to use, then type it <strong>once more</strong> in the field below to confirm.</li>
+      <li>(Optional) Add a <strong>hint</strong> to jog your memory — never put the password itself in the hint.</li>
+      <li>Click <strong>Start</strong> to create your vault.</li>
+    </ol>
+    <div class="tip">Passwords use <strong>Latin letters, digits and symbols</strong> — check your keyboard's input language while typing.</div>
+    <figure><img src="img/02_setup.png" alt="Master password setup">
+      <figcaption>Set your master password</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>1.3 Unlock</h3>
+    <p>From then on, unlock the app with your master password when you open it. Use the 👁 icon to reveal what you typed, and if you can't remember the password, click <strong>Show hint</strong>.</p>
+    <figure><img src="img/03_unlock.png" alt="Unlock screen">
+      <figcaption>Unlock</figcaption></figure>
+  </section>
+
+  <h2>2. Bulk Import Memos (CSV)</h2>
+  <p>If you already keep a list of accounts and memos, you can register them all at once from a <strong>CSV file</strong>.</p>
+
+  <section class="step">
+    <h3>2.1 CSV Format</h3>
+    <p>Row 1 is the <strong>header</strong>; data starts on row 2. Column order:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Column</th><th>Meaning</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>제목 / title</td><td>Memo title</td><td>네이버</td></tr>
+        <tr><td>내용 / contents</td><td>Memo note</td><td>work account</td></tr>
+        <tr><td>비밀번호 / pw</td><td>Password</td><td>pw1234</td></tr>
+        <tr><td>date (m/d)</td><td>Schedule month/day (optional)</td><td>7/17</td></tr>
+        <tr><td>year</td><td>Schedule year (optional)</td><td>2002</td></tr>
+        <tr><td>kind</td><td>birthday/anniversary/expiry (optional)</td><td>birthday</td></tr>
+        <tr><td>calendar</td><td>solar / lunar</td><td>lunar</td></tr>
+      </tbody>
+    </table></div>
+    <pre><code>제목,내용,비밀번호,날짜(월/일),연도,생일/반복/만기,양력/음력
+title,contents,pw1234,7/17,2002,birthday,lunar</code></pre>
+    <div class="tip">Save the file as <strong>UTF-8</strong> (in Excel choose "CSV UTF-8"). The date/year/kind/calendar columns are optional.</div>
+  </section>
+
+  <section class="step">
+    <h3>2.2 Download the Sample</h3>
+    <p>Go to the <strong>Settings</strong> tab → <strong>Bulk import (CSV)</strong> section and click <strong>Download CSV sample</strong> to get the example file, then fill in your data using that format.</p>
+    <figure><img src="img/04_csv_sample.png" alt="Download CSV sample">
+      <figcaption>Settings → Download CSV sample</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>2.3 Pick a File &amp; Import</h3>
+    <p>Click <strong>Bulk import (CSV)</strong> and pick your prepared file; when the import finishes, the <strong>number of added items</strong> is shown and they appear in your list.</p>
+    <figure><img src="img/05_csv_import.png" alt="Import result">
+      <figcaption>Import result</figcaption></figure>
+  </section>
+
+  <h2>3. Creating Memos</h2>
+  <p>Memos, schedules, sites, IDs and passwords are all entered on <strong>one screen</strong>.</p>
+
+  <section class="step">
+    <h3>3.1 New Memo</h3>
+    <p>On the <strong>Secret memos</strong> list, tap the <strong>＋</strong> button (bottom-right) to start a new memo.</p>
+    <figure><img src="img/06_memo_list.png" alt="Secret memos list">
+      <figcaption>Secret memos list + New (＋)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.2 Title &amp; Note</h3>
+    <p>Enter a <strong>title</strong> and <strong>note</strong> (both required). Add <code>#tags</code> in the note to use for search and sorting later.</p>
+    <figure><img src="img/07_memo_edit.png" alt="Editing a memo">
+      <figcaption>Editing a memo (title · note)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.3 Site, ID &amp; Password</h3>
+    <ol>
+      <li>Tap the <strong>Site</strong> icon at the bottom to open the panel.</li>
+      <li>Enter the <strong>site (URL)</strong>, <strong>login ID</strong> and <strong>password</strong>.</li>
+      <li>Use 🎲 <strong>Suggest</strong> to generate a strong password; after saving, the password is masked — use the <strong>Copy</strong> button to copy it.</li>
+      <li>After saving, the <strong>🔗</strong> button next to the URL field opens the site directly in your default browser.</li>
+    </ol>
+    <figure><img src="img/08_site_id_pw.png" alt="Site, ID and password">
+      <figcaption>Site · Login ID · Password (+🔗 open site)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.4 Add a Schedule</h3>
+    <p>Tap the <strong>Schedules</strong> icon at the bottom and set the <strong>date</strong>, kind (anniversary/birthday/expiry), <strong>solar/lunar</strong> calendar and reminders.</p>
+    <figure><img src="img/09_schedule.png" alt="Adding a schedule">
+      <figcaption>Adding a schedule</figcaption></figure>
+    <div class="note">ℹ️ <strong>A memo that has a schedule is hidden from the Secret memos list and shown only on the Schedules screen</strong> — open it there to edit.</div>
+  </section>
+
+  <h2>Using It Safely</h2>
+  <ul>
+    <li>Your <strong>master password</strong> can't be recovered — be sure to store it safely somewhere else.</li>
+    <li><strong>Auto-lock</strong>: the app locks automatically after a period of inactivity (adjustable in Settings).</li>
+    <li><strong>Backup</strong>: Settings → Export backup creates an encrypted backup file you can restore after a device change or reinstall.</li>
+    <li>All data lives only on this device — keep a backup in case of loss or reset.</li>
+  </ul>
+
+  </div>
+
+  <!-- ============================== Tiếng Việt ============================== -->
+  <div data-lang="vi">
+
+  <div class="hero">
+    <h1>Hướng dẫn sử dụng Modora trên máy tính</h1>
+    <div class="ver">Phiên bản 1.3.0 · 2026-07</div>
+    <p>Modora là ứng dụng lưu trữ trang web, ID, mật khẩu cùng ghi chú và lịch trình <strong>được mã hóa chỉ trên thiết bị của bạn</strong> (Argon2id · AES-256-GCM). Dữ liệu không bao giờ được gửi đến bất kỳ máy chủ nào.</p>
+  </div>
+
+  <div class="note">⚠️ <strong>Nếu quên mật khẩu chính, bạn sẽ không thể khôi phục dữ liệu.</strong> Hãy lưu giữ mật khẩu ở nơi an toàn.</div>
+
+  <h2>1. Cài đặt và bắt đầu</h2>
+
+  <section class="step">
+    <h3>1.1 Tải xuống</h3>
+    <ol>
+      <li>Mở <a href="/download/download.html"><strong>modora.btbz.ai/download</strong></a> trong trình duyệt.</li>
+      <li>Nhấn nút tương ứng với hệ điều hành của bạn để tải tệp cài đặt.
+        <ul>
+          <li><strong>Windows</strong>: chạy <code>ModoraSetup.exe</code> — trình hướng dẫn cài đặt sẽ xuất hiện. Nếu SmartScreen cảnh báo, chọn <strong>More info → Run anyway (Thông tin thêm → Vẫn chạy)</strong>.</li>
+          <li><strong>macOS</strong>: mở <code>Modora.dmg</code> và kéo Modora vào thư mục <strong>Applications (Ứng dụng)</strong>.</li>
+        </ul>
+      </li>
+    </ol>
+    <figure><img src="img/01_download.png" alt="Trang tải xuống">
+      <figcaption>Trang tải xuống</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>1.2 Thiết lập mật khẩu chính lần đầu</h3>
+    <p>Khi <strong>chạy ứng dụng lần đầu</strong>, màn hình tạo mật khẩu chính sẽ xuất hiện.</p>
+    <ol>
+      <li>Nhập <strong>mật khẩu chính</strong> bạn muốn dùng, sau đó nhập <strong>thêm một lần nữa</strong> vào ô bên dưới để xác nhận.</li>
+      <li>(Tùy chọn) Bạn có thể ghi một <strong>gợi ý</strong> để dễ nhớ. Đừng ghi chính mật khẩu vào phần gợi ý.</li>
+      <li>Nhấn <strong>Bắt đầu</strong> để tạo kho lưu trữ.</li>
+    </ol>
+    <div class="tip">Mật khẩu dùng <strong>chữ Latinh, chữ số và ký hiệu</strong> — hãy kiểm tra ngôn ngữ bàn phím khi nhập.</div>
+    <figure><img src="img/02_setup.png" alt="Thiết lập mật khẩu chính">
+      <figcaption>Thiết lập mật khẩu chính lần đầu</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>1.3 Mở khóa</h3>
+    <p>Từ những lần sau, hãy nhập mật khẩu chính để mở khóa khi mở ứng dụng. Dùng biểu tượng 👁 để xem nội dung đã nhập; nếu không nhớ mật khẩu, nhấn <strong>Xem gợi ý</strong>.</p>
+    <figure><img src="img/03_unlock.png" alt="Màn hình mở khóa">
+      <figcaption>Mở khóa</figcaption></figure>
+  </section>
+
+  <h2>2. Nhập hàng loạt ghi chú có sẵn (CSV)</h2>
+  <p>Nếu bạn đã có sẵn danh sách tài khoản và ghi chú, bạn có thể đăng ký tất cả cùng lúc bằng <strong>tệp CSV</strong>.</p>
+
+  <section class="step">
+    <h3>2.1 Định dạng CSV</h3>
+    <p>Dòng đầu tiên là <strong>hàng tiêu đề</strong>; dữ liệu bắt đầu từ dòng thứ hai. Thứ tự cột:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Cột</th><th>Ý nghĩa</th><th>Ví dụ</th></tr></thead>
+      <tbody>
+        <tr><td>제목 / title</td><td>Tiêu đề ghi chú</td><td>네이버</td></tr>
+        <tr><td>내용 / contents</td><td>Nội dung ghi chú</td><td>tài khoản công việc</td></tr>
+        <tr><td>비밀번호 / pw</td><td>Mật khẩu</td><td>pw1234</td></tr>
+        <tr><td>ngày (tháng/ngày)</td><td>Tháng/ngày của lịch trình (tùy chọn)</td><td>7/17</td></tr>
+        <tr><td>năm / year</td><td>Năm của lịch trình (tùy chọn)</td><td>2002</td></tr>
+        <tr><td>loại / kind</td><td>sinh nhật/kỷ niệm/hết hạn (tùy chọn)</td><td>birthday</td></tr>
+        <tr><td>dương/âm lịch</td><td>dương lịch = solar, âm lịch = lunar</td><td>lunar</td></tr>
+      </tbody>
+    </table></div>
+    <pre><code>제목,내용,비밀번호,날짜(월/일),연도,생일/반복/만기,양력/음력
+title,contents,pw1234,7/17,2002,birthday,lunar</code></pre>
+    <div class="tip">Lưu tệp ở định dạng <strong>UTF-8</strong> (trong Excel chọn "CSV UTF-8"). Các cột ngày/năm/loại/dương-âm lịch có thể để trống.</div>
+  </section>
+
+  <section class="step">
+    <h3>2.2 Tải tệp mẫu</h3>
+    <p>Vào thẻ <strong>Cài đặt</strong> → mục <strong>Nhập hàng loạt CSV</strong>, nhấn <strong>Tải mẫu CSV</strong> để tải tệp ví dụ, rồi điền dữ liệu của bạn theo đúng định dạng đó.</p>
+    <figure><img src="img/04_csv_sample.png" alt="Tải mẫu CSV">
+      <figcaption>Cài đặt → Tải mẫu CSV</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>2.3 Chọn tệp &amp; nhập</h3>
+    <p>Nhấn <strong>Nhập hàng loạt CSV</strong> và chọn tệp đã chuẩn bị; sau khi nhập xong, <strong>số mục đã thêm</strong> sẽ hiển thị và các mục xuất hiện trong danh sách của bạn.</p>
+    <figure><img src="img/05_csv_import.png" alt="Kết quả nhập">
+      <figcaption>Kết quả nhập</figcaption></figure>
+  </section>
+
+  <h2>3. Tạo ghi chú</h2>
+  <p>Ghi chú, lịch trình, trang web, ID và mật khẩu đều được nhập trên <strong>cùng một màn hình</strong>.</p>
+
+  <section class="step">
+    <h3>3.1 Ghi chú mới</h3>
+    <p>Trong danh sách <strong>Ghi chú bí mật</strong>, nhấn nút <strong>＋</strong> ở góc dưới bên phải để bắt đầu ghi chú mới.</p>
+    <figure><img src="img/06_memo_list.png" alt="Danh sách ghi chú bí mật">
+      <figcaption>Danh sách ghi chú bí mật + tạo mới (＋)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.2 Tiêu đề · nội dung</h3>
+    <p>Nhập <strong>tiêu đề</strong> và <strong>nội dung</strong> (cả hai đều bắt buộc). Thêm <code>#thẻ</code> trong nội dung để dùng cho tìm kiếm và phân loại sau này.</p>
+    <figure><img src="img/07_memo_edit.png" alt="Chỉnh sửa ghi chú">
+      <figcaption>Chỉnh sửa ghi chú (tiêu đề · nội dung)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.3 Trang web · ID · mật khẩu</h3>
+    <ol>
+      <li>Nhấn biểu tượng <strong>Trang web</strong> ở dưới cùng để mở bảng nhập.</li>
+      <li>Nhập <strong>trang web (URL)</strong>, <strong>ID</strong> và <strong>mật khẩu</strong>.</li>
+      <li>Có thể tạo mật khẩu mạnh bằng 🎲 <strong>Gợi ý</strong>; sau khi lưu, mật khẩu được che và bạn dùng nút <strong>Sao chép</strong> để sao chép.</li>
+      <li>Sau khi lưu, nút <strong>🔗</strong> bên phải ô URL sẽ mở trang web ngay trong trình duyệt mặc định.</li>
+    </ol>
+    <figure><img src="img/08_site_id_pw.png" alt="Trang web, ID và mật khẩu">
+      <figcaption>Trang web · ID · mật khẩu (+🔗 mở trang web)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.4 Đăng ký lịch trình</h3>
+    <p>Nhấn biểu tượng <strong>Lịch trình</strong> ở dưới cùng để đặt <strong>ngày</strong>, loại (kỷ niệm/sinh nhật/hết hạn), <strong>dương lịch/âm lịch</strong> và lời nhắc trước.</p>
+    <figure><img src="img/09_schedule.png" alt="Đăng ký lịch trình">
+      <figcaption>Đăng ký lịch trình</figcaption></figure>
+    <div class="note">ℹ️ <strong>Ghi chú đã có lịch trình sẽ bị ẩn khỏi danh sách Ghi chú bí mật và chỉ hiển thị trên màn hình Lịch trình.</strong> Để chỉnh sửa, hãy mở mục đó từ màn hình Lịch trình.</div>
+  </section>
+
+  <h2>Sử dụng an toàn</h2>
+  <ul>
+    <li><strong>Mật khẩu chính</strong> không thể khôi phục — hãy nhớ lưu giữ riêng ở nơi an toàn.</li>
+    <li><strong>Tự động khóa</strong>: ứng dụng tự khóa sau một thời gian không sử dụng (điều chỉnh trong Cài đặt).</li>
+    <li><strong>Sao lưu</strong>: Cài đặt → Xuất bản sao lưu sẽ tạo tệp sao lưu mã hóa để bạn khôi phục khi đổi thiết bị hoặc cài lại.</li>
+    <li>Mọi dữ liệu chỉ nằm trên thiết bị này — nên sao lưu để đề phòng mất mát hoặc đặt lại máy.</li>
+  </ul>
+
+  </div>
+
+  <!-- ============================== Español ============================== -->
+  <div data-lang="es">
+
+  <div class="hero">
+    <h1>Guía del usuario de Modora para escritorio</h1>
+    <div class="ver">Versión 1.3.0 · 2026-07</div>
+    <p>Modora es una aplicación que guarda tus sitios, ID, contraseñas, notas y agenda <strong>cifrados únicamente en tu dispositivo</strong> (Argon2id · AES-256-GCM). Los datos nunca se envían a ningún servidor.</p>
+  </div>
+
+  <div class="note">⚠️ <strong>Si olvidas tu contraseña maestra, los datos no se pueden recuperar.</strong> Guárdala aparte en un lugar seguro.</div>
+
+  <h2>1. Instalación y primeros pasos</h2>
+
+  <section class="step">
+    <h3>1.1 Descargar</h3>
+    <ol>
+      <li>Abre <a href="/download/download.html"><strong>modora.btbz.ai/download</strong></a> en tu navegador.</li>
+      <li>Pulsa el botón de tu sistema operativo para descargar el instalador.
+        <ul>
+          <li><strong>Windows</strong>: ejecuta <code>ModoraSetup.exe</code> — se abrirá el asistente de instalación. Si aparece SmartScreen, elige <strong>Más información → Ejecutar de todas formas</strong>.</li>
+          <li><strong>macOS</strong>: abre <code>Modora.dmg</code> y arrastra Modora a la carpeta <strong>Aplicaciones</strong>.</li>
+        </ul>
+      </li>
+    </ol>
+    <figure><img src="img/01_download.png" alt="Página de descarga">
+      <figcaption>Página de descarga</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>1.2 Configurar la contraseña maestra</h3>
+    <p>Al <strong>abrir la aplicación por primera vez</strong> aparece la pantalla para crear la contraseña maestra.</p>
+    <ol>
+      <li>Escribe la <strong>contraseña maestra</strong> que usarás y escríbela <strong>una vez más</strong> en el campo inferior para confirmarla.</li>
+      <li>(Opcional) Puedes añadir una <strong>pista</strong> para recordarla. Nunca escribas la contraseña misma en la pista.</li>
+      <li>Pulsa <strong>Comenzar</strong> para crear tu bóveda.</li>
+    </ol>
+    <div class="tip">Las contraseñas usan <strong>letras latinas, números y símbolos</strong> — comprueba el idioma del teclado al escribir.</div>
+    <figure><img src="img/02_setup.png" alt="Configuración de la contraseña maestra">
+      <figcaption>Configuración inicial de la contraseña maestra</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>1.3 Desbloquear</h3>
+    <p>A partir de entonces, desbloquea la aplicación con tu contraseña maestra al abrirla. Con el icono 👁 puedes ver lo que escribiste; si no recuerdas la contraseña, pulsa <strong>Ver pista</strong>.</p>
+    <figure><img src="img/03_unlock.png" alt="Pantalla de desbloqueo">
+      <figcaption>Desbloquear</figcaption></figure>
+  </section>
+
+  <h2>2. Importar notas existentes en bloque (CSV)</h2>
+  <p>Si ya tienes una lista de cuentas y notas, puedes registrarlas todas a la vez con un <strong>archivo CSV</strong>.</p>
+
+  <section class="step">
+    <h3>2.1 Formato CSV</h3>
+    <p>La primera fila es el <strong>encabezado</strong>; los datos empiezan en la segunda fila. Orden de columnas:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Columna</th><th>Significado</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td>제목 / title</td><td>Título de la nota</td><td>네이버</td></tr>
+        <tr><td>내용 / contents</td><td>Contenido de la nota</td><td>cuenta de trabajo</td></tr>
+        <tr><td>비밀번호 / pw</td><td>Contraseña</td><td>pw1234</td></tr>
+        <tr><td>fecha (mes/día)</td><td>Mes/día de la agenda (opcional)</td><td>7/17</td></tr>
+        <tr><td>año / year</td><td>Año de la agenda (opcional)</td><td>2002</td></tr>
+        <tr><td>tipo / kind</td><td>cumpleaños/aniversario/vencimiento (opcional)</td><td>birthday</td></tr>
+        <tr><td>calendario</td><td>solar = solar, lunar = lunar</td><td>lunar</td></tr>
+      </tbody>
+    </table></div>
+    <pre><code>제목,내용,비밀번호,날짜(월/일),연도,생일/반복/만기,양력/음력
+title,contents,pw1234,7/17,2002,birthday,lunar</code></pre>
+    <div class="tip">Guarda el archivo en <strong>UTF-8</strong> (en Excel elige "CSV UTF-8"). Las columnas de fecha/año/tipo/calendario pueden quedar vacías.</div>
+  </section>
+
+  <section class="step">
+    <h3>2.2 Descargar la plantilla</h3>
+    <p>Ve a la pestaña <strong>Ajustes</strong> → sección <strong>Importación masiva CSV</strong> y pulsa <strong>Descargar plantilla CSV</strong> para obtener el archivo de ejemplo; luego rellena tus datos con ese formato.</p>
+    <figure><img src="img/04_csv_sample.png" alt="Descargar plantilla CSV">
+      <figcaption>Ajustes → Descargar plantilla CSV</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>2.3 Elegir archivo e importar</h3>
+    <p>Pulsa <strong>Importación masiva CSV</strong> y elige el archivo preparado; al terminar la importación se muestra el <strong>número de elementos añadidos</strong> y estos aparecen en tu lista.</p>
+    <figure><img src="img/05_csv_import.png" alt="Resultado de la importación">
+      <figcaption>Resultado de la importación</figcaption></figure>
+  </section>
+
+  <h2>3. Crear notas</h2>
+  <p>Las notas, la agenda, los sitios, los ID y las contraseñas se introducen juntos en <strong>una sola pantalla</strong>.</p>
+
+  <section class="step">
+    <h3>3.1 Nueva nota</h3>
+    <p>En la lista de <strong>Notas secretas</strong>, pulsa el botón <strong>＋</strong> (abajo a la derecha) para empezar una nota nueva.</p>
+    <figure><img src="img/06_memo_list.png" alt="Lista de notas secretas">
+      <figcaption>Lista de notas secretas + nueva (＋)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.2 Título y contenido</h3>
+    <p>Escribe el <strong>título</strong> y el <strong>contenido</strong> (ambos obligatorios). Añade <code>#etiquetas</code> en el contenido para buscar y clasificar después.</p>
+    <figure><img src="img/07_memo_edit.png" alt="Edición de una nota">
+      <figcaption>Edición de una nota (título · contenido)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.3 Sitio · ID · contraseña</h3>
+    <ol>
+      <li>Pulsa el icono <strong>Sitio</strong> en la parte inferior para abrir el panel.</li>
+      <li>Introduce el <strong>sitio (URL)</strong>, el <strong>ID</strong> y la <strong>contraseña</strong>.</li>
+      <li>Puedes generar una contraseña fuerte con 🎲 <strong>Sugerir</strong>; tras guardar, la contraseña queda enmascarada y se copia con el botón <strong>Copiar</strong>.</li>
+      <li>Después de guardar, el botón <strong>🔗</strong> a la derecha del campo URL abre el sitio directamente en tu navegador predeterminado.</li>
+    </ol>
+    <figure><img src="img/08_site_id_pw.png" alt="Sitio, ID y contraseña">
+      <figcaption>Sitio · ID · contraseña (+🔗 abrir sitio)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.4 Añadir a la agenda</h3>
+    <p>Pulsa el icono <strong>Agenda</strong> en la parte inferior y configura la <strong>fecha</strong>, el tipo (aniversario/cumpleaños/vencimiento), el calendario <strong>solar/lunar</strong> y los recordatorios.</p>
+    <figure><img src="img/09_schedule.png" alt="Añadir a la agenda">
+      <figcaption>Añadir a la agenda</figcaption></figure>
+    <div class="note">ℹ️ <strong>Una nota con fecha de agenda se oculta de la lista de Notas secretas y solo se muestra en la pantalla de Agenda.</strong> Para editarla, ábrela desde esa pantalla.</div>
+  </section>
+
+  <h2>Uso seguro</h2>
+  <ul>
+    <li>La <strong>contraseña maestra</strong> no se puede recuperar — guárdala aparte en un lugar seguro.</li>
+    <li><strong>Bloqueo automático</strong>: la aplicación se bloquea tras un periodo de inactividad (ajustable en Ajustes).</li>
+    <li><strong>Copia de seguridad</strong>: Ajustes → Exportar copia de seguridad crea un archivo cifrado que puedes restaurar al cambiar de dispositivo o reinstalar.</li>
+    <li>Todos los datos están solo en este dispositivo — se recomienda mantener una copia de seguridad por si se pierde o se restablece.</li>
+  </ul>
+
+  </div>
+
+  <!-- ============================== Русский ============================== -->
+  <div data-lang="ru">
+
+  <div class="hero">
+    <h1>Руководство пользователя Modora для компьютера</h1>
+    <div class="ver">Версия 1.3.0 · 2026-07</div>
+    <p>Modora — это приложение, которое хранит сайты, логины, пароли, заметки и расписание <strong>в зашифрованном виде только на вашем устройстве</strong> (Argon2id · AES-256-GCM). Данные никогда не передаются ни на какие серверы.</p>
+  </div>
+
+  <div class="note">⚠️ <strong>Если вы забудете мастер-пароль, восстановить данные будет невозможно.</strong> Храните его отдельно в надёжном месте.</div>
+
+  <h2>1. Установка и начало работы</h2>
+
+  <section class="step">
+    <h3>1.1 Скачать</h3>
+    <ol>
+      <li>Откройте в браузере <a href="/download/download.html"><strong>modora.btbz.ai/download</strong></a>.</li>
+      <li>Нажмите кнопку своей операционной системы, чтобы скачать установочный файл.
+        <ul>
+          <li><strong>Windows</strong>: запустите <code>ModoraSetup.exe</code> — откроется мастер установки. Если появится предупреждение SmartScreen, выберите <strong>Подробнее → Выполнить в любом случае</strong>.</li>
+          <li><strong>macOS</strong>: откройте <code>Modora.dmg</code> и перетащите Modora в папку <strong>Программы</strong>.</li>
+        </ul>
+      </li>
+    </ol>
+    <figure><img src="img/01_download.png" alt="Страница загрузки">
+      <figcaption>Страница загрузки</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>1.2 Первичная установка мастер-пароля</h3>
+    <p>При <strong>первом запуске</strong> приложения появится экран создания мастер-пароля.</p>
+    <ol>
+      <li>Введите <strong>мастер-пароль</strong>, который будете использовать, и повторите его <strong>ещё раз</strong> в поле ниже для подтверждения.</li>
+      <li>(Необязательно) Можно добавить <strong>подсказку</strong> для памяти. Никогда не записывайте сам пароль в подсказку.</li>
+      <li>Нажмите <strong>Начать</strong>, чтобы создать хранилище.</li>
+    </ol>
+    <div class="tip">Пароль состоит из <strong>латинских букв, цифр и символов</strong> — проверяйте раскладку клавиатуры при вводе.</div>
+    <figure><img src="img/02_setup.png" alt="Установка мастер-пароля">
+      <figcaption>Первичная установка мастер-пароля</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>1.3 Разблокировка</h3>
+    <p>В дальнейшем при открытии приложения вводите мастер-пароль для разблокировки. Значок 👁 показывает введённый текст; если вы не помните пароль, нажмите <strong>Показать подсказку</strong>.</p>
+    <figure><img src="img/03_unlock.png" alt="Экран разблокировки">
+      <figcaption>Разблокировка</figcaption></figure>
+  </section>
+
+  <h2>2. Массовый импорт заметок (CSV)</h2>
+  <p>Если у вас уже есть список учётных записей и заметок, их можно добавить все сразу из <strong>файла CSV</strong>.</p>
+
+  <section class="step">
+    <h3>2.1 Формат CSV</h3>
+    <p>Первая строка — <strong>заголовок</strong>; данные начинаются со второй строки. Порядок столбцов:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Столбец</th><th>Описание</th><th>Пример</th></tr></thead>
+      <tbody>
+        <tr><td>제목 / title</td><td>Заголовок заметки</td><td>네이버</td></tr>
+        <tr><td>내용 / contents</td><td>Текст заметки</td><td>рабочая учётная запись</td></tr>
+        <tr><td>비밀번호 / pw</td><td>Пароль</td><td>pw1234</td></tr>
+        <tr><td>дата (месяц/день)</td><td>Месяц/день расписания (необязательно)</td><td>7/17</td></tr>
+        <tr><td>год / year</td><td>Год расписания (необязательно)</td><td>2002</td></tr>
+        <tr><td>тип / kind</td><td>день рождения/годовщина/срок действия (необязательно)</td><td>birthday</td></tr>
+        <tr><td>календарь</td><td>солнечный = solar, лунный = lunar</td><td>lunar</td></tr>
+      </tbody>
+    </table></div>
+    <pre><code>제목,내용,비밀번호,날짜(월/일),연도,생일/반복/만기,양력/음력
+title,contents,pw1234,7/17,2002,birthday,lunar</code></pre>
+    <div class="tip">Сохраняйте файл в кодировке <strong>UTF-8</strong> (в Excel выберите «CSV UTF-8»). Столбцы даты, года, типа и календаря можно оставить пустыми.</div>
+  </section>
+
+  <section class="step">
+    <h3>2.2 Скачивание образца</h3>
+    <p>Откройте вкладку <strong>Настройки</strong> → раздел <strong>Массовый импорт CSV</strong> и нажмите <strong>Скачать образец CSV</strong>, чтобы получить файл-пример, затем заполните данные по этому формату.</p>
+    <figure><img src="img/04_csv_sample.png" alt="Скачать образец CSV">
+      <figcaption>Настройки → Скачать образец CSV</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>2.3 Выбор файла и импорт</h3>
+    <p>Нажмите <strong>Массовый импорт CSV</strong> и выберите подготовленный файл; по завершении импорта будет показано <strong>число добавленных записей</strong>, и они появятся в вашем списке.</p>
+    <figure><img src="img/05_csv_import.png" alt="Результат импорта">
+      <figcaption>Результат импорта</figcaption></figure>
+  </section>
+
+  <h2>3. Создание заметок</h2>
+  <p>Заметки, расписание, сайты, логины и пароли вводятся вместе на <strong>одном экране</strong>.</p>
+
+  <section class="step">
+    <h3>3.1 Новая заметка</h3>
+    <p>В списке <strong>Секретные заметки</strong> нажмите кнопку <strong>＋</strong> в правом нижнем углу, чтобы создать новую заметку.</p>
+    <figure><img src="img/06_memo_list.png" alt="Список секретных заметок">
+      <figcaption>Список секретных заметок + создание (＋)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.2 Заголовок и текст</h3>
+    <p>Введите <strong>заголовок</strong> и <strong>текст</strong> (оба обязательны). Добавьте в текст <code>#теги</code> — они пригодятся для поиска и сортировки.</p>
+    <figure><img src="img/07_memo_edit.png" alt="Редактирование заметки">
+      <figcaption>Редактирование заметки (заголовок · текст)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.3 Сайт · логин · пароль</h3>
+    <ol>
+      <li>Нажмите значок <strong>Сайт</strong> внизу, чтобы открыть панель.</li>
+      <li>Введите <strong>сайт (URL)</strong>, <strong>логин</strong> и <strong>пароль</strong>.</li>
+      <li>Надёжный пароль можно создать кнопкой 🎲 <strong>Предложить</strong>; после сохранения пароль маскируется — используйте кнопку <strong>Копировать</strong>.</li>
+      <li>После сохранения кнопка <strong>🔗</strong> справа от поля URL открывает сайт прямо в браузере по умолчанию.</li>
+    </ol>
+    <figure><img src="img/08_site_id_pw.png" alt="Сайт, логин и пароль">
+      <figcaption>Сайт · логин · пароль (+🔗 открыть сайт)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.4 Добавление в расписание</h3>
+    <p>Нажмите значок <strong>Расписание</strong> внизу и задайте <strong>дату</strong>, тип (годовщина/день рождения/срок действия), <strong>солнечный или лунный календарь</strong> и напоминания.</p>
+    <figure><img src="img/09_schedule.png" alt="Добавление в расписание">
+      <figcaption>Добавление в расписание</figcaption></figure>
+    <div class="note">ℹ️ <strong>Заметка с расписанием скрывается из списка секретных заметок и отображается только на экране расписания.</strong> Чтобы отредактировать её, откройте запись там.</div>
+  </section>
+
+  <h2>Безопасное использование</h2>
+  <ul>
+    <li><strong>Мастер-пароль</strong> восстановить невозможно — обязательно храните его отдельно в надёжном месте.</li>
+    <li><strong>Автоблокировка</strong>: приложение автоматически блокируется после периода бездействия (настраивается в настройках).</li>
+    <li><strong>Резервная копия</strong>: Настройки → Экспорт резервной копии создаёт зашифрованный файл, из которого можно восстановить данные при смене устройства или переустановке.</li>
+    <li>Все данные находятся только на этом устройстве — рекомендуем делать резервные копии на случай утери или сброса.</li>
+  </ul>
+
+  </div>
+
+  <!-- ============================== हिन्दी ============================== -->
+  <div data-lang="hi">
+
+  <div class="hero">
+    <h1>Modora डेस्कटॉप उपयोगकर्ता गाइड</h1>
+    <div class="ver">संस्करण 1.3.0 · 2026-07</div>
+    <p>Modora एक ऐसा ऐप है जो आपकी साइटें, ID, पासवर्ड, नोट्स और शेड्यूल <strong>केवल आपके डिवाइस पर एन्क्रिप्ट करके</strong> (Argon2id · AES-256-GCM) सुरक्षित रखता है। डेटा कभी किसी सर्वर पर नहीं भेजा जाता।</p>
+  </div>
+
+  <div class="note">⚠️ <strong>यदि आप मास्टर पासवर्ड भूल जाते हैं, तो डेटा पुनर्प्राप्त नहीं किया जा सकता।</strong> इसे किसी सुरक्षित स्थान पर अलग से रखें।</div>
+
+  <h2>1. इंस्टॉल और शुरुआत</h2>
+
+  <section class="step">
+    <h3>1.1 डाउनलोड</h3>
+    <ol>
+      <li>ब्राउज़र में <a href="/download/download.html"><strong>modora.btbz.ai/download</strong></a> खोलें।</li>
+      <li>अपने ऑपरेटिंग सिस्टम का बटन दबाकर इंस्टॉलर फ़ाइल डाउनलोड करें।
+        <ul>
+          <li><strong>Windows</strong>: <code>ModoraSetup.exe</code> चलाएँ — इंस्टॉल विज़ार्ड शुरू होगा। SmartScreen चेतावनी दिखे तो <strong>अधिक जानकारी → फिर भी चलाएँ</strong> चुनें।</li>
+          <li><strong>macOS</strong>: <code>Modora.dmg</code> खोलें और Modora को <strong>Applications</strong> फ़ोल्डर में खींचें।</li>
+        </ul>
+      </li>
+    </ol>
+    <figure><img src="img/01_download.png" alt="डाउनलोड पेज">
+      <figcaption>डाउनलोड पेज</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>1.2 पहली बार मास्टर पासवर्ड सेट करना</h3>
+    <p>ऐप को <strong>पहली बार चलाने</strong> पर मास्टर पासवर्ड बनाने की स्क्रीन दिखाई देती है।</p>
+    <ol>
+      <li>अपना <strong>मास्टर पासवर्ड</strong> दर्ज करें और पुष्टि के लिए नीचे वाले बॉक्स में <strong>एक बार फिर</strong> दर्ज करें।</li>
+      <li>(वैकल्पिक) याद रखने के लिए कोई <strong>संकेत</strong> लिख सकते हैं। संकेत में पासवर्ड स्वयं न लिखें।</li>
+      <li><strong>शुरू करें</strong> दबाते ही आपका वॉल्ट बन जाता है।</li>
+    </ol>
+    <div class="tip">पासवर्ड में <strong>अंग्रेज़ी अक्षर, अंक और चिह्न</strong> इस्तेमाल होते हैं — टाइप करते समय कीबोर्ड की भाषा जाँच लें।</div>
+    <figure><img src="img/02_setup.png" alt="मास्टर पासवर्ड सेटअप">
+      <figcaption>पहली बार मास्टर पासवर्ड सेट करना</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>1.3 अनलॉक</h3>
+    <p>इसके बाद ऐप खोलते समय मास्टर पासवर्ड से अनलॉक करें। 👁 आइकन से दर्ज किया गया टेक्स्ट देख सकते हैं; पासवर्ड याद न आए तो <strong>संकेत देखें</strong> दबाएँ।</p>
+    <figure><img src="img/03_unlock.png" alt="अनलॉक स्क्रीन">
+      <figcaption>अनलॉक</figcaption></figure>
+  </section>
+
+  <h2>2. मौजूदा नोट्स एक साथ आयात करना (CSV)</h2>
+  <p>यदि आपके पास पहले से खातों/नोट्स की सूची है, तो <strong>CSV फ़ाइल</strong> से सब एक साथ दर्ज कर सकते हैं।</p>
+
+  <section class="step">
+    <h3>2.1 CSV प्रारूप</h3>
+    <p>पहली पंक्ति <strong>हेडर</strong> है; डेटा दूसरी पंक्ति से शुरू होता है। कॉलम क्रम:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>कॉलम</th><th>विवरण</th><th>उदाहरण</th></tr></thead>
+      <tbody>
+        <tr><td>제목 / title</td><td>नोट का शीर्षक</td><td>네이버</td></tr>
+        <tr><td>내용 / contents</td><td>नोट की सामग्री</td><td>कार्य खाता</td></tr>
+        <tr><td>비밀번호 / pw</td><td>पासवर्ड</td><td>pw1234</td></tr>
+        <tr><td>तिथि (माह/दिन)</td><td>शेड्यूल का माह/दिन (वैकल्पिक)</td><td>7/17</td></tr>
+        <tr><td>वर्ष / year</td><td>शेड्यूल का वर्ष (वैकल्पिक)</td><td>2002</td></tr>
+        <tr><td>प्रकार / kind</td><td>जन्मदिन/वर्षगाँठ/समाप्ति (वैकल्पिक)</td><td>birthday</td></tr>
+        <tr><td>सौर/चंद्र</td><td>सौर = solar, चंद्र = lunar</td><td>lunar</td></tr>
+      </tbody>
+    </table></div>
+    <pre><code>제목,내용,비밀번호,날짜(월/일),연도,생일/반복/만기,양력/음력
+title,contents,pw1234,7/17,2002,birthday,lunar</code></pre>
+    <div class="tip">फ़ाइल को <strong>UTF-8</strong> में सहेजें (Excel में "CSV UTF-8" चुनें)। तिथि, वर्ष, प्रकार और सौर/चंद्र कॉलम खाली छोड़े जा सकते हैं।</div>
+  </section>
+
+  <section class="step">
+    <h3>2.2 नमूना डाउनलोड करना</h3>
+    <p><strong>सेटिंग्स</strong> टैब → <strong>CSV एक साथ आयात</strong> अनुभाग में <strong>CSV नमूना डाउनलोड करें</strong> दबाकर उदाहरण फ़ाइल लें और उसी प्रारूप में अपना डेटा भरें।</p>
+    <figure><img src="img/04_csv_sample.png" alt="CSV नमूना डाउनलोड">
+      <figcaption>सेटिंग्स → CSV नमूना डाउनलोड</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>2.3 फ़ाइल चुनना और आयात</h3>
+    <p><strong>CSV एक साथ आयात</strong> दबाकर तैयार की गई फ़ाइल चुनें; आयात पूरा होने पर <strong>जोड़े गए आइटम की संख्या</strong> दिखाई देती है और वे आपकी सूची में आ जाते हैं।</p>
+    <figure><img src="img/05_csv_import.png" alt="आयात का परिणाम">
+      <figcaption>आयात का परिणाम</figcaption></figure>
+  </section>
+
+  <h2>3. नोट बनाना</h2>
+  <p>नोट्स, शेड्यूल, साइट, ID और पासवर्ड सब <strong>एक ही स्क्रीन</strong> पर दर्ज किए जाते हैं।</p>
+
+  <section class="step">
+    <h3>3.1 नया नोट</h3>
+    <p><strong>गुप्त नोट्स</strong> सूची में नीचे दाईं ओर <strong>＋</strong> बटन दबाकर नया नोट शुरू करें।</p>
+    <figure><img src="img/06_memo_list.png" alt="गुप्त नोट्स सूची">
+      <figcaption>गुप्त नोट्स सूची + नया (＋)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.2 शीर्षक · सामग्री</h3>
+    <p><strong>शीर्षक</strong> और <strong>सामग्री</strong> दर्ज करें (दोनों अनिवार्य)। सामग्री में <code>#टैग</code> लिखने पर बाद में खोज और वर्गीकरण में काम आता है।</p>
+    <figure><img src="img/07_memo_edit.png" alt="नोट संपादन">
+      <figcaption>नोट संपादन (शीर्षक · सामग्री)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.3 साइट · ID · पासवर्ड</h3>
+    <ol>
+      <li>नीचे <strong>साइट</strong> आइकन दबाकर पैनल खोलें।</li>
+      <li><strong>साइट (URL)</strong>, <strong>ID</strong> और <strong>पासवर्ड</strong> दर्ज करें।</li>
+      <li>🎲 <strong>सुझाव</strong> से मज़बूत पासवर्ड बना सकते हैं; सहेजने के बाद पासवर्ड छिपा रहता है और <strong>कॉपी</strong> बटन से कॉपी होता है।</li>
+      <li>सहेजने के बाद URL बॉक्स के दाईं ओर <strong>🔗</strong> बटन से साइट सीधे डिफ़ॉल्ट ब्राउज़र में खुलती है।</li>
+    </ol>
+    <figure><img src="img/08_site_id_pw.png" alt="साइट, ID और पासवर्ड">
+      <figcaption>साइट · ID · पासवर्ड (+🔗 साइट खोलें)</figcaption></figure>
+  </section>
+
+  <section class="step">
+    <h3>3.4 शेड्यूल जोड़ना</h3>
+    <p>नीचे <strong>शेड्यूल</strong> आइकन दबाकर <strong>तिथि</strong>, प्रकार (वर्षगाँठ/जन्मदिन/समाप्ति), <strong>सौर/चंद्र कैलेंडर</strong> और रिमाइंडर सेट करें।</p>
+    <figure><img src="img/09_schedule.png" alt="शेड्यूल जोड़ना">
+      <figcaption>शेड्यूल जोड़ना</figcaption></figure>
+    <div class="note">ℹ️ <strong>जिस नोट में शेड्यूल जुड़ा है, वह गुप्त नोट्स सूची से छिप जाता है और केवल शेड्यूल स्क्रीन पर दिखता है।</strong> संपादित करने के लिए उसे शेड्यूल स्क्रीन से खोलें।</div>
+  </section>
+
+  <h2>सुरक्षित उपयोग</h2>
+  <ul>
+    <li><strong>मास्टर पासवर्ड</strong> पुनर्प्राप्त नहीं किया जा सकता — इसे अवश्य किसी सुरक्षित स्थान पर अलग से रखें।</li>
+    <li><strong>ऑटो-लॉक</strong>: कुछ समय उपयोग न होने पर ऐप अपने आप लॉक हो जाता है (सेटिंग्स में समायोज्य)।</li>
+    <li><strong>बैकअप</strong>: सेटिंग्स → बैकअप निर्यात से एन्क्रिप्टेड बैकअप फ़ाइल बनाएँ; डिवाइस बदलने या दोबारा इंस्टॉल करने पर उससे पुनर्स्थापित कर सकते हैं।</li>
+    <li>सारा डेटा केवल इसी डिवाइस पर रहता है — खोने या रीसेट की स्थिति के लिए बैकअप रखने की सलाह दी जाती है।</li>
+  </ul>
+
+  </div>
+
+  <footer>
+    © Modora ·
+    <a href="/">Home</a> ·
+    <a href="/download/download.html"><span class="i18n-ko">다운로드</span><span class="i18n-en">Download</span><span class="i18n-vi">Tải xuống</span><span class="i18n-es">Descargar</span><span class="i18n-ru">Скачать</span><span class="i18n-hi">डाउनलोड</span></a> ·
+    <a href="/privacy.html"><span class="i18n-ko">개인정보처리방침</span><span class="i18n-en">Privacy</span><span class="i18n-vi">Chính sách quyền riêng tư</span><span class="i18n-es">Privacidad</span><span class="i18n-ru">Конфиденциальность</span><span class="i18n-hi">गोपनीयता नीति</span></a> ·
+    <a href="/guide/user_guide_1.pdf">PDF</a> ·
+    <a href="mailto:fremdung@gmail.com">fremdung@gmail.com</a>
+  </footer>
+
+</div>
+
+<script>
+  var LANGS = ['ko','en','vi','es','ru','hi'];
+  function setLang(l) {
+    if (LANGS.indexOf(l) < 0) l = 'en';
+    document.documentElement.setAttribute('data-show', l);
+    document.documentElement.setAttribute('lang', l);
+    var sel = document.getElementById('lang-select'); if (sel) sel.value = l;
+    try { localStorage.setItem('modora-lang', l); } catch (e) {}
+  }
+  (function () {
+    var saved = null; try { saved = localStorage.getItem('modora-lang'); } catch (e) {}
+    if (LANGS.indexOf(saved) < 0) saved = null;
+    var nav = (navigator.language || 'en').toLowerCase().slice(0, 2);
+    setLang(saved || (LANGS.indexOf(nav) >= 0 ? nav : 'en'));
+  })();
+</script>
+</body>
+</html>
