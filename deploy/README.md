@@ -27,6 +27,7 @@ rsync -az index.html privacy.html reviews.html qna.html amb-mail:/var/www/modora
 rsync -az download/download.html amb-mail:/var/www/modora.btbz.ai/html/download/   # 설치파일 폴더 — html만!
 cd .. && rsync -az admin/ amb-mail:/var/www/btbz.ai/html/admin/
 cd www.btbz.ai && rsync -az index.html robots.txt sitemap.xml 404.html og-image.png favicon.ico apple-touch-icon.png amb-mail:/var/www/btbz.ai/html/
+rsync -az --exclude '.DS_Store' service/ amb-mail:/var/www/btbz.ai/html/service/   # 서비스 목록 + ABC리포트 미리보기
 ```
 
 ### nginx

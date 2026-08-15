@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko" data-show="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서비스 | Services — BTBZ</title>
+<meta name="description" content="BTBZ의 서비스 — Modora(로컬 우선 비밀메모·비밀번호 앱)와 ABC리포트(해외시장 상품 인텔리전스). | BTBZ services — Modora and ABC Report.">
+<link rel="canonical" href="https://www.btbz.ai/service/">
+<meta property="og:title" content="서비스 | Services — BTBZ">
+<meta property="og:description" content="BTBZ의 서비스 — Modora와 ABC리포트. | BTBZ services — Modora and ABC Report.">
+<meta property="og:url" content="https://www.btbz.ai/service/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BTBZ">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://www.btbz.ai/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.btbz.ai/og-image.png">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%23070b14'/%3E%3Ctext%20x='16'%20y='21.5'%20font-family='Arial,sans-serif'%20font-size='12'%20font-weight='700'%20fill='%235b8cff'%20text-anchor='middle'%3EBZ%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+  :root {
+    --bg: #070b14;
+    --bg-soft: #0d1424;
+    --line: rgba(255, 255, 255, 0.08);
+    --text: #e8ecf4;
+    --text-dim: #9aa5b8;
+    --accent: #5b8cff;
+    --accent-2: #7cd4fd;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100svh;
+    display: flex; flex-direction: column;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(12px);
+    background: rgba(7, 11, 20, 0.7);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo {
+    font-size: 1.25rem; font-weight: 800; letter-spacing: 0.12em;
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .nav-right { display: flex; align-items: center; gap: 24px; }
+  .nav-links { display: flex; gap: 28px; font-size: 0.92rem; color: var(--text-dim); }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.current { color: var(--text); }
+  .lang-select {
+    border: 1px solid var(--line); background: var(--bg-soft); color: var(--text);
+    border-radius: 999px; padding: 6px 12px; font-size: .85rem;
+    font-family: inherit; cursor: pointer;
+  }
+
+  main { flex: 1; }
+  .page-head { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+  .page-head::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(600px 320px at 78% 10%, rgba(91, 140, 255, 0.16), transparent 70%),
+      radial-gradient(460px 300px at 10% 90%, rgba(124, 212, 253, 0.09), transparent 70%);
+    pointer-events: none;
+  }
+  .page-head-inner { position: relative; padding: 76px 0 60px; }
+  .crumb { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 18px; }
+  .crumb a { border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+  .crumb a:hover { color: var(--text); border-color: var(--text-dim); }
+  .section-label {
+    font-size: 0.8rem; letter-spacing: 0.22em; font-weight: 600;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    font-weight: 800; line-height: 1.25; letter-spacing: -0.02em;
+    margin-bottom: 18px;
+  }
+  h1 .grad {
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .page-desc { color: var(--text-dim); max-width: 620px; }
+
+  .services { padding: 64px 0 96px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; align-items: stretch; }
+  .card {
+    display: flex; flex-direction: column;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 32px 28px;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover {
+    border-color: rgba(91, 140, 255, 0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 40px rgba(4, 7, 15, 0.5);
+  }
+  .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .card .icon {
+    width: 46px; height: 46px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(91, 140, 255, 0.12);
+    margin-bottom: 22px; font-size: 1.3rem;
+  }
+  .card-head { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+  .card-head h2 { font-size: 1.22rem; font-weight: 800; letter-spacing: 0.01em; }
+  .badge {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em;
+    color: var(--accent-2); border: 1px solid rgba(124, 212, 253, 0.35);
+    border-radius: 999px; padding: 3px 10px;
+  }
+  .card p { font-size: 0.94rem; color: var(--text-dim); }
+  .card .go {
+    margin-top: auto; padding-top: 22px; border-top: 1px solid var(--line);
+    font-size: 0.92rem; font-weight: 700; color: var(--accent-2);
+  }
+  .card:hover .go { color: var(--text); }
+  .note { margin-top: 28px; font-size: 0.85rem; color: var(--text-dim); }
+
+  [data-lang] { display: none; }
+  html[data-show="ko"] [data-lang="ko"], html[data-show="en"] [data-lang="en"], html[data-show="vi"] [data-lang="vi"], html[data-show="es"] [data-lang="es"], html[data-show="ru"] [data-lang="ru"], html[data-show="hi"] [data-lang="hi"] { display: block; }
+  .i18n-ko, .i18n-en, .i18n-vi, .i18n-es, .i18n-ru, .i18n-hi { display: none; }
+  html[data-show="ko"] .i18n-ko, html[data-show="en"] .i18n-en, html[data-show="vi"] .i18n-vi, html[data-show="es"] .i18n-es, html[data-show="ru"] .i18n-ru, html[data-show="hi"] .i18n-hi { display: inline; }
+
+  footer { border-top: 1px solid var(--line); padding: 36px 0; font-size: 0.85rem; color: var(--text-dim); }
+  .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .footer-inner a:hover { color: var(--text); }
+
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+    .page-head-inner { padding: 56px 0 44px; }
+    .services { padding: 48px 0 72px; }
+  }
+</style>
+<script>window.BTBZ_GA4 = { measurementId: 'G-4LE1ZNX2WN' };</script>
+<script src="/analytics.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="/" class="logo">BTBZ</a>
+    <div class="nav-right">
+      <nav class="nav-links">
+        <a href="/service/" class="current"><span class="i18n-ko">서비스</span><span class="i18n-en">Services</span><span class="i18n-vi">Dịch vụ</span><span class="i18n-es">Servicios</span><span class="i18n-ru">Сервисы</span><span class="i18n-hi">सेवाएँ</span></a>
+        <a href="/#about"><span class="i18n-ko">소개</span><span class="i18n-en">About</span><span class="i18n-vi">Giới thiệu</span><span class="i18n-es">Nosotros</span><span class="i18n-ru">О нас</span><span class="i18n-hi">परिचय</span></a>
+        <a href="/#contact"><span class="i18n-ko">문의</span><span class="i18n-en">Contact</span><span class="i18n-vi">Liên hệ</span><span class="i18n-es">Contacto</span><span class="i18n-ru">Связаться</span><span class="i18n-hi">संपर्क करें</span></a>
+      </nav>
+      <select id="lang-select" class="lang-select" aria-label="Language" onchange="setLang(this.value)">
+        <option value="ko">한국어</option><option value="en">English</option><option value="vi">Tiếng Việt</option><option value="es">Español</option><option value="ru">Русский</option><option value="hi">हिन्दी</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <div class="wrap page-head-inner">
+      <div class="crumb"><a href="/">BTBZ</a> <span aria-hidden="true">›</span> <span class="i18n-ko">서비스</span><span class="i18n-en">Services</span><span class="i18n-vi">Dịch vụ</span><span class="i18n-es">Servicios</span><span class="i18n-ru">Сервисы</span><span class="i18n-hi">सेवाएँ</span></div>
+      <div class="section-label"><span class="i18n-ko">서비스</span><span class="i18n-en">Services</span><span class="i18n-vi">Dịch vụ</span><span class="i18n-es">Servicios</span><span class="i18n-ru">Сервисы</span><span class="i18n-hi">सेवाएँ</span></div>
+      <h1><span class="i18n-ko">BTBZ의 <span class="grad">서비스</span></span><span class="i18n-en">BTBZ <span class="grad">services</span></span><span class="i18n-vi">Dịch vụ của <span class="grad">BTBZ</span></span><span class="i18n-es">Servicios de <span class="grad">BTBZ</span></span><span class="i18n-ru">Сервисы <span class="grad">BTBZ</span></span><span class="i18n-hi">BTBZ की <span class="grad">सेवाएँ</span></span></h1>
+      <p class="page-desc"><span class="i18n-ko">프라이버시를 존중하는 소프트웨어와 실용적인 AI로 만든 제품들입니다. 아래에서 각 서비스를 확인하세요.</span><span class="i18n-en">Products built with privacy-respecting software and practical AI. Explore each service below.</span><span class="i18n-vi">Các sản phẩm được xây dựng bằng phần mềm tôn trọng quyền riêng tư và AI thiết thực. Khám phá từng dịch vụ bên dưới.</span><span class="i18n-es">Productos creados con software que respeta la privacidad e IA práctica. Explora cada servicio a continuación.</span><span class="i18n-ru">Продукты, созданные на основе программного обеспечения, уважающего конфиденциальность, и практичного ИИ. Ниже — каждый из сервисов.</span><span class="i18n-hi">प्राइवेसी का सम्मान करने वाले सॉफ़्टवेयर और व्यावहारिक AI से बने उत्पाद। नीचे हर सेवा देखें।</span></p>
+    </div>
+  </div>
+
+  <section class="services">
+    <div class="wrap">
+      <div class="cards">
+
+        <a class="card" href="https://modora.btbz.ai/">
+          <div class="icon" aria-hidden="true">🔐</div>
+          <div class="card-head">
+            <h2>Modora</h2>
+            <span class="badge">LOCAL-FIRST</span>
+          </div>
+          <div data-lang="ko"><p>비밀메모·비밀번호·첨부 파일과 생일·기념일·만료일 일정을 한곳에서 관리하는 로컬 우선 앱. 모든 데이터는 기기 안에 암호화되어 저장됩니다.</p></div>
+          <div data-lang="en"><p>A local-first app for secret memos, passwords, attachments, and birthday, anniversary, and expiry-date schedules — all in one place. Everything is stored encrypted on your device.</p></div>
+          <div data-lang="vi"><p>Ứng dụng local-first quản lý ghi chú bí mật, mật khẩu, tệp đính kèm và lịch sinh nhật, kỷ niệm, hết hạn ở cùng một nơi. Mọi dữ liệu được mã hóa và lưu trên thiết bị của bạn.</p></div>
+          <div data-lang="es"><p>Una aplicación local-first para notas secretas, contraseñas, archivos adjuntos y fechas de cumpleaños, aniversarios y vencimientos, todo en un solo lugar. Todo se guarda cifrado en tu dispositivo.</p></div>
+          <div data-lang="ru"><p>Local-first приложение для секретных заметок, паролей, вложений и дат дней рождения, годовщин и сроков действия — всё в одном месте. Все данные хранятся на устройстве в зашифрованном виде.</p></div>
+          <div data-lang="hi"><p>गुप्त नोट्स, पासवर्ड, अटैचमेंट और जन्मदिन, सालगिरह व समाप्ति-तिथि के शेड्यूल — सब एक जगह संभालने वाला local-first ऐप। सारा डेटा आपके डिवाइस में एन्क्रिप्ट होकर सहेजा जाता है।</p></div>
+          <span class="go"><span class="i18n-ko">서비스 보기 →</span><span class="i18n-en">Visit service →</span><span class="i18n-vi">Xem dịch vụ →</span><span class="i18n-es">Ver servicio →</span><span class="i18n-ru">Перейти к сервису →</span><span class="i18n-hi">सेवा देखें →</span></span>
+        </a>
+
+        <a class="card" href="/service/abc-report-mockup.html">
+          <div class="icon" aria-hidden="true">📊</div>
+          <div class="card-head">
+            <h2><span class="i18n-ko">ABC리포트</span><span class="i18n-en">ABC Report</span><span class="i18n-vi">ABC Report</span><span class="i18n-es">ABC Report</span><span class="i18n-ru">ABC Report</span><span class="i18n-hi">ABC Report</span></h2>
+            <span class="badge">PREVIEW</span>
+          </div>
+          <div data-lang="ko"><p>해외시장 상품 인텔리전스. 내 제품이 어느 나라에서 누가 얼마에 팔고 있는지 관측하고, 경쟁·실질 마진·규제 요건까지 담은 시장 진단 리포트를 제공합니다.</p></div>
+          <div data-lang="en"><p>Overseas market product intelligence. See who is already selling your product abroad and at what price, with a market diagnostic report covering competition, real margins, and regulatory requirements.</p></div>
+          <div data-lang="vi"><p>Thông tin thị trường sản phẩm ở nước ngoài. Xem ai đang bán sản phẩm của bạn ở thị trường nào và với giá bao nhiêu, kèm báo cáo chẩn đoán thị trường về cạnh tranh, biên lợi nhuận thực tế và yêu cầu pháp lý.</p></div>
+          <div data-lang="es"><p>Inteligencia de producto para mercados internacionales. Descubre quién ya vende tu producto en el extranjero y a qué precio, con un informe de diagnóstico de mercado sobre competencia, margen real y requisitos regulatorios.</p></div>
+          <div data-lang="ru"><p>Аналитика товара на зарубежных рынках. Узнайте, кто и по какой цене уже продаёт ваш продукт за рубежом, — с диагностическим отчётом по конкуренции, реальной марже и регуляторным требованиям.</p></div>
+          <div data-lang="hi"><p>विदेशी बाज़ार में उत्पाद इंटेलिजेंस। देखें कि आपका उत्पाद किस देश में, कौन, किस क़ीमत पर बेच रहा है — साथ में प्रतिस्पर्धा, वास्तविक मार्जिन और नियामक शर्तों वाली मार्केट डायग्नोस्टिक रिपोर्ट।</p></div>
+          <span class="go"><span class="i18n-ko">리포트 미리보기 →</span><span class="i18n-en">Preview the report →</span><span class="i18n-vi">Xem trước báo cáo →</span><span class="i18n-es">Ver vista previa del informe →</span><span class="i18n-ru">Посмотреть отчёт →</span><span class="i18n-hi">रिपोर्ट प्रीव्यू देखें →</span></span>
+        </a>
+
+      </div>
+
+      <p class="note"><span class="i18n-ko">※ ABC리포트는 준비 중인 서비스입니다. 미리보기 화면은 한국어로만 제공됩니다.</span><span class="i18n-en">* ABC Report is still in preparation. The preview is available in Korean only.</span><span class="i18n-vi">* ABC Report đang được chuẩn bị. Bản xem trước chỉ có bằng tiếng Hàn.</span><span class="i18n-es">* ABC Report está en preparación. La vista previa solo está disponible en coreano.</span><span class="i18n-ru">* ABC Report находится в подготовке. Предпросмотр доступен только на корейском языке.</span><span class="i18n-hi">* ABC Report अभी तैयारी में है। प्रीव्यू केवल कोरियाई में उपलब्ध है।</span></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>© 2026 BTBZ. All rights reserved.</span>
+    <span><a href="https://modora.btbz.ai/privacy.html"><span class="i18n-ko">개인정보처리방침</span><span class="i18n-en">Privacy Policy</span><span class="i18n-vi">Chính sách quyền riêng tư</span><span class="i18n-es">Política de privacidad</span><span class="i18n-ru">Политика конфиденциальности</span><span class="i18n-hi">गोपनीयता नीति</span></a> · www.btbz.ai</span>
+  </div>
+</footer>
+
+<script src="/consent-banner.js" defer></script>
+<script>
+var LANGS = ['ko','en','vi','es','ru','hi'];
+function setLang(l) {
+  if (LANGS.indexOf(l) < 0) l = 'en';
+  document.documentElement.setAttribute('data-show', l);
+  document.documentElement.setAttribute('lang', l);
+  var sel = document.getElementById('lang-select'); if (sel) sel.value = l;
+  try { localStorage.setItem('btbz-lang', l); } catch (e) {}
+}
+(function () {
+  var saved = null; try { saved = localStorage.getItem('btbz-lang'); } catch (e) {}
+  if (LANGS.indexOf(saved) < 0) saved = null;
+  var nav = (navigator.language || 'en').toLowerCase().slice(0, 2);
+  setLang(saved || (LANGS.indexOf(nav) >= 0 ? nav : 'en'));
+})();
+</script>
+</body>
+</html>
